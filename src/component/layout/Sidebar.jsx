@@ -19,9 +19,9 @@ const menus = [
     icon: BookOpen,
     route: "/courses",
     submenu: [
-      { label: "All Courses", route: "/courses/all" },
-      { label: "Live Classes", route: "/courses/live" },
-      { label: "Curriculum", route: "/courses/curriculum" }
+      { label: "Course List", route: "/courses/list" },
+      { label: "Course Page", route: "/courses/page" },
+      { label: "Course Preview", route: "/courses/preview" }
     ]
   },
 
