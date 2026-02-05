@@ -3,6 +3,7 @@ import "./App.css";
 import Layout from "./component/layout/Layout";
 import { Route, Routes } from "react-router-dom";
 import Admin from "./component/pages/admin/dashboard/Admin";
+import Course from "./component/pages/admin/courses/Course";
 
 export default function App() {
   return (
@@ -10,7 +11,7 @@ export default function App() {
       <Routes>
         <Route element={<Layout />}>
           <Route path="/" element={<Admin />} />
-         
+           <Route path="/rr" element={<Course />} />
         </Route>
       </Routes>
     </>
