@@ -1,13 +1,23 @@
-import React from 'react'
-import Sidebar from './Sidebar'
+import React from "react";
+import { Outlet } from "react-router-dom";
+import Sidebar from "./Sidebar";
 
-export default function Layout({children}) {
+export default function Layout() {
   return (
-    <>
-     <Sidebar/>
-  
-      {children}
-     
-    </>
-  )
+    <div className="flex min-h-screen bg-[#0a0f1f] text-white overflow-hidden">
+
+      {/* Sidebar */}
+      <Sidebar />
+
+      {/* Main Area */}
+      <div
+        className="flex-1 h-screen overflow-y-auto p-8 bg-gradient-to-br from-[#0c1226] to-[#070b16]
+        rounded-l-[3rem] shadow-inner border-l border-white/10 mx-[2vh] my-[2vh]"
+      >
+        <div className="max-w-7xl mx-auto">
+          <Outlet />
+        </div>
+      </div>
+    </div>
+  );
 }

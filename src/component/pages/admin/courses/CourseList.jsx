@@ -1,7 +1,7 @@
 import React from "react";
 import { PlusCircle, Search, Edit, Trash2, BookOpen } from "lucide-react";
 
-const courseList = [
+const list = [
   {
     id: 1,
     title: "Full Stack Web Development",
@@ -28,7 +28,7 @@ const courseList = [
   },
 ];
 
-export default function Courses() {
+export default function CoursesList() {
   return (
     <div className="w-full">
 
@@ -69,7 +69,7 @@ export default function Courses() {
           </thead>
 
           <tbody>
-            {courseList.map((course) => (
+            {list.map((course) => (
               <tr
                 key={course.id}
                 className="border-t border-white/10 hover:bg-white/5 transition"
