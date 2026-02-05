@@ -1,17 +1,17 @@
-import React from 'react'
+import React from "react";
+import "./App.css";
 import Layout from './component/layout/Layout'
-import './App.css'
-import { Route, Routes } from 'react-router-dom'
+import { Route, Routes } from "react-router-dom";
+import Admin from "./component/pages/admin/dashboard/Admin";
 
 export default function App() {
   return (
     <>
-      <Layout>
-        <Routes>
-          
-          <Route/>
-        </Routes>
-      </Layout>
+      <Routes >
+        <Route element={<Layout />}>
+          <Route path="/" element={<Admin />} />
+        </Route>
+      </Routes>
     </>
-  )
+  );
 }
