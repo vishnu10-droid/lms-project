@@ -1,22 +1,38 @@
 import React from "react";
 import { Outlet } from "react-router-dom";
 import Sidebar from "./Sidebar";
+import Navbar from "./Navbar";   // ✅ Correct spelling
 
 export default function Layout() {
   return (
-    <div className="flex min-h-screen bg-[#0a0f1f] text-white overflow-hidden">
+    <div className="flex min-h-screen bg-gray-100 text-gray-800">
 
       {/* Sidebar */}
       <Sidebar />
 
-      {/* Main Area */}
-      <div
-        className="flex-1 h-screen overflow-y-auto p-8 bg-gradient-to-br from-[#0c1226] to-[#070b16]
-        rounded-l-[3rem] shadow-inner border-l border-white/10 mx-[2vh] my-[2vh]"
-      >
-        <div className="max-w-7xl mx-auto">
-          <Outlet />
-        </div>
+      {/* Right Side Area */}
+      <div className="flex flex-col flex-1 h-screen">
+
+        {/* Navbar Full Top */}
+        <Navbar title="Dashboard" />
+
+        {/* Main Content */}
+        <main className="flex-1 overflow-y-auto p-6">
+          <div
+            className="
+              max-w-7xl mx-auto
+              bg-white
+              rounded-2xl
+              shadow-md
+              border border-gray-200
+              p-8
+              min-h-[85vh]
+            "
+          >
+            <Outlet />
+          </div>
+        </main>
+
       </div>
     </div>
   );
