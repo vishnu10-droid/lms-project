@@ -34,7 +34,7 @@ const STUDENT = {
 
 /* ---------------- COMPONENT ---------------- */
 
-export default function StudentProfile() {
+export default function Studentid() {
 
   const [student, setStudent] = useState(STUDENT);
   const navigate = useNavigate();

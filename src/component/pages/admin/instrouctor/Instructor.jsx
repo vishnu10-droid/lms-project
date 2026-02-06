@@ -42,7 +42,7 @@ const INSTRUCTOR_DATA = {
 
 /* ---------------- COMPONENT ---------------- */
 
-export default function InstructorProfile() {
+export default function Instructorid() {
 
   const [instructor, setInstructor] = useState(INSTRUCTOR_DATA);
   const navigate = useNavigate();

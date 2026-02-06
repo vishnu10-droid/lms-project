@@ -1,199 +1,328 @@
-import React, { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import React, { useState } from "react";
 import { NavLink, useLocation } from "react-router-dom";
+import logo from "../../assets/fevicon.png";
 
 import {
-  LayoutDashboard,
+  Home,
   BookOpen,
+  Layers,
+  PlusCircle,
   Users,
-  GraduationCap,
-  ClipboardList,
-  MessageSquare,
-  BarChart,
-  Settings,
+  UserCheck,
+  Calendar,
+  BarChart3,
   Bell,
-  Award,
-  ChevronLeft,
-  ChevronRight,
+  Settings,
   ChevronDown,
-  LogOut,
+  IdCard,
+  CreditCard,
+  User,
+  Phone,
 } from "lucide-react";
 
-/* ------------ MENU DATA ------------ */
+/* ---------------- COLORS ---------------- */
 
-const menus = [
-  { name: "Dashboard", path: "/", icon: LayoutDashboard },
+const COLORS = {
+  dashboard: {
+    hover: "hover:bg-blue-100",
+    active: "bg-blue-500",
+    text: "text-blue-600",
+  },
+  courses: {
+    hover: "hover:bg-green-100",
+    active: "bg-green-500",
+    text: "text-green-600",
+  },
+  students: {
+    hover: "hover:bg-cyan-100",
+    active: "bg-cyan-500",
+    text: "text-cyan-600",
+  },
+  instructors: {
+    hover: "hover:bg-purple-100",
+    active: "bg-purple-500",
+    text: "text-purple-600",
+  },
+  schedule: {
+    hover: "hover:bg-orange-100",
+    active: "bg-orange-500",
+    text: "text-orange-600",
+  },
+  notifications: {
+    hover: "hover:bg-red-100",
+    active: "bg-red-500",
+    text: "text-red-600",
+  },
+  reports: {
+    hover: "hover:bg-pink-100",
+    active: "bg-pink-500",
+    text: "text-pink-600",
+  },
+  settings: {
+    hover: "hover:bg-gray-100",
+    active: "bg-gray-500",
+    text: "text-gray-600",
+  },
+};
+
+/* ---------------- MENU ---------------- */
+
+const menu = [
+  {
+    title: "Dashboard",
+    icon: Home,
+    path: "/",
+    ...COLORS.dashboard,
+  },
 
   {
-    name: "Courses",
+    title: "Courses",
     icon: BookOpen,
+    ...COLORS.courses,
     submenu: [
-      { name: "All Courses", path: "/courses" },
-      { name: "Add Course", path: "/courses/create" },
-      { name: "Live Classes", path: "/courses/live" }
-    ]
+      {
+        title: "All Courses",
+        icon: BookOpen,
+        path: "/admin/courses",
+        hover: "hover:bg-emerald-100",
+        active: "bg-emerald-500",
+        text: "text-emerald-600",
+      },
+      {
+        title: "Add Course",
+        icon: PlusCircle,
+        path: "/admin/courses/add",
+        hover: "hover:bg-teal-100",
+        active: "bg-teal-500",
+        text: "text-teal-600",
+      },
+      {
+        title: "Categories",
+        icon: Layers,
+        path: "/admin/categories",
+        hover: "hover:bg-lime-100",
+        active: "bg-lime-500",
+        text: "text-lime-600",
+      },
+    ],
   },
-{
-  name: "Users",
-  path: "/users",   // 👈 add this
-  icon: Users,
-  submenu: [
-    { name: "Students", path: "/users/students" },
-    { name: "Instructors", path: "/users/instructors" },
-    { name: "Admins", path: "/users/admins" }
-  ]
-},
+
+  {
+    title: "Students",
+    icon: Users,
+    ...COLORS.students,
+    submenu: [
+      {
+        title: "Student ID",
+        icon: IdCard,
+        path: "/admin/students/id",
+        hover: "hover:bg-sky-100",
+        active: "bg-sky-500",
+        text: "text-sky-600",
+      },
+      {
+        title: "Student Payments",
+        icon: CreditCard,
+        path: "/admin/students/payments",
+        hover: "hover:bg-amber-100",
+        active: "bg-amber-500",
+        text: "text-amber-600",
+      },
+    ],
+  },
+
+  {
+    title: "Instructors",
+    icon: UserCheck,
+    ...COLORS.instructors,
+    submenu: [
+      {
+        title: "Instructor List",
+        icon: Users,
+        path: "/admin/instructors",
+        hover: "hover:bg-purple-100",
+        active: "bg-purple-500",
+        text: "text-purple-600",
+      },
+      {
+        title: "View Profile",
+        icon: User,
+        path: "/admin/instructors/profile",
+        hover: "hover:bg-fuchsia-100",
+        active: "bg-fuchsia-500",
+        text: "text-fuchsia-600",
+      },
+    ],
+  },
+
+  {
+    title: "Schedule",
+    icon: Calendar,
+    path: "/admin/schedule",
+    ...COLORS.schedule,
+  },
+
+  {
+    title: "Notifications",
+    icon: Bell,
+    path: "/admin/notifications",
+    ...COLORS.notifications,
+  },
+
+  {
+    title: "Reports",
+    icon: BarChart3,
+    path: "/admin/reports",
+    ...COLORS.reports,
+  },
+   {
+    title: "Payment",
+    icon: Phone,
+    path: "/admin/payment",
+    ...COLORS.dashboard,
+  },
 
 
-  { name: "Analytics", path: "/analytics", icon: BarChart },
-  { name: "Enrollments", path: "/enrollments", icon: ClipboardList },
-  { name: "Messages", path: "/messages", icon: MessageSquare },
-  { name: "Notifications", path: "/notifications", icon: Bell },
-  { name: "Certificates", path: "/certificates", icon: Award },
-  { name: "Settings", path: "/settings", icon: Settings }
+  {
+    title: "Settings",
+    icon: Settings,
+    path: "/admin/settings",
+    ...COLORS.settings,
+  },
 ];
 
-/* ------------ SIDEBAR ------------ */
+/* ---------------- COMPONENT ---------------- */
 
 export default function Sidebar() {
-  const [isOpen, setIsOpen] = useState(true);
-  const [openMenu, setOpenMenu] = useState(null);
+  const [openCourses, setOpenCourses] = useState(false);
+  const [openStudents, setOpenStudents] = useState(false);
+  const [openInstructors, setOpenInstructors] = useState(false);
+
   const location = useLocation();
 
-  const isSubmenuActive = (submenu) =>
-    submenu?.some(sub => location.pathname.startsWith(sub.path));
-
-  useEffect(() => {
-    menus.forEach(item => {
-      if (isSubmenuActive(item.submenu)) {
-        setOpenMenu(item.name);
-      }
-    });
-  }, [location.pathname]);
-
   return (
-    <motion.aside
-      animate={{ width: isOpen ? 230 : 75 }}
-      className="h-screen bg-gradient-to-b from-[#0f172a] to-[#020617] 
-                 text-white flex flex-col shadow-2xl relative"
-    >
-      {/* TOGGLE */}
-      <button
-        onClick={() => setIsOpen(!isOpen)}
-        className="absolute -right-3 top-6 bg-indigo-500 p-1.5 rounded-full shadow-md"
-      >
-        {isOpen ? <ChevronLeft size={14} /> : <ChevronRight size={14} />}
-      </button>
-
+    <aside className="w-72 h-screen bg-white border-r px-5 py-6 flex flex-col">
       {/* LOGO */}
-      <div className="p-4 flex items-center gap-2">
-        <div className="w-9 h-9 bg-gradient-to-tr from-indigo-500 to-purple-600 
-                        rounded-lg flex items-center justify-center font-bold">
-          LMS
+      <div className="flex items-center gap-3 mb-6">
+        <div className="w-12 h-12 rounded-xl overflow-hidden shadow">
+          <img
+            src={logo}
+            alt="AI Scholar"
+            className="w-full h-full object-contain"
+          />
         </div>
-        {isOpen && (
-          <span className="font-semibold tracking-wide
-                         text-transparent bg-clip-text
-                         bg-gradient-to-r from-indigo-400 to-purple-400">
-            Admin
-          </span>
-        )}
+        <div>
+          <h2 className="text-xl font-bold text-gray-800">AI Scholar</h2>
+          <p className="text-sm text-gray-500">Admin Portal</p>
+        </div>
       </div>
 
-      {/* MENU */}
-      <nav className="flex-1 px-2 space-y-1 overflow-y-auto">
-        {menus.map(item => {
-          const Icon = item.icon;
-          const active = item.submenu
-            ? isSubmenuActive(item.submenu)
-            : location.pathname === item.path;
+      {/* MENU (SCROLL ENABLED) */}
+      <nav className="flex-1 space-y-2 overflow-y-auto pr-2">
+        {menu.map((item, i) => {
+          const isSubActive =
+            item.submenu &&
+            item.submenu.some((sub) => location.pathname === sub.path);
 
           return (
-            <div key={item.name}>
-              {/* MAIN ITEM */}
-              <button
-                onClick={() =>
-                  item.submenu &&
-                  setOpenMenu(openMenu === item.name ? null : item.name)
-                }
-                className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-sm
-                transition-all duration-300
-                ${
-                  active
-                    ? "bg-gradient-to-r from-indigo-500 to-purple-600 shadow-md"
-                    : "hover:bg-white/10"
-                }`}
-              >
-                <div className="flex items-center gap-3">
+            <div key={i}>
+              {/* NORMAL ITEM */}
+              {!item.submenu && (
+                <NavLink
+                  to={item.path}
+                  className={({ isActive }) =>
+                    `flex items-center gap-4 px-4 py-3 rounded-xl transition
+                    ${
+                      isActive
+                        ? `${item.active} text-white shadow`
+                        : `text-gray-700 ${item.hover}`
+                    }`
+                  }
+                >
                   <div
-                    className={`p-1.5 rounded-lg ${
-                      active ? "bg-black/20" : "bg-white/5"
-                    }`}
+                    className={`w-10 h-10 flex items-center justify-center rounded-lg
+                    ${location.pathname === item.path ? "bg-white/20 text-white" : item.text}`}
                   >
-                    <Icon size={16} />
+                    <item.icon size={20} />
                   </div>
+                  <span className="font-medium">{item.title}</span>
+                </NavLink>
+              )}
 
-                  {isOpen && (
-                    item.submenu ? (
-                      <span>{item.name}</span>
-                    ) : (
-                      <NavLink to={item.path}>{item.name}</NavLink>
-                    )
-                  )}
-                </div>
-
-                {isOpen && item.submenu && (
-                  <ChevronDown
-                    size={14}
-                    className={`transition ${
-                      openMenu === item.name ? "rotate-180" : ""
-                    }`}
-                  />
-                )}
-              </button>
-
-              {/* SUBMENU */}
-              <AnimatePresence>
-                {isOpen && openMenu === item.name && item.submenu && (
-                  <motion.div
-                    initial={{ height: 0, opacity: 0 }}
-                    animate={{ height: "auto", opacity: 1 }}
-                    exit={{ height: 0, opacity: 0 }}
-                    className="ml-10 mt-1 space-y-1"
+              {/* COURSES DROPDOWN */}
+              {item.submenu && (
+                <>
+                  <button
+                    onClick={() => {
+                      if (item.title === "Courses")
+                        setOpenCourses(!openCourses);
+                      if (item.title === "Students")
+                        setOpenStudents(!openStudents);
+                      if (item.title === "Instructors")
+                        setOpenInstructors(!openInstructors);
+                    }}
+                    className={`w-full flex items-center justify-between px-4 py-3 rounded-xl transition
+                   ${
+                     isSubActive
+                       ? `${item.active} text-white shadow`
+                       : `text-gray-700 ${item.hover}`
+                   }`}
                   >
-                    {item.submenu.map(sub => (
-                      <NavLink
-                        key={sub.name}
-                        to={sub.path}
-                        className="block text-xs text-gray-400 
-                                   hover:text-indigo-400 transition"
+                    <div className="flex items-center gap-4">
+                      <div
+                        className={`w-10 h-10 flex items-center justify-center rounded-lg
+                       ${isSubActive ? "bg-white/20 text-white" : item.text}`}
                       >
-                        • {sub.name}
-                      </NavLink>
-                    ))}
-                  </motion.div>
-                )}
-              </AnimatePresence>
+                        <item.icon size={20} />
+                      </div>
+                      <span className="font-medium">{item.title}</span>
+                    </div>
+
+                    <ChevronDown
+                      className={`transition ${
+                        (item.title === "Courses" && openCourses) ||
+                        (item.title === "Students" && openStudents) ||
+                        (item.title === "Instructors" && openInstructors)
+                          ? "rotate-180"
+                          : ""
+                      }`}
+                    />
+                  </button>
+
+                  {((item.title === "Courses" && openCourses) ||
+                    (item.title === "Students" && openStudents) ||
+                    (item.title === "Instructors" && openInstructors)) && (
+                    <div className="ml-12 mt-2 space-y-2">
+                      {item.submenu.map((sub, j) => (
+                        <NavLink
+                          key={j}
+                          to={sub.path}
+                          className={({ isActive }) =>
+                            `flex items-center gap-3 px-3 py-2 rounded-lg transition
+                            ${
+                              isActive
+                                ? `${sub.active} text-white shadow`
+                                : `text-gray-700 ${sub.hover}`
+                            }`
+                          }
+                        >
+                          <div
+                            className={`w-9 h-9 flex items-center justify-center rounded-md
+                            ${location.pathname === sub.path ? "bg-white/20 text-white" : sub.text}`}
+                          >
+                            <sub.icon size={16} />
+                          </div>
+                          <span className="text-sm">{sub.title}</span>
+                        </NavLink>
+                      ))}
+                    </div>
+                  )}
+                </>
+              )}
             </div>
           );
         })}
       </nav>
-
-      {/* PROFILE */}
-      <div className="p-3 border-t border-white/10 flex items-center gap-3">
-        <img
-          src="https://api.dicebear.com/7.x/avataaars/svg?seed=admin"
-          className="w-8 h-8 rounded-full"
-          alt="Admin"
-        />
-
-        {isOpen && <p className="text-sm text-gray-300">Admin</p>}
-
-        <LogOut
-          size={16}
-          className="ml-auto text-red-400 hover:text-red-500 cursor-pointer"
-        />
-      </div>
-    </motion.aside>
+    </aside>
   );
 }
