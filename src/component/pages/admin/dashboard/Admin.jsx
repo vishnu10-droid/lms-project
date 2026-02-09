@@ -1,163 +1,209 @@
-import React from "react";
-import { motion } from "framer-motion";
+import React, { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import {
   LineChart, Line, BarChart, Bar, XAxis, YAxis,
-  Tooltip, ResponsiveContainer, CartesianGrid
+  Tooltip, ResponsiveContainer, CartesianGrid, AreaChart, Area,
+  PieChart, Pie, Cell
 } from "recharts";
-
 import {
-  Users,
-  BookOpen,
-  GraduationCap,
-  DollarSign,
-  TrendingUp,
-  PlusCircle,
-  UserPlus,
-  Megaphone,
-  CheckCircle
+  Users, BookOpen, GraduationCap, DollarSign, TrendingUp,
+  PlusCircle, UserPlus, Megaphone, CheckCircle, Clock, 
+  Activity, Award, Zap, Shield, Search, Bell, Menu
 } from "lucide-react";
 
-/* ------------------ DATA ------------------ */
-
-const stats = [
-  { title: "Students", value: "12,540", icon: <Users />, color: "bg-indigo-500" },
-  { title: "Instructors", value: "320", icon: <GraduationCap />, color: "bg-green-500" },
-  { title: "Courses", value: "860", icon: <BookOpen />, color: "bg-orange-500" },
-  { title: "Revenue", value: "$128k", icon: <DollarSign />, color: "bg-pink-500" }
+/* ------------------ ENHANCED DATA ------------------ */
+const initialStats = [
+  { title: "Total Students", value: "12,540", change: "+18%", icon: <Users />, color: "from-blue-600 to-cyan-500", status: "up" },
+  { title: "Monthly Revenue", value: "₹1.28Cr", change: "+24%", icon: <DollarSign />, color: "from-emerald-600 to-teal-500", status: "up" },
+  { title: "Active Courses", value: "860", change: "+12%", icon: <BookOpen />, color: "from-violet-600 to-purple-500", status: "up" },
+  { title: "Retention Rate", value: "94.2%", change: "+5%", icon: <Activity />, color: "from-orange-600 to-amber-500", status: "up" },
 ];
 
-const enrollmentsData = [
-  { month: "Jan", students: 400 },
-  { month: "Feb", students: 650 },
-  { month: "Mar", students: 600 },
-  { month: "Apr", students: 820 },
-  { month: "May", students: 980 },
-  { month: "Jun", students: 1200 }
+const enrollmentTrends = [
+  { month: "Jan", students: 4000, revenue: 2400 },
+  { month: "Feb", students: 3000, revenue: 1398 },
+  { month: "Mar", students: 2000, revenue: 9800 },
+  { month: "Apr", students: 2780, revenue: 3908 },
+  { month: "May", students: 1890, revenue: 4800 },
+  { month: "Jun", students: 2390, revenue: 3800 },
+  { month: "Jul", students: 3490, revenue: 4300 },
 ];
 
-const revenueData = [
-  { month: "Jan", revenue: 12000 },
-  { month: "Feb", revenue: 18000 },
-  { month: "Mar", revenue: 16000 },
-  { month: "Apr", revenue: 24000 },
-  { month: "May", revenue: 28000 },
-  { month: "Jun", revenue: 32000 }
-];
+export default function ModernAdminDashboard() {
+  const [stats, setStats] = useState(initialStats);
 
-const activities = [
-  "Rahul enrolled in React Masterclass",
-  "New course submitted: UI/UX Bootcamp",
-  "Payment received from Ankit",
-  "Python Basics course approved",
-  "Neha joined as Instructor"
-];
-
-/* ------------------ COMPONENT ------------------ */
-
-export default function AdminDashboard() {
   return (
-    <div className="p-6 space-y-8">
+    <div className="min-h-screen bg-[#f8fafc] text-slate-900 font-sans selection:bg-indigo-100">
+      
+      <main className="p-4 sm:p-8 max-w-[1600px] mx-auto space-y-8">
+        
+        {/* 👋 WELCOME HEADER */}
+        <header className="flex flex-col md:flex-row justify-between items-start md:items-end gap-4">
+          <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }}>
+            <h2 className="text-sm font-bold text-indigo-600 uppercase tracking-widest mb-1">Overview Dashboard</h2>
+            <h1 className="text-3xl md:text-4xl font-black text-slate-900 tracking-tight">Good Morning, Chief! </h1>
+            <p className="text-slate-500 font-medium mt-1">Here's what is happening with your platform today.</p>
+          </motion.div>
+          <div className="flex gap-3 w-full md:w-auto">
+            <button className="flex-1 md:flex-none px-5 py-2.5 bg-white border border-slate-200 rounded-xl font-bold text-sm shadow-sm hover:bg-slate-50 transition-all">Download CSV</button>
+            <button className="flex-1 md:flex-none px-5 py-2.5 bg-indigo-600 text-white rounded-xl font-bold text-sm shadow-lg shadow-indigo-200 hover:bg-indigo-700 transition-all">Create Report</button>
+          </div>
+        </header>
 
-      {/* HEADER */}
-      <div>
-        <h1 className="text-3xl font-bold">Dashboard</h1>
-        <p className="text-gray-500">Admin overview of platform performance</p>
-      </div>
+        {/* 📊 KPI GRID */}
+        <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          {stats.map((stat, i) => (
+            <motion.div
+              key={stat.title}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: i * 0.1 }}
+              className="bg-white p-6 rounded-3xl border border-slate-100 shadow-sm hover:shadow-xl hover:shadow-indigo-500/5 transition-all group"
+            >
+              <div className="flex justify-between items-start mb-4">
+                <div className={`p-3 rounded-2xl bg-gradient-to-br ${stat.color} text-white shadow-lg`}>
+                  {React.cloneElement(stat.icon, { size: 22 })}
+                </div>
+                <span className="text-xs font-bold text-emerald-600 bg-emerald-50 px-2 py-1 rounded-lg">{stat.change}</span>
+              </div>
+              <p className="text-slate-500 text-sm font-semibold mb-1">{stat.title}</p>
+              <h3 className="text-3xl font-black text-slate-900">{stat.value}</h3>
+            </motion.div>
+          ))}
+        </section>
 
-      {/* KPI CARDS */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-        {stats.map((item, i) => (
-          <motion.div
-            key={i}
-            whileHover={{ scale: 1.03 }}
-            className="bg-white p-6 rounded-xl shadow flex items-center gap-4"
+        {/* 📈 MAIN CHARTS SECTION */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          
+          {/* REVENUE AREA CHART */}
+          <motion.div 
+            initial={{ opacity: 0, scale: 0.95 }} 
+            animate={{ opacity: 1, scale: 1 }}
+            className="lg:col-span-2 bg-white p-8 rounded-[2rem] border border-slate-100 shadow-sm"
           >
-            <div className={`${item.color} p-4 text-white rounded-xl`}>
-              {item.icon}
+            <div className="flex justify-between items-center mb-8">
+              <div>
+                <h3 className="text-xl font-bold text-slate-900">Revenue Stream</h3>
+                <p className="text-sm text-slate-500 font-medium">Comparison between Students vs Revenue</p>
+              </div>
+              <div className="flex bg-slate-100 p-1 rounded-xl">
+                <button className="px-4 py-1.5 bg-white text-indigo-600 rounded-lg text-xs font-bold shadow-sm">Monthly</button>
+                <button className="px-4 py-1.5 text-slate-500 rounded-lg text-xs font-bold">Yearly</button>
+              </div>
             </div>
-            <div>
-              <p className="text-gray-500">{item.title}</p>
-              <h2 className="text-2xl font-bold">{item.value}</h2>
+            <div className="h-[350px] w-full">
+              <ResponsiveContainer width="100%" height="100%">
+                <AreaChart data={enrollmentTrends}>
+                  <defs>
+                    <linearGradient id="colorRev" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="5%" stopColor="#6366f1" stopOpacity={0.3}/>
+                      <stop offset="95%" stopColor="#6366f1" stopOpacity={0}/>
+                    </linearGradient>
+                  </defs>
+                  <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
+                  <XAxis dataKey="month" axisLine={false} tickLine={false} tick={{fill: '#64748b', fontSize: 12, fontWeight: 600}} dy={10} />
+                  <YAxis axisLine={false} tickLine={false} tick={{fill: '#64748b', fontSize: 12}} />
+                  <Tooltip 
+                    contentStyle={{ borderRadius: '16px', border: 'none', boxShadow: '0 10px 15px -3px rgba(0,0,0,0.1)' }}
+                  />
+                  <Area type="monotone" dataKey="revenue" stroke="#6366f1" strokeWidth={4} fillOpacity={1} fill="url(#colorRev)" />
+                </AreaChart>
+              </ResponsiveContainer>
             </div>
           </motion.div>
-        ))}
-      </div>
 
-      {/* CHARTS */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          {/* ⚡ QUICK ACTIONS VERTICAL LIST */}
+          <div className="space-y-6">
+             <div className="bg-indigo-600 rounded-[2rem] p-8 text-white shadow-2xl shadow-indigo-200 relative overflow-hidden">
+                <div className="relative z-10">
+                  <h3 className="text-xl font-bold mb-2">Platform Power-up</h3>
+                  <p className="text-indigo-100 text-sm mb-6">Create a new marketing campaign or onboard new staff instantly.</p>
+                  <button className="w-full bg-white text-indigo-600 py-3 rounded-2xl font-bold text-sm flex items-center justify-center gap-2 hover:bg-indigo-50 transition-all">
+                    <PlusCircle size={18} /> Launch Campaign
+                  </button>
+                </div>
+                <Zap className="absolute -bottom-4 -right-4 text-indigo-500 opacity-20" size={120} />
+             </div>
 
-        {/* Enrollments */}
-        <div className="bg-white p-6 rounded-xl shadow">
-          <h3 className="font-semibold mb-4 flex items-center gap-2">
-            <TrendingUp size={18} /> Student Enrollments
-          </h3>
-
-          <ResponsiveContainer width="100%" height={300}>
-            <LineChart data={enrollmentsData}>
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="month" />
-              <YAxis />
-              <Tooltip />
-              <Line dataKey="students" stroke="#6366F1" strokeWidth={3} />
-            </LineChart>
-          </ResponsiveContainer>
-        </div>
-
-        {/* Revenue */}
-        <div className="bg-white p-6 rounded-xl shadow">
-          <h3 className="font-semibold mb-4">Revenue Trend</h3>
-
-          <ResponsiveContainer width="100%" height={300}>
-            <BarChart data={revenueData}>
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="month" />
-              <YAxis />
-              <Tooltip />
-              <Bar dataKey="revenue" fill="#22C55E" />
-            </BarChart>
-          </ResponsiveContainer>
-        </div>
-
-      </div>
-
-      {/* QUICK ACTIONS + ACTIVITY */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-
-        {/* Quick Actions */}
-        <div className="bg-white p-6 rounded-xl shadow">
-          <h3 className="font-semibold mb-4">Quick Actions</h3>
-
-          <div className="grid grid-cols-2 gap-4">
-            <button className="flex items-center gap-2 p-3 bg-indigo-500 text-white rounded-lg">
-              <PlusCircle size={18} /> Add Course
-            </button>
-            <button className="flex items-center gap-2 p-3 bg-green-500 text-white rounded-lg">
-              <UserPlus size={18} /> Add Instructor
-            </button>
-            <button className="flex items-center gap-2 p-3 bg-orange-500 text-white rounded-lg">
-              <CheckCircle size={18} /> Approve Course
-            </button>
-            <button className="flex items-center gap-2 p-3 bg-pink-500 text-white rounded-lg">
-              <Megaphone size={18} /> Announcement
-            </button>
+             <div className="bg-white border border-slate-100 rounded-[2rem] p-6 shadow-sm">
+                <h3 className="text-lg font-bold mb-4 flex items-center gap-2">
+                   <Clock size={18} className="text-indigo-600" /> System Logs
+                </h3>
+                <div className="space-y-4">
+                  {[
+                    { msg: "New Instructor Signup", time: "2m ago", color: "bg-blue-500" },
+                    { msg: "Server Scaled Up (Auto)", time: "15m ago", color: "bg-emerald-500" },
+                    { msg: "Payment Gateway Refreshed", time: "1h ago", color: "bg-amber-500" }
+                  ].map((log, i) => (
+                    <div key={i} className="flex items-center justify-between border-b border-slate-50 pb-3 last:border-0">
+                      <div className="flex items-center gap-3">
+                        <div className={`w-2 h-2 rounded-full ${log.color}`}></div>
+                        <p className="text-xs font-bold text-slate-700">{log.msg}</p>
+                      </div>
+                      <span className="text-[10px] font-medium text-slate-400 uppercase tracking-tighter">{log.time}</span>
+                    </div>
+                  ))}
+                </div>
+             </div>
           </div>
+
         </div>
 
-        {/* Recent Activity */}
-        <div className="bg-white p-6 rounded-xl shadow">
-          <h3 className="font-semibold mb-4">Recent Activities</h3>
+        {/* 🏆 BOTTOM CARDS */}
+        <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+           <div className="bg-white p-6 rounded-3xl border border-slate-100 shadow-sm col-span-1 md:col-span-2">
+              <div className="flex justify-between items-center mb-6">
+                <h3 className="text-lg font-bold">Top Performing Instructors</h3>
+                <button className="text-indigo-600 text-xs font-bold hover:underline">View All</button>
+              </div>
+              <div className="overflow-x-auto">
+                <table className="w-full text-left">
+                  <thead>
+                    <tr className="text-slate-400 text-[10px] uppercase tracking-widest border-b border-slate-50">
+                      <th className="pb-3 font-black">Instructor</th>
+                      <th className="pb-3 font-black">Course</th>
+                      <th className="pb-3 font-black">Students</th>
+                      <th className="pb-3 font-black">Rating</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-slate-50">
+                    {[1, 2, 3].map((_, i) => (
+                      <tr key={i} className="group">
+                        <td className="py-4 flex items-center gap-3">
+                          <img src={`https://i.pravatar.cc/150?img=${i+10}`} className="w-8 h-8 rounded-full" alt="user" />
+                          <span className="text-sm font-bold text-slate-700">Dr. Sarah Jenkins</span>
+                        </td>
+                        <td className="py-4 text-sm text-slate-500 font-medium">Advanced React Patterns</td>
+                        <td className="py-4 text-sm font-bold text-slate-800">2,405</td>
+                        <td className="py-4">
+                           <div className="flex items-center gap-1 text-amber-500 font-bold text-sm">
+                             <Award size={14} fill="currentColor" /> 4.9
+                           </div>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+           </div>
+           
+           <div className="bg-slate-900 p-8 rounded-[2rem] text-white flex flex-col justify-center relative overflow-hidden">
+              <Shield size={40} className="text-indigo-400 mb-4" />
+              <h3 className="text-xl font-bold mb-2">Security Shield Active</h3>
+              <p className="text-slate-400 text-sm leading-relaxed mb-6">Your platform is currently protected against SQL injections and DDoS attacks. 0 threats detected in 24h.</p>
+              <div className="h-2 w-full bg-slate-800 rounded-full overflow-hidden">
+                <motion.div 
+                  initial={{ width: 0 }} 
+                  animate={{ width: "100%" }} 
+                  transition={{ duration: 2, repeat: Infinity }}
+                  className="h-full bg-indigo-500"
+                />
+              </div>
+              <p className="text-[10px] mt-4 text-slate-500 font-black uppercase tracking-[0.2em]">Status: Optimal</p>
+           </div>
+        </section>
 
-          <ul className="space-y-3 text-sm">
-            {activities.map((item, i) => (
-              <li key={i} className="border-b pb-2">
-                {item}
-              </li>
-            ))}
-          </ul>
-        </div>
-
-      </div>
-
+      </main>
     </div>
   );
 }
