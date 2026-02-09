@@ -1,154 +1,234 @@
 import React, { useState } from "react";
 import {
   Bell,
-  Search,
-  CheckCircle,
   BookOpen,
-  DollarSign,
-  Users
+  CheckCircle,
+  CreditCard,
+  MessageCircle,
+  AlertTriangle,
+  Trash2,
+  Star,
+  X
 } from "lucide-react";
 
-/* ---------------- DUMMY DATA ---------------- */
+/* ---------------- SAMPLE DATA ---------------- */
 
-const NOTIFICATIONS_DATA = [
+const initialNotifications = [
   {
     id: 1,
-    title: "New Student Registered",
-    message: "Rahul Kumar has created an account.",
-    type: "system",
+    title: "New Lesson Added",
+    message: "Lesson 5 added in React Mastery Course",
+    type: "course",
+    unread: true,
     time: "2 min ago",
-    read: false
+    important: true
   },
   {
     id: 2,
-    title: "Course Purchased",
-    message: "Anjali bought React Mastery.",
-    type: "payment",
-    time: "1 hour ago",
-    read: false
+    title: "Assignment Graded",
+    message: "You scored 92% in JavaScript Quiz",
+    type: "assignment",
+    unread: true,
+    time: "30 min ago",
+    important: false
   },
   {
     id: 3,
-    title: "New Course Submitted",
-    message: "Instructor submitted Node Bootcamp.",
-    type: "course",
+    title: "Payment Successful",
+    message: "₹1200 paid for UI/UX Bootcamp",
+    type: "payment",
+    unread: false,
+    time: "2 hrs ago",
+    important: false
+  },
+  {
+    id: 4,
+    title: "New Message",
+    message: "Instructor replied to your doubt",
+    type: "message",
+    unread: true,
+    time: "5 hrs ago",
+    important: false
+  },
+  {
+    id: 5,
+    title: "System Alert",
+    message: "Maintenance scheduled at 2 AM",
+    type: "system",
+    unread: false,
     time: "Yesterday",
-    read: true
+    important: true
   }
 ];
 
+/* ---------------- ICON MAPPER ---------------- */
+
+const iconMap = {
+  course: <BookOpen className="text-indigo-500" size={20} />,
+  assignment: <CheckCircle className="text-green-500" size={20} />,
+  payment: <CreditCard className="text-emerald-500" size={20} />,
+  message: <MessageCircle className="text-blue-500" size={20} />,
+  system: <AlertTriangle className="text-rose-500" size={20} />
+};
+
 /* ---------------- COMPONENT ---------------- */
 
-export default function Notifications() {
-
-  const [notifications, setNotifications] = useState(NOTIFICATIONS_DATA);
-  const [search, setSearch] = useState("");
+export default function NotificationCenter() {
+  const [open, setOpen] = useState(false);
   const [filter, setFilter] = useState("all");
+  const [notifications, setNotifications] = useState(initialNotifications);
 
-  /* FILTERED DATA */
+  const unreadCount = notifications.filter(n => n.unread).length;
+
   const filtered = notifications.filter(n => {
-
-    const matchSearch =
-      n.title.toLowerCase().includes(search.toLowerCase()) ||
-      n.message.toLowerCase().includes(search.toLowerCase());
-
-    const matchFilter =
-      filter === "all" ||
-      (filter === "unread" && !n.read) ||
-      n.type === filter;
-
-    return matchSearch && matchFilter;
+    if (filter === "unread") return n.unread;
+    if (filter === "important") return n.important;
+    return true;
   });
 
-  const markAllRead = () => {
-    setNotifications(notifications.map(n => ({ ...n, read: true })));
+  const markAsRead = (id) => {
+    setNotifications(prev =>
+      prev.map(n => (n.id === id ? { ...n, unread: false } : n))
+    );
   };
 
+  const clearAll = () => setNotifications([]);
+
   return (
-    <div className="p-6 text-white">
-
-      {/* HEADER */}
-      <div className="flex justify-between items-center mb-6">
-
-        <h1 className="text-2xl font-bold">Notifications</h1>
-
+    // Wrapper to make it visible on a blank screen
+    <div className="min-h-screen bg-slate-100 flex items-start justify-center p-10">
+      
+      <div className="relative">
+        {/* Bell Icon Trigger */}
         <button
-          onClick={markAllRead}
-          className="bg-indigo-600 px-4 py-2 rounded-lg flex items-center gap-2"
+          onClick={() => setOpen(!open)}
+          className={`relative p-3 rounded-full transition-all ${
+            open ? "bg-indigo-100 text-indigo-600" : "bg-white text-slate-600 hover:bg-slate-50"
+          } shadow-sm border border-slate-200`}
         >
-          <CheckCircle size={18}/> Mark all as read
+          <Bell size={24} />
+
+          {unreadCount > 0 && (
+            <span className="absolute top-0 right-0 bg-rose-500 text-white text-[10px] font-bold h-5 w-5 flex items-center justify-center rounded-full border-2 border-white">
+              {unreadCount}
+            </span>
+          )}
         </button>
 
-      </div>
+        {/* Dropdown Menu */}
+        {open && (
+          <>
+            {/* Click-away backdrop */}
+            <div 
+              className="fixed inset-0 z-40" 
+              onClick={() => setOpen(false)}
+            />
 
-      {/* SEARCH */}
-      <div className="flex items-center bg-slate-800 rounded-lg px-3 w-72 mb-4">
-        <Search size={16}/>
-        <input
-          placeholder="Search notifications..."
-          className="bg-transparent outline-none p-2 w-full"
-          value={search}
-          onChange={(e)=>setSearch(e.target.value)}
-        />
-      </div>
+            <div className="absolute right-0 mt-3 w-96 bg-white shadow-2xl rounded-2xl overflow-hidden z-50 border border-slate-200 animate-in fade-in zoom-in duration-200 origin-top-right">
+              
+              {/* Header */}
+              <div className="flex justify-between items-center p-4 border-b bg-slate-50/50">
+                <div>
+                  <h3 className="font-bold text-slate-800">Notifications</h3>
+                  <p className="text-xs text-slate-500">You have {unreadCount} unread messages</p>
+                </div>
+                <button
+                  onClick={clearAll}
+                  className="text-xs font-medium text-rose-500 flex items-center gap-1 hover:bg-rose-50 px-2 py-1 rounded-md transition"
+                >
+                  <Trash2 size={14} /> Clear All
+                </button>
+              </div>
 
-      {/* FILTER TABS */}
-      <div className="flex gap-3 mb-5">
+              {/* Filters */}
+              <div className="flex gap-2 p-3 border-b bg-white">
+                {["all", "unread", "important"].map((tab) => (
+                  <button
+                    key={tab}
+                    onClick={() => setFilter(tab)}
+                    className={`px-4 py-1.5 rounded-lg text-xs font-semibold capitalize transition-all
+                    ${
+                      filter === tab
+                        ? "bg-indigo-600 text-white shadow-md shadow-indigo-200"
+                        : "bg-slate-100 text-slate-600 hover:bg-slate-200"
+                    }`}
+                  >
+                    {tab}
+                  </button>
+                ))}
+              </div>
 
-        {["all","unread","system","course","payment"].map(tab => (
-          <button
-            key={tab}
-            onClick={()=>setFilter(tab)}
-            className={`px-4 py-1 rounded-full text-sm capitalize
-            ${filter===tab
-              ? "bg-indigo-600"
-              : "bg-slate-800 hover:bg-slate-700"}`}
-          >
-            {tab}
-          </button>
-        ))}
+              {/* Scrollable List */}
+              <div className="max-h-[450px] overflow-y-auto">
+                {filtered.length === 0 ? (
+                  <div className="flex flex-col items-center justify-center py-12 px-4 text-center">
+                    <div className="bg-slate-100 p-3 rounded-full mb-3">
+                      <Bell size={24} className="text-slate-400" />
+                    </div>
+                    <p className="text-slate-500 font-medium">No notifications found</p>
+                    <p className="text-xs text-slate-400">Try changing your filters</p>
+                  </div>
+                ) : (
+                  filtered.map((item) => (
+                    <div
+                      key={item.id}
+                      onClick={() => markAsRead(item.id)}
+                      className={`flex gap-4 p-4 border-b last:border-0 cursor-pointer transition-colors
+                      ${
+                        item.unread
+                          ? "bg-indigo-50/50 hover:bg-indigo-50"
+                          : "bg-white hover:bg-slate-50"
+                      }`}
+                    >
+                      {/* Icon Section */}
+                      <div className="flex-shrink-0 mt-1">
+                        <div className="bg-white p-2 rounded-xl shadow-sm border border-slate-100">
+                          {iconMap[item.type]}
+                        </div>
+                      </div>
 
-      </div>
+                      {/* Content Section */}
+                      <div className="flex-1 min-w-0">
+                        <div className="flex justify-between items-start mb-0.5">
+                          <h4 className={`text-sm font-semibold truncate ${item.unread ? "text-slate-900" : "text-slate-600"}`}>
+                            {item.title}
+                          </h4>
+                          {item.important && (
+                            <Star size={14} className="fill-yellow-400 text-yellow-400 flex-shrink-0 ml-2" />
+                          )}
+                        </div>
 
-      {/* LIST */}
-      <div className="bg-slate-800 rounded-xl divide-y divide-slate-700">
+                        <p className="text-xs text-slate-500 leading-relaxed mb-2">
+                          {item.message}
+                        </p>
 
-        {filtered.map(n => (
-          <div
-            key={n.id}
-            className={`p-4 flex items-start gap-4
-            ${!n.read ? "bg-slate-700/40" : ""}`}
-          >
+                        <div className="flex items-center justify-between">
+                          <span className="text-[10px] font-medium text-slate-400 uppercase tracking-wider">
+                            {item.time}
+                          </span>
+                          {item.unread && (
+                            <span className="h-2 w-2 bg-indigo-600 rounded-full"></span>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                  ))
+                )}
+              </div>
 
-            {/* ICON */}
-            <div className="p-2 rounded-lg bg-indigo-600">
-              {n.type === "system" && <Users size={18}/>}
-              {n.type === "course" && <BookOpen size={18}/>}
-              {n.type === "payment" && <DollarSign size={18}/>}
+              {/* Footer */}
+              <div className="p-3 border-top bg-slate-50 text-center">
+                <button 
+                  onClick={() => setOpen(false)}
+                  className="text-xs font-semibold text-indigo-600 hover:text-indigo-700"
+                >
+                  Close Panel
+                </button>
+              </div>
             </div>
-
-            {/* CONTENT */}
-            <div className="flex-1">
-              <h3 className="font-semibold">{n.title}</h3>
-              <p className="text-sm text-gray-400">{n.message}</p>
-              <p className="text-xs text-gray-500 mt-1">{n.time}</p>
-            </div>
-
-            {!n.read && (
-              <span className="w-2 h-2 bg-indigo-500 rounded-full mt-2"></span>
-            )}
-
-          </div>
-        ))}
-
-        {filtered.length === 0 && (
-          <p className="p-4 text-center text-gray-400">
-            No notifications found.
-          </p>
+          </>
         )}
-
       </div>
-
     </div>
   );
 }
