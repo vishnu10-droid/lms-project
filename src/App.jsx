@@ -22,12 +22,12 @@ import AdminControls from "./component/pages/admin/Setting/AdminControls";
 import GeneralSettings from "./component/pages/admin/Setting/GeneralSettings";
 import AppearanceSettings from "./component/pages/admin/Setting/AppearanceSettings";
 import SettingsLayout from "./component/layout/SettingsLayout";
-import SchedulePage from "./component/pages/admin/schedule/SchedulePage";
-import EventCard from "./component/pages/admin/schedule/EventCard";
-import CalendarView from "./component/pages/admin/schedule/CalendarView";
-import CalendarHeader from "./component/pages/admin/schedule/CalendarHeader";
+// import SchedulePage from "./component/pages/admin/schedule/SchedulePage";
+// import EventCard from "./component/pages/admin/schedule/EventCard";
+// import CalendarView from "./component/pages/admin/schedule/CalendarView";
+// import CalendarHeader from "./component/pages/admin/schedule/CalendarHeader";
 import EventModal from "./component/pages/admin/schedule/EventModal";
-import FullCalendarComponent from "./component/pages/admin/schedule/FullCalendarComponent";
+// import FullCalendarComponent from "./component/pages/admin/schedule/FullCalendarComponent";
 import DayView from "./component/pages/admin/schedule/DayView";
 import MonthView from "./component/pages/admin/schedule/MonthView";
 import WeekView from "./component/pages/admin/schedule/WeekView";
@@ -60,11 +60,6 @@ export default function App() {
           <Route path="/admin/reports" element={<Reports />} />
 
           {/* Schedule */}
-          <Route path="/admin/schedulepage" element={<SchedulePage />} />
-          <Route path="/admin/eventcard" element={<EventCard />} />
-          <Route path="/admin/calendarview" element={<CalendarView/>} />
-          <Route path="/admin/calendraheader" element={<CalendarHeader/>} />
-          <Route path="/admin/calendra/fullcalendar" element={<FullCalendarComponent/>} /> {/* main*/}
           
           <Route path="/admin/schedulepage/eventmodal" element={<EventModal />} />
           <Route path="/admin/schedule/dayview" element={<DayView />} />
