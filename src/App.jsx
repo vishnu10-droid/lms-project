@@ -17,6 +17,7 @@ import StudentPayments from "./component/pages/admin/students/StudentPayments";
 import InstrouctorProlife from "./component/pages/admin/instrouctor/InstrouctorProlife";
 import Schedule from "./component/pages/admin/schedule/Schedule";
 import Reports from "./component/pages/admin/reports/Reports";
+import StudentList from "./component/pages/admin/students/Students";
 
 export default function App() {
   return (
@@ -28,7 +29,7 @@ export default function App() {
           <Route path="/admin/courses" element={<Course />} />
           <Route path="/admin/categories" element={<CourseCategories />} />
           <Route path="/admin/certificates" element={<Certificate />} />
-          <Route path="/admin/students/id" element={<Studentid />} />
+          <Route path="/admin/students/id" element={<StudentList/>} />
           <Route path="/admin/instructors" element={<Instructorid />} />
           <Route path="/admin/analytics" element={<Analytics />} />
           <Route path="/admin/payment" element={<Payments />} />

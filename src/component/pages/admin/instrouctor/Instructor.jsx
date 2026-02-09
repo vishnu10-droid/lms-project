@@ -6,9 +6,7 @@ import {
   DollarSign,
   Clock,
   Star,
-  ArrowLeft,
-  CheckCircle,
-  XCircle
+  ArrowLeft
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
@@ -43,7 +41,6 @@ const INSTRUCTOR_DATA = {
 /* ---------------- COMPONENT ---------------- */
 
 export default function Instructorid() {
-
   const [instructor, setInstructor] = useState(INSTRUCTOR_DATA);
   const navigate = useNavigate();
 
@@ -55,98 +52,83 @@ export default function Instructorid() {
   };
 
   return (
-    <div className="p-6 text-white">
+    <div className="min-h-screen bg-gradient-to-br from-indigo-50 to-purple-50 p-6">
 
-      {/* BACK BUTTON */}
+      {/* BACK */}
       <button
         onClick={() => navigate(-1)}
-        className="flex items-center gap-2 text-gray-400 hover:text-white mb-4"
+        className="flex items-center gap-2 text-gray-600 hover:text-indigo-600 mb-6"
       >
         <ArrowLeft size={18} /> Back
       </button>
 
-      {/* PROFILE HEADER */}
-      <div className="bg-slate-800 p-6 rounded-xl flex items-center gap-6 mb-6">
+      {/* HEADER */}
+      <div className="bg-white/70 backdrop-blur-xl p-6 rounded-2xl shadow-lg flex flex-col md:flex-row gap-6 items-center">
 
         <img
           src={instructor.avatar}
-          className="w-24 h-24 rounded-full"
-          alt="instructor"
+          className="w-28 h-28 rounded-full ring-4 ring-indigo-500 object-cover"
         />
 
-        <div className="flex-1">
+        <div className="flex-1 space-y-2">
           <h1 className="text-2xl font-bold">{instructor.name}</h1>
 
-          <p className="text-gray-400 flex items-center gap-2">
+          <p className="text-gray-500 flex items-center gap-2">
             <Mail size={14} /> {instructor.email}
           </p>
 
-          <p className="text-gray-400 flex items-center gap-2">
-            <Clock size={14} /> Joined: {instructor.joined}
-          </p>
-
-          <p className="text-gray-400 flex items-center gap-2">
-            <Star size={14} /> Rating: {instructor.rating}
-          </p>
+          <div className="flex flex-wrap gap-4 text-gray-500">
+            <span className="flex items-center gap-1">
+              <Clock size={14} /> {instructor.joined}
+            </span>
+            <span className="flex items-center gap-1">
+              <Star size={14} /> {instructor.rating}
+            </span>
+          </div>
         </div>
 
         <div className="flex flex-col gap-2">
+
           <span
-            className={`px-3 py-1 rounded text-sm text-center
+            className={`px-4 py-1 rounded-full text-sm text-center
             ${instructor.status === "active"
-              ? "bg-green-500/20 text-green-400"
-              : "bg-red-500/20 text-red-400"}`}
+              ? "bg-green-100 text-green-700"
+              : "bg-red-100 text-red-700"}`}
           >
             {instructor.status}
           </span>
 
           <button
             onClick={toggleStatus}
-            className="bg-indigo-600 px-3 py-1 rounded"
+            className="px-4 py-2 rounded-lg bg-indigo-600 text-white hover:bg-indigo-700 transition"
           >
             {instructor.status === "active"
               ? "Block Instructor"
               : "Unblock Instructor"}
           </button>
-        </div>
 
+        </div>
       </div>
 
       {/* STATS */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
-
-        <StatCard
-          title="Total Students"
-          value={instructor.totalStudents}
-          icon={User}
-        />
-
-        <StatCard
-          title="Total Courses"
-          value={instructor.courses.length}
-          icon={BookOpen}
-        />
-
-        <StatCard
-          title="Total Earnings"
-          value={instructor.totalEarnings}
-          icon={DollarSign}
-        />
-
+      <div className="grid md:grid-cols-3 gap-6 my-8">
+        <StatCard title="Students" value={instructor.totalStudents} icon={User} />
+        <StatCard title="Courses" value={instructor.courses.length} icon={BookOpen} />
+        <StatCard title="Earnings" value={instructor.totalEarnings} icon={DollarSign} />
       </div>
 
-      {/* CONTENT GRID */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      {/* GRID */}
+      <div className="grid lg:grid-cols-2 gap-6">
 
         {/* SKILLS */}
-        <div className="bg-slate-800 p-5 rounded-xl">
-          <h2 className="font-semibold mb-4">Expertise / Skills</h2>
+        <div className="bg-white rounded-2xl shadow-md p-6 hover:shadow-xl transition">
+          <h2 className="font-semibold mb-4">Skills</h2>
 
           <div className="flex flex-wrap gap-2">
             {instructor.skills.map((skill, i) => (
               <span
                 key={i}
-                className="px-3 py-1 bg-indigo-500/20 text-indigo-400 rounded-full text-sm"
+                className="px-3 py-1 bg-indigo-100 text-indigo-700 rounded-full text-sm"
               >
                 {skill}
               </span>
@@ -154,13 +136,13 @@ export default function Instructorid() {
           </div>
         </div>
 
-        {/* COURSES CREATED */}
-        <div className="bg-slate-800 p-5 rounded-xl">
+        {/* COURSES */}
+        <div className="bg-white rounded-2xl shadow-md p-6 hover:shadow-xl transition">
 
           <h2 className="font-semibold mb-4">Courses Created</h2>
 
           <table className="w-full text-sm">
-            <thead className="text-gray-400">
+            <thead className="text-gray-500">
               <tr>
                 <th className="text-left">Course</th>
                 <th>Students</th>
@@ -170,10 +152,10 @@ export default function Instructorid() {
 
             <tbody>
               {instructor.courses.map((c, i) => (
-                <tr key={i} className="border-t border-slate-700">
+                <tr key={i} className="border-t">
                   <td className="py-2">{c.title}</td>
                   <td>{c.students}</td>
-                  <td>{c.price}</td>
+                  <td className="font-semibold text-indigo-600">{c.price}</td>
                 </tr>
               ))}
             </tbody>
@@ -181,13 +163,13 @@ export default function Instructorid() {
 
         </div>
 
-        {/* PAYOUT HISTORY */}
-        <div className="bg-slate-800 p-5 rounded-xl lg:col-span-2">
+        {/* PAYOUTS */}
+        <div className="bg-white rounded-2xl shadow-md p-6 hover:shadow-xl transition lg:col-span-2">
 
           <h2 className="font-semibold mb-4">Payout History</h2>
 
           <table className="w-full text-sm">
-            <thead className="text-gray-400">
+            <thead className="text-gray-500">
               <tr>
                 <th className="text-left">Amount</th>
                 <th>Date</th>
@@ -197,15 +179,15 @@ export default function Instructorid() {
 
             <tbody>
               {instructor.payouts.map(p => (
-                <tr key={p.id} className="border-t border-slate-700">
-                  <td className="py-2">{p.amount}</td>
+                <tr key={p.id} className="border-t">
+                  <td className="py-2 font-medium">{p.amount}</td>
                   <td>{p.date}</td>
                   <td>
                     <span
-                      className={`px-2 py-1 rounded text-xs
+                      className={`px-3 py-1 rounded-full text-xs
                       ${p.status === "paid"
-                        ? "bg-green-500/20 text-green-400"
-                        : "bg-yellow-500/20 text-yellow-400"}`}
+                        ? "bg-green-100 text-green-700"
+                        : "bg-yellow-100 text-yellow-700"}`}
                     >
                       {p.status}
                     </span>
@@ -227,14 +209,14 @@ export default function Instructorid() {
 
 function StatCard({ title, value, icon: Icon }) {
   return (
-    <div className="bg-slate-800 p-4 rounded-xl flex justify-between items-center">
+    <div className="bg-white rounded-2xl shadow-md p-5 flex justify-between items-center hover:shadow-xl transition">
       <div>
-        <p className="text-gray-400 text-sm">{title}</p>
-        <h2 className="text-xl font-bold">{value}</h2>
+        <p className="text-gray-500 text-sm">{title}</p>
+        <h2 className="text-2xl font-bold">{value}</h2>
       </div>
 
-      <div className="p-3 bg-indigo-600 rounded-lg">
-        <Icon size={20} />
+      <div className="p-3 bg-indigo-100 text-indigo-600 rounded-lg">
+        <Icon size={22} />
       </div>
     </div>
   );
