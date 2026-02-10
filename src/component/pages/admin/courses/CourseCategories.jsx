@@ -46,6 +46,7 @@ const CourseCategoryPage = () => {
       window.removeEventListener("scroll", handleScroll);
       clearTimeout(timer);
     };
+
   }, []);
 
   const filteredCourses = useMemo(() => {
@@ -209,7 +210,7 @@ const CourseCategoryPage = () => {
                   className="bg-white border-none shadow-sm rounded-xl text-sm font-bold py-2.5 px-4 focus:ring-2 focus:ring-indigo-500 outline-none"
                 >
                   <option value="popular">Most Popular</option>
-                  <option value="rating">Highest Rated</option>
+                  <option value="rating">Highest Rated more data</option>
                   <option value="priceLow">Price: Low to High</option>
                   <option value="priceHigh">Price: High to Low</option>
                 </select>
