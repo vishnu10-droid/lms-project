@@ -1,223 +1,109 @@
 import React, { useState } from "react";
-import { motion } from "framer-motion";
-import {
-  Star,
-  Users,
-  BookOpen,
-  DollarSign,
-  MessageCircle,
-  UserPlus,
-  Linkedin,
-  Twitter,
-  Github,
-  PlayCircle,
-  Award,
-  Globe
-} from "lucide-react";
+import { Star, Users, BookOpen, MessageCircle, UserPlus, PlayCircle, CheckCircle } from "lucide-react";
 
-/* ---------------- DATA ---------------- */
-
-const instructor = {
-  name: "John Anderson",
-  title: "Senior Web Development Instructor",
-  bio: "I help students master web development with real-world projects and modern technologies.",
-  avatar: "https://i.pravatar.cc/150?u=john", // Updated to a reliable placeholder
-  rating: 4.8,
-  reviews: 1240,
-  students: 35600,
-  courses: 18,
-  earnings: 125000,
-  skills: ["React", "JavaScript", "Node.js", "Tailwind", "Next.js"]
-};
-
-const courses = [
-  { id: 1, title: "React Masterclass", students: 12500, rating: 4.9, price: 49, image: "https://images.unsplash.com/photo-1633356122544-f134324a6cee?w=400" },
-  { id: 2, title: "JS Zero to Hero", students: 10200, rating: 4.7, price: 39, image: "https://images.unsplash.com/photo-1579468118864-1b9ea3c0db4a?w=400" },
-  { id: 3, title: "Advanced Node.js", students: 8400, rating: 4.8, price: 59, image: "https://images.unsplash.com/photo-1502462041640-b3d7e50d0662?w=400" },
-  { id: 4, title: "Tailwind CSS Pro", students: 5100, rating: 4.9, price: 29, image: "https://images.unsplash.com/photo-1587620962725-abab7fe55159?w=400" }
-];
-
-const reviews = [
-  { id: 1, name: "Rahul Kumar", rating: 5, comment: "Excellent explanation and practical examples." },
-  { id: 2, name: "Anita Sharma", rating: 4, comment: "Very helpful and easy to understand." }
-];
-
-/* ---------------- MAIN COMPONENT ---------------- */
-
-export default function InstructorProfile() {
+export default function SimpleInstructorProfile() {
   const [tab, setTab] = useState("about");
 
   return (
-    <div className="min-h-screen bg-slate-50 p-4 md:p-8">
-      <div className="max-w-7xl mx-auto space-y-6">
-
-        {/* ================= HEADER ================= */}
-        <motion.div 
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="bg-white rounded-3xl shadow-sm border border-slate-200 p-6 md:p-8 flex flex-col md:flex-row gap-8"
-        >
-          <div className="relative group">
-            <img
-              src={instructor.avatar}
-              className="w-32 h-32 md:w-40 md:h-40 rounded-2xl object-cover ring-4 ring-indigo-50 shadow-lg"
-              alt="Avatar"
-            />
-            <div className="absolute -bottom-2 -right-2 bg-emerald-500 p-1.5 rounded-lg border-2 border-white shadow-sm">
-              <CheckCircle size={14} className="text-white" />
+    <div className="min-h-screen bg-gray-50 p-6">
+      <div className="max-w-6xl mx-auto space-y-6">
+        
+        {/* 1. Profile Header Card */}
+        <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 flex flex-col md:flex-row gap-6 items-center">
+          <div className="relative">
+            <img src="https://i.pravatar.cc/150?u=john" className="w-32 h-32 rounded-full object-cover border-4 border-indigo-50" alt="Instructor" />
+            <div className="absolute bottom-1 right-1 bg-green-500 text-white p-1 rounded-full border-2 border-white">
+              <CheckCircle size={14} />
             </div>
           </div>
-
-          <div className="flex-1 space-y-4">
-            <div>
-              <h1 className="text-3xl font-black text-slate-900 leading-tight">{instructor.name}</h1>
-              <p className="text-indigo-600 font-bold text-sm uppercase tracking-wider">{instructor.title}</p>
+          
+          <div className="text-center md:text-left flex-1">
+            <h1 className="text-2xl font-bold text-gray-900">John Anderson</h1>
+            <p className="text-indigo-600 font-medium">Senior Web Developer</p>
+            <div className="flex items-center justify-center md:justify-start gap-2 mt-2 text-sm text-gray-500">
+              <Star size={16} className="text-yellow-400 fill-yellow-400" />
+              <span className="font-bold text-gray-800">4.8</span>
+              <span>(1,240 reviews)</span>
             </div>
-
-            <div className="flex items-center gap-3 py-1 px-3 bg-slate-50 rounded-lg w-fit">
-              <div className="flex text-yellow-400"><Star size={16} fill="currentColor" /></div>
-              <span className="font-black text-slate-800">{instructor.rating}</span>
-              <span className="text-slate-400 text-sm font-medium">({instructor.reviews} reviews)</span>
-            </div>
-
-            <p className="text-slate-500 text-sm md:text-base max-w-2xl">{instructor.bio}</p>
-
-            <div className="flex flex-wrap gap-2">
-              {instructor.skills.map((s) => (
-                <span key={s} className="px-3 py-1 text-xs font-bold bg-white text-slate-600 border border-slate-200 rounded-lg">
-                  {s}
-                </span>
-              ))}
-            </div>
-
-            <div className="flex flex-wrap gap-3 pt-4">
-              <button className="flex-1 md:flex-none flex items-center justify-center gap-2 px-6 py-2.5 bg-slate-900 text-white rounded-xl font-bold hover:bg-indigo-600 transition-all">
+            <div className="flex gap-3 mt-4">
+              <button className="bg-indigo-600 text-white px-5 py-2 rounded-lg font-semibold flex items-center gap-2 hover:bg-indigo-700 transition">
                 <UserPlus size={18} /> Follow
               </button>
-              <button className="flex-1 md:flex-none flex items-center justify-center gap-2 px-6 py-2.5 bg-white border border-slate-200 text-slate-700 rounded-xl font-bold hover:bg-slate-50 transition-all">
+              <button className="border border-gray-200 px-5 py-2 rounded-lg font-semibold flex items-center gap-2 hover:bg-gray-50 transition">
                 <MessageCircle size={18} /> Message
               </button>
-              <div className="flex items-center gap-4 px-4 text-slate-400">
-                 <Linkedin size={20} className="hover:text-indigo-600 cursor-pointer" />
-                 <Twitter size={20} className="hover:text-sky-500 cursor-pointer" />
-                 <Github size={20} className="hover:text-slate-900 cursor-pointer" />
-              </div>
             </div>
           </div>
-        </motion.div>
-
-        {/* ================= 🚀 4-COLUMN STATS GRID ================= */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          <StatCard icon={<Users size={20}/>} label="Total Students" value={instructor.students.toLocaleString()} color="bg-blue-50 text-blue-600" />
-          <StatCard icon={<BookOpen size={20}/>} label="Active Courses" value={instructor.courses} color="bg-indigo-50 text-indigo-600" />
-          <StatCard icon={<Award size={20}/>} label="Avg Rating" value={instructor.rating} color="bg-amber-50 text-amber-600" />
-          <StatCard icon={<DollarSign size={20}/>} label="Instructor Revenue" value={`$${instructor.earnings.toLocaleString()}`} color="bg-emerald-50 text-emerald-600" />
         </div>
 
-        {/* ================= TABS SECTION ================= */}
-        <div className="bg-white rounded-3xl shadow-sm border border-slate-100 overflow-hidden">
-          <div className="flex border-b border-slate-100 bg-slate-50/50">
-            {["about", "courses", "reviews"].map((t) => (
-              <button
+        {/* 2. Stats Grid */}
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+          <StatBox icon={<Users />} label="Students" value="35,600" color="text-blue-600" bg="bg-blue-50" />
+          <StatBox icon={<BookOpen />} label="Courses" value="18" color="text-indigo-600" bg="bg-indigo-50" />
+          <StatBox icon={<Star />} label="Rating" value="4.8" color="text-amber-600" bg="bg-amber-50" />
+          <StatBox icon={<PlayCircle />} label="Tutorials" value="150+" color="text-red-600" bg="bg-red-50" />
+        </div>
+
+        {/* 3. Tabs Navigation */}
+        <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+          <div className="flex border-b">
+            {["about", "courses"].map((t) => (
+              <button 
                 key={t}
                 onClick={() => setTab(t)}
-                className={`px-8 py-4 text-sm font-black uppercase tracking-widest transition-all ${
-                  tab === t ? "bg-white border-t-2 border-indigo-600 text-indigo-600" : "text-slate-400 hover:text-slate-600"
-                }`}
+                className={`flex-1 py-4 text-sm font-bold uppercase tracking-widest transition ${tab === t ? "text-indigo-600 border-b-2 border-indigo-600" : "text-gray-400"}`}
               >
                 {t}
               </button>
             ))}
           </div>
 
-          <div className="p-8">
-            {tab === "about" && (
-              <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-4">
-                <h2 className="text-xl font-black text-slate-800">Biography</h2>
-                <p className="text-slate-500 leading-relaxed max-w-4xl">{instructor.bio} Over 10 years of experience building scalable applications.</p>
-              </motion.div>
-            )}
-
-            {/* ================= 🚀 4-COLUMN COURSES GRID ================= */}
-            {tab === "courses" && (
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                {courses.map((course) => (
-                  <motion.div
-                    whileHover={{ y: -5 }}
-                    key={course.id}
-                    className="bg-white rounded-2xl border border-slate-200 overflow-hidden group shadow-sm"
-                  >
-                    <div className="relative aspect-video overflow-hidden">
-                      <img src={course.image} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" alt={course.title} />
-                      <div className="absolute inset-0 bg-slate-900/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                        <PlayCircle size={40} className="text-white" />
-                      </div>
-                    </div>
-                    <div className="p-4 space-y-3">
-                      <h3 className="font-bold text-slate-800 text-sm line-clamp-1">{course.title}</h3>
-                      <div className="flex items-center justify-between text-[11px] font-bold text-slate-400">
-                        <span className="flex items-center gap-1"><Users size={12}/> {course.students}</span>
-                        <span className="text-amber-500 flex items-center gap-1">★ {course.rating}</span>
-                      </div>
-                      <div className="flex items-center justify-between pt-2 border-t border-slate-50">
-                         <span className="text-lg font-black text-indigo-600">${course.price}</span>
-                         <button className="p-2 bg-slate-50 rounded-lg text-slate-400 hover:bg-indigo-50 hover:text-indigo-600 transition-colors">
-                            <BookOpen size={16} />
-                         </button>
-                      </div>
-                    </div>
-                  </motion.div>
-                ))}
+          <div className="p-6">
+            {tab === "about" ? (
+              <div className="space-y-4">
+                <h3 className="font-bold text-lg text-gray-800">Biography</h3>
+                <p className="text-gray-600 leading-relaxed">
+                  John is a senior developer with 10+ years of experience. He specializes in React, Node.js, and helping beginners transition into tech careers through project-based learning.
+                </p>
               </div>
-            )}
-
-            {tab === "reviews" && (
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {reviews.map((r) => (
-                  <div key={r.id} className="p-4 rounded-2xl border border-slate-100 bg-slate-50/30">
-                    <div className="flex items-center justify-between mb-2">
-                      <h4 className="font-bold text-slate-800">{r.name}</h4>
-                      <div className="flex text-amber-400">
-                        {[...Array(r.rating)].map((_, i) => <Star key={i} size={12} fill="currentColor" />)}
-                      </div>
-                    </div>
-                    <p className="text-sm text-slate-500 italic">"{r.comment}"</p>
-                  </div>
-                ))}
+            ) : (
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <CourseItem title="React Masterclass" price="$49" students="12k" img="https://images.unsplash.com/photo-1633356122544-f134324a6cee?w=400" />
+                <CourseItem title="Advanced Node.js" price="$59" students="8k" img="https://images.unsplash.com/photo-1502462041640-b3d7e50d0662?w=400" />
               </div>
             )}
           </div>
         </div>
-
       </div>
     </div>
   );
 }
 
-/* ---------------- UPDATED SMALL COMPONENT ---------------- */
+/* --- Small Reusable Components (Keep code clean) --- */
 
-function StatCard({ icon, label, value, color }) {
+function StatBox({ icon, label, value, color, bg }) {
   return (
-    <motion.div
-      whileHover={{ y: -5 }}
-      className="bg-white rounded-2xl border border-slate-200 p-5 shadow-sm flex items-center gap-4"
-    >
-      <div className={`p-3 rounded-xl ${color}`}>
-        {icon}
-      </div>
+    <div className="bg-white p-4 rounded-xl border border-gray-100 flex items-center gap-4">
+      <div className={`p-3 rounded-lg ${bg} ${color}`}>{icon}</div>
       <div>
-        <p className="text-slate-400 text-[11px] font-black uppercase tracking-widest">{label}</p>
-        <p className="font-black text-xl text-slate-800 leading-none mt-1">{value}</p>
+        <p className="text-gray-400 text-xs font-bold uppercase">{label}</p>
+        <p className="text-lg font-bold text-gray-800">{value}</p>
       </div>
-    </motion.div>
+    </div>
   );
 }
 
-// Simple Helper Component
-function CheckCircle({ size, className }) {
+function CourseItem({ title, price, students, img }) {
   return (
-    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" className={className}>
-      <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" /><polyline points="22 4 12 14.01 9 11.01" />
-    </svg>
+    <div className="flex items-center gap-4 p-3 border border-gray-100 rounded-xl hover:bg-gray-50 transition cursor-pointer">
+      <img src={img} className="w-20 h-14 rounded-lg object-cover" alt="" />
+      <div className="flex-1 min-w-0">
+        <h4 className="text-sm font-bold text-gray-800 truncate">{title}</h4>
+        <div className="flex items-center justify-between mt-1">
+          <span className="text-xs text-gray-500">{students} students</span>
+          <span className="text-sm font-bold text-indigo-600">{price}</span>
+        </div>
+      </div>
+    </div>
   );
 }

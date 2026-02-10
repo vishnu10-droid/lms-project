@@ -21,8 +21,9 @@ import WeekView from "./component/pages/admin/schedule/WeekView";
 import Students from "./component/pages/admin/students/Students";
 import AdminNotifications from "./component/pages/admin/Notification/Notifications";
 import AdminProfile from "./component/pages/admin/dashboard/AdminProfile";
-import Settings from "./component/pages/admin/settings/Setting";
 import Login from "./component/layout/Login";
+import Settings from './component/pages/admin/settings/Setting';  // ✅ Works now
+
 
 export default function App() {
   return (

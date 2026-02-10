@@ -7,7 +7,7 @@ import {
   ChevronDown,
   User,
   LogOut,
-  Settings
+  Settings,
 } from "lucide-react";
 
 export default function Navbar({ title = "Dashboard" }) {
@@ -21,9 +21,10 @@ export default function Navbar({ title = "Dashboard" }) {
   };
 
   return (
-    <div className="w-full bg-white/80 backdrop-blur-md border-b border-gray-200 
-                    px-6 py-4 flex items-center justify-between sticky top-0 z-40">
-
+    <div
+      className="w-full bg-white/80 backdrop-blur-md border-b border-gray-200 
+                    px-6 py-4 flex items-center justify-between sticky top-0 z-40"
+    >
       {/* Left */}
       <div>
         <h1 className="text-3xl font-bold text-gray-900 tracking-tight">
@@ -36,10 +37,9 @@ export default function Navbar({ title = "Dashboard" }) {
 
       {/* Right */}
       <div className="flex items-center gap-6">
-
         {/* Search */}
         <div className="relative hidden md:block">
-          <Search 
+          <Search
             className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"
             size={18}
           />
@@ -58,20 +58,24 @@ export default function Navbar({ title = "Dashboard" }) {
           className="relative p-2 rounded-full hover:bg-gray-100 transition"
         >
           <Bell className="text-gray-600" />
-          <span className="absolute -top-1 -right-1 bg-red-500 text-white 
-                           text-[10px] px-1.5 rounded-full">
+          <span
+            className="absolute -top-1 -right-1 bg-red-500 text-white 
+                           text-[10px] px-1.5 rounded-full"
+          >
             3
           </span>
         </NavLink>
 
         {/* Messages */}
         <NavLink
-          to="/admin/messages"
+          to="/admin/notifications"
           className="relative p-2 rounded-full hover:bg-gray-100 transition"
         >
           <Mail className="text-gray-600" />
-          <span className="absolute -top-1 -right-1 bg-blue-500 text-white 
-                           text-[10px] px-1.5 rounded-full">
+          <span
+            className="absolute -top-1 -right-1 bg-blue-500 text-white 
+                           text-[10px] px-1.5 rounded-full"
+          >
             5
           </span>
         </NavLink>
@@ -91,9 +95,10 @@ export default function Navbar({ title = "Dashboard" }) {
           </button>
 
           {open && (
-            <div className="absolute right-0 mt-3 w-52 bg-white border 
-                            rounded-xl shadow-lg overflow-hidden">
-
+            <div
+              className="absolute right-0 mt-3 w-52 bg-white border 
+                            rounded-xl shadow-lg overflow-hidden"
+            >
               <div className="p-4 border-b">
                 <p className="font-semibold">Admin User</p>
                 <p className="text-sm text-gray-500">admin@email.com</p>
@@ -120,11 +125,9 @@ export default function Navbar({ title = "Dashboard" }) {
               >
                 <LogOut size={16} /> Logout
               </button>
-
             </div>
           )}
         </div>
-
       </div>
     </div>
   );
