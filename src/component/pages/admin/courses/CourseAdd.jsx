@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-const CoureseAdd = () => {
+const CourseAdd = () => {
   const [course, setCourse] = useState({
     title: '',
     description: '',
@@ -121,4 +121,4 @@ const CoureseAdd = () => {
   );
 };
 
-export default CoureseAdd;
+export default CourseAdd;

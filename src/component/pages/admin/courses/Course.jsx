@@ -1,182 +1,138 @@
-
-
-
-
-
-
-
 import React, { useState } from 'react';
-import { 
-  PlayCircle, ThumbsUp, Eye, Star, Trash2, Edit, 
-  CheckCircle2, MessageSquare, Share2, Bookmark, 
-  ChevronRight, Play, FileText, Download, Plus, Settings
-} from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import { Search, Filter, PlayCircle, BookOpen, MoreVertical, Plus, Star } from 'lucide-react';
 
-const Course = ({ userRole = 'admin' }) => {
-  const [activeTab, setActiveTab] = useState('overview');
-  const [currentVideo, setCurrentVideo] = useState({
-    id: 1,
-    title: "01. Introduction to React Hooks & Modern State",
-    description: "Deep dive into the world of functional components. We'll cover why hooks were introduced, the rules of hooks, and how to migrate from class components effectively.",
-    views: "12,540",
-    likes: "1.2K",
-    rating: 4.9,
-    duration: "15:20",
-    url: "https://www.youtube.com/embed/dQw4w9WgXcQ"
-  });
+const Course = () => {
+  const Navi = useNavigate();
+  const [searchTerm, setSearchTerm] = useState('');
 
-  const lessons = [
-    { id: 1, title: "01. Introduction to React Hooks", views: "12K", duration: "15:20", thumbnail: "https://images.unsplash.com/photo-1633356122544-f134324a6cee?w=200&q=80", completed: true },
-    { id: 2, title: "02. Deep Dive into useEffect", views: "8K", duration: "22:10", thumbnail: "https://images.unsplash.com/photo-1587620962725-abab7fe55159?w=200&q=80", completed: true },
-    { id: 3, title: "03. Custom Hooks Patterns", views: "5K", duration: "18:45", thumbnail: "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=200&q=80", completed: false },
-    { id: 4, title: "04. Context API vs Redux", views: "4.2K", duration: "30:00", thumbnail: "https://images.unsplash.com/photo-1618477388954-7852f32655ec?w=200&q=80", completed: false },
-  ];
+  const courses = Array.from({ length: 12 }).map((_, i) => ({
+    id: i + 1,
+    title: i % 3 === 0 ? "Advanced UI/UX Motion Design" : "Mastering React Architecture",
+    description: "Master the art of building scalable, high-performance applications with modern professional patterns.",
+    imageUrl: `https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=800&auto=format&fit=crop&q=60`,
+    category: i % 2 === 0 ? "Development" : "Design",
+    price: i % 3 === 0 ? "Free" : "$49.99",
+    level: "Intermediate",
+    rating: 4.8
+  }));
 
   return (
-    <div className="min-h-screen bg-[#f1f5f9] text-slate-900 font-sans">
-      {/* LMS TOP NAVIGATION */}
-  
-      <div className="max-w-[1700px] mx-auto grid grid-cols-1 lg:grid-cols-12 gap-0 lg:h-[calc(100vh-64px)]">
-        
-        {/* MAIN VIDEO AREA (Left 8 Columns) */}
-        <main className="lg:col-span-8 overflow-y-auto custom-scrollbar bg-white lg:border-r border-slate-200">
-          <div className="aspect-video w-full bg-black shadow-2xl sticky top-0 z-10">
-            <iframe className="w-full h-full" src={currentVideo.url} title="LMS Player" frameBorder="0" allowFullScreen></iframe>
+    <div   className="min-h-screen bg-[#f8fafc] p-6 md:p-10 font-sans ">
+      {/* --- HEADER SECTION --- */}
+      <div className="max-w-7xl mx-auto mb-10">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-8">
+          <div>
+            <h1 className="text-3xl font-black text-slate-900 tracking-tight">Courses Library</h1>
+            <p className="text-slate-500 mt-1">Manage and monitor your educational content</p>
           </div>
+          <button 
+            onClick={() => Navi('/admin/courses/add')}
+            className="flex items-center justify-center gap-2 px-6 py-3 bg-indigo-600 text-white rounded-xl font-bold shadow-lg shadow-indigo-200 hover:bg-indigo-700 hover:-translate-y-0.5 transition-all duration-200"
+          >
+            <Plus size={20} /> Add New Course
+          </button>
+        </div>
 
-          <div className="p-8">
-            <div className="flex justify-between items-start mb-6">
-              <div>
-                <h2 className="text-3xl font-black text-slate-800 tracking-tight mb-2">{currentVideo.title}</h2>
-                <div className="flex items-center gap-4 text-sm font-medium text-slate-500">
-                  <span className="flex items-center gap-1.5"><Eye size={16} className="text-indigo-500"/> {currentVideo.views} Students</span>
-                  <span className="flex items-center gap-1.5"><Star size={16} className="text-yellow-500 fill-yellow-500"/> {currentVideo.rating} Rating</span>
-                </div>
+        {/* --- SEARCH & FILTER BAR --- */}
+        <div className="flex flex-col md:flex-row md:items-center gap-4 bg-white p-4 rounded-2xl shadow-sm border border-slate-100">
+          <div className="relative flex-1">
+            <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" size={20} />
+            <input 
+              type="text" 
+              placeholder="Search by course name, instructor, or tags..." 
+              className="w-full pl-12 pr-4 py-3 bg-slate-50 border-none rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none transition text-slate-600"
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
+          </div>
+          <div className="flex gap-2">
+            <select className="px-4 py-3 bg-slate-50 border-none rounded-xl text-slate-600 font-medium outline-none cursor-pointer">
+              <option>All Categories</option>
+              <option>Development</option>
+              <option>Design</option>
+            </select>
+            <button className="p-3 bg-slate-100 text-slate-600 rounded-xl hover:bg-slate-200 transition">
+              <Filter size={20} />
+            </button>
+          </div>
+        </div>
+      </div>
+
+      {/* --- ENHANCED COURSE GRID --- */}
+      <div onClick={() => Navi('/admin/courses/Playlist')} className="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+        {courses.map((course) => (
+          <div key={course.id} className="group relative bg-white rounded-3xl border border-slate-100 shadow-sm hover:shadow-2xl hover:shadow-indigo-100 transition-all duration-300 flex flex-col overflow-hidden">
+            
+            {/* Image Header */}
+            <div className="relative h-52 overflow-hidden">
+              <img 
+                src={course.imageUrl} 
+                alt={course.title} 
+                className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 ease-out"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+              
+              {/* Badges */}
+              <div className="absolute top-4 left-4 flex gap-2">
+                <span className="backdrop-blur-md bg-white/20 text-white px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-wider border border-white/30">
+                  {course.category}
+                </span>
               </div>
 
-              {/* ADMIN ACTION GROUP */}
-              {(userRole === 'admin' || userRole === 'teacher') && (
-                <div className="flex bg-slate-50 p-1 rounded-xl border border-slate-100 shadow-inner">
-                  <button className="flex items-center gap-2 px-4 py-2 text-xs font-bold text-slate-600 hover:text-indigo-600 transition-all"><Edit size={14}/> Edit</button>
-                  <div className="w-[1px] bg-slate-200 mx-1 my-1"></div>
-                  <button className="flex items-center gap-2 px-4 py-2 text-xs font-bold text-red-500 hover:bg-red-50 rounded-lg transition-all"><Trash2 size={14}/> Delete</button>
-                </div>
-              )}
-            </div>
-
-            {/* LMS TABS SYSTEM */}
-            <div className="flex border-b border-slate-100 mb-8">
-              {['overview', 'resources', 'reviews', 'announcements'].map((tab) => (
-                <button
-                  key={tab}
-                  onClick={() => setActiveTab(tab)}
-                  className={`px-6 py-4 text-sm font-bold capitalize transition-all relative ${
-                    activeTab === tab ? 'text-indigo-600' : 'text-slate-400 hover:text-slate-600'
-                  }`}
-                >
-                  {tab}
-                  {activeTab === tab && <div className="absolute bottom-0 left-0 w-full h-1 bg-indigo-600 rounded-t-full"></div>}
+              <div className="absolute top-4 right-4 translate-y-[-10px] opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300">
+                <button className="bg-white p-2 rounded-xl shadow-xl text-slate-700 hover:text-indigo-600">
+                  <MoreVertical size={18} />
                 </button>
-              ))}
+              </div>
             </div>
 
-            <div className="space-y-6 min-h-[400px]">
-              {activeTab === 'overview' && (
-                <div className="animate-in fade-in slide-in-from-bottom-2 duration-500">
-                  <h4 className="font-bold text-lg mb-3">Lesson Description</h4>
-                  <p className="text-slate-600 leading-relaxed text-lg mb-8">{currentVideo.description}</p>
-                  
-                  {/* Discussion Component */}
-                  <div className="bg-slate-50 rounded-2xl p-6 border border-slate-100">
-                    <h4 className="font-bold mb-4 flex items-center gap-2"><MessageSquare size={18}/> Discussion</h4>
-                    <div className="flex gap-4">
-                      <div className="w-10 h-10 rounded-full bg-slate-200 flex-shrink-0"></div>
-                      <div className="flex-1">
-                        <textarea className="w-full bg-white border border-slate-200 rounded-xl p-3 text-sm focus:ring-2 focus:ring-indigo-500 outline-none" placeholder="Ask a question about this lesson..."></textarea>
-                        <button className="mt-2 bg-indigo-600 text-white px-4 py-2 rounded-lg text-xs font-bold shadow-md shadow-indigo-100">Post Comment</button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              )}
+            {/* Content Body */}
+            <div className="p-6 flex-1 flex flex-col">
+              <div className="flex items-center gap-1 text-amber-500 mb-2">
+                <Star size={14} fill="currentColor" />
+                <span className="text-xs font-bold text-slate-700">{course.rating}</span>
+                <span className="text-slate-400 text-[10px] font-medium">(1.2k reviews)</span>
+              </div>
 
-              {activeTab === 'resources' && (
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 animate-in zoom-in-95 duration-300">
-                  <div className="flex items-center justify-between p-4 border border-slate-100 rounded-2xl bg-white hover:border-indigo-200 cursor-pointer transition-all shadow-sm group">
-                    <div className="flex items-center gap-3">
-                      <div className="p-3 bg-red-50 text-red-500 rounded-xl group-hover:bg-red-500 group-hover:text-white transition-all"><FileText size={20}/></div>
-                      <div><p className="text-sm font-bold">Exercise_Files.zip</p><p className="text-[11px] text-slate-400 font-medium">12.5 MB • ZIP Archive</p></div>
-                    </div>
-                    <Download size={18} className="text-slate-300"/>
-                  </div>
-                </div>
-              )}
-            </div>
-          </div>
-        </main>
+              <h3 className="text-lg font-bold text-slate-800 leading-snug mb-2 group-hover:text-indigo-600 transition-colors">
+                {course.title}
+              </h3>
+              
+              <p className="text-slate-500 text-sm line-clamp-2 leading-relaxed mb-6">
+                {course.description}
+              </p>
 
-        {/* PLAYLIST SIDEBAR (Right 4 Columns) */}
-        <aside className="lg:col-span-4 flex flex-col h-full bg-[#f8fafc]">
-          <div className="p-6 bg-white border-b border-slate-200 shadow-sm">
-            <div className="flex justify-between items-end">
-                <div>
-                    <h3 className="font-black text-xl text-slate-800">Course Content</h3>
-                    <p className="text-xs text-indigo-600 font-bold uppercase tracking-widest mt-1">25% Complete</p>
-                </div>
-                <Settings size={18} className="text-slate-400 cursor-pointer hover:rotate-90 transition-all duration-500"/>
-            </div>
-            <div className="w-full h-2 bg-slate-100 rounded-full mt-4 overflow-hidden">
-              <div className="bg-indigo-500 h-full w-1/4 rounded-full shadow-[0_0_10px_rgba(99,102,241,0.5)]"></div>
-            </div>
-          </div>
-
-          <div className="flex-1 overflow-y-auto p-4 space-y-3 custom-scrollbar">
-            {lessons.map((lesson) => (
-              <div 
-                key={lesson.id}
-                onClick={() => setCurrentVideo({...currentVideo, id: lesson.id, title: lesson.title})}
-                className={`flex gap-4 p-3 rounded-2xl cursor-pointer transition-all duration-300 group ${
-                  currentVideo.id === lesson.id 
-                  ? 'bg-white shadow-xl shadow-slate-200/50 ring-1 ring-indigo-100' 
-                  : 'hover:bg-white hover:shadow-md'
-                }`}
-              >
-                <div className="relative flex-shrink-0 overflow-hidden rounded-xl">
-                  <img src={lesson.thumbnail} alt="thumb" className="w-24 h-16 object-cover" />
-                  <div className={`absolute inset-0 bg-indigo-600/20 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity`}>
-                    <PlayCircle size={24} className="text-white fill-indigo-600" />
+              {/* Meta Info Bar */}
+              <div className="mt-auto grid grid-cols-2 gap-4 border-t border-slate-50 pt-4">
+                <div className="flex items-center gap-2 text-slate-500">
+                  <div className="p-1.5 bg-indigo-50 rounded-lg text-indigo-600">
+                    <PlayCircle size={16} />
                   </div>
-                  {lesson.completed && (
-                    <div className="absolute top-1 right-1 bg-green-500 text-white rounded-full p-0.5 shadow-sm">
-                      <CheckCircle2 size={10} strokeWidth={4} />
-                    </div>
-                  )}
+                  <span className="text-xs font-bold">12 Lessons</span>
                 </div>
-                
-                <div className="flex flex-col justify-center flex-1 min-w-0">
-                  <h4 className={`text-sm font-bold truncate ${currentVideo.id === lesson.id ? 'text-indigo-600' : 'text-slate-700'}`}>
-                    {lesson.title}
-                  </h4>
-                  <div className="flex items-center gap-3 mt-1 text-[11px] font-bold text-slate-400">
-                    <span className="flex items-center gap-1 bg-slate-100 px-1.5 py-0.5 rounded uppercase tracking-tighter">HD</span>
-                    <span>{lesson.duration}</span>
+                <div className="flex items-center gap-2 text-slate-500">
+                  <div className="p-1.5 bg-emerald-50 rounded-lg text-emerald-600">
+                    <BookOpen size={16} />
                   </div>
+                  <span className="text-xs font-bold">{course.level}</span>
                 </div>
               </div>
-            ))}
-          </div>
+            </div>
 
-          {/* Teacher Contact Info (LMS touch) */}
-          <div className="p-4 bg-white border-t border-slate-200">
-            <div className="flex items-center gap-3 p-3 rounded-2xl bg-indigo-50/50 border border-indigo-100/50">
-              <div className="w-10 h-10 rounded-full bg-indigo-600 flex items-center justify-center text-white font-black text-xs">JD</div>
-              <div>
-                <p className="text-xs font-bold text-slate-800">Support Online</p>
-                <p className="text-[10px] text-indigo-500 font-bold uppercase">Average response: 2h</p>
+            {/* Admin Quick Footer */}
+            <div className="px-6 py-4 bg-slate-50/50 flex items-center justify-between border-t border-slate-100">
+              <span className="text-xl font-black text-slate-900">{course.price}</span>
+              <div className="flex gap-2">
+                <button className="p-2 text-slate-400 hover:text-indigo-600 hover:bg-white rounded-lg transition-all shadow-sm">
+                  Edit
+                </button>
+                <button className="px-4 py-2 bg-slate-900 text-white text-xs font-bold rounded-xl hover:bg-indigo-600 transition-colors shadow-lg shadow-slate-200">
+                  Preview
+                </button>
               </div>
             </div>
           </div>
-        </aside>
+        ))}
       </div>
     </div>
   );

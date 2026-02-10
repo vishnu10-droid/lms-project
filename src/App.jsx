@@ -23,6 +23,7 @@ import AdminNotifications from "./component/pages/admin/Notification/Notificatio
 import AdminProfile from "./component/pages/admin/dashboard/AdminProfile";
 import Login from "./component/layout/Login";
 import Settings from './component/pages/admin/settings/Setting';  // ✅ Works now
+import PlayList from "./component/pages/admin/courses/PlayList";
 
 
 export default function App() {
@@ -60,6 +61,7 @@ export default function App() {
           <Route path="/admin/schedule/monthview" element={<MonthView />} />
           <Route path="/admin/schedule/weekview" element={<WeekView />} />
           <Route path="/admin/schedule" element={<Schedule />} />
+          <Route path="/admin/courses/playlist" element={<PlayList />} />
 
           <Route path="/admin/settings" element={<Settings/>} />
 
