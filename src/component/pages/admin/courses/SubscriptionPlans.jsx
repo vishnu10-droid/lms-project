@@ -5,7 +5,8 @@ export default function SubscriptionPlans() {
   const [billing, setBilling] = useState("monthly");
 
   const plans = [
-    {
+    { 
+      
       name: "Basic",
       price: 0,
       highlight: false,
