@@ -24,11 +24,16 @@ import AdminProfile from "./component/pages/admin/dashboard/AdminProfile";
 import Login from "./component/layout/Login";
 import Settings from './component/pages/admin/settings/Setting';  // ✅ Works now
 import PlayList from "./component/pages/admin/courses/PlayList";
+import CourseCategoriesFullstack from "./component/pages/admin/courses/CourseCategoriesFullstack";
+import VideoPlayer from "./component/pages/admin/courses/VideoPlayer";
+import ScrollToTop from "./component/jsx/ScrollToTop";
 
 
 export default function App() {
   return (
     <>
+    <ScrollToTop/>
+
       <Routes>
         <Route element={<Layout />}>
           <Route path="/" element={<Admin />} />
@@ -36,6 +41,9 @@ export default function App() {
           <Route path="/admin/profile" element={<AdminProfile/>} />
           <Route path="/admin/courses/add" element={<CourseAdd />} />
           <Route path="/admin/courses" element={<Course />} />
+          <Route path="/admin/Course/Categories/Fullstack" element={<CourseCategoriesFullstack />} />
+        <Route path="/admin/Course/video/player" element={<VideoPlayer />} />
+
           <Route path="/admin/categories" element={<CourseCategories />} />
           <Route path="/admin/certificates" element={<Certificate />} />
           <Route path="/admin/students/id" element={<Students/>} />
