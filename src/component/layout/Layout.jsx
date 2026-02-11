@@ -17,7 +17,7 @@ export default function Layout() {
         <Navbar title="Dashboard" />
 
         {/* Main Content */}
-        <main className="flex-1 overflow-y-auto p-6">
+        <main className="flex-1 overflow-y-auto p-3">
           <div
             className="
               max-w-7xl mx-auto
@@ -25,11 +25,11 @@ export default function Layout() {
               rounded-2xl
               shadow-md
               border border-gray-200
-              p-8
+              p-4
               min-h-[85vh]
             "
           >
-            <Outlet />
+            <Outlet  />
           </div>
         </main>
 
