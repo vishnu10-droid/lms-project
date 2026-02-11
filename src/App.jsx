@@ -24,14 +24,10 @@ import AdminProfile from "./component/pages/admin/dashboard/AdminProfile";
 import Login from "./component/layout/Login";
 import Settings from './component/pages/admin/settings/Setting';  // ✅ Works now
 import PlayList from "./component/pages/admin/courses/PlayList";
-<<<<<<< HEAD
 import CourseCategoriesFullstack from "./component/pages/admin/courses/CourseCategoriesFullstack";
 import VideoPlayer from "./component/pages/admin/courses/VideoPlayer";
 import ScrollToTop from "./component/jsx/ScrollToTop";
-=======
 import SubscriptionPlans from "./component/pages/admin/courses/SubscriptionPlans";
->>>>>>> 21c19bef37faa8c1b1cc8512c394483fe1300c2f
-
 
 export default function App() {
   return (
