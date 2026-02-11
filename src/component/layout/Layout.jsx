@@ -1,18 +1,16 @@
 import React from "react";
 import { Outlet } from "react-router-dom";
 import Sidebar from "./Sidebar";
-import Navbar from "./Navbar";   // ✅ Correct spelling
+import Navbar from "./Navbar"; // ✅ Correct spelling
 
 export default function Layout() {
   return (
     <div className="flex min-h-screen bg-gray-100 text-gray-800">
-
       {/* Sidebar */}
       <Sidebar />
 
       {/* Right Side Area */}
       <div className="flex flex-col flex-1 h-screen">
-
         {/* Navbar Full Top */}
         <Navbar title="Dashboard" />
 
@@ -29,10 +27,9 @@ export default function Layout() {
               min-h-[85vh]
             "
           >
-            <Outlet  />
+            <Outlet />
           </div>
         </main>
-
       </div>
     </div>
   );

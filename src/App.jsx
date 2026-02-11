@@ -24,6 +24,7 @@ import AdminProfile from "./component/pages/admin/dashboard/AdminProfile";
 import Login from "./component/layout/Login";
 import Settings from './component/pages/admin/settings/Setting';  // ✅ Works now
 import PlayList from "./component/pages/admin/courses/PlayList";
+import SubscriptionPlans from "./component/pages/admin/courses/SubscriptionPlans";
 
 
 export default function App() {
@@ -35,6 +36,7 @@ export default function App() {
           <Route path="/login" element={<Login/>} />
           <Route path="/admin/profile" element={<AdminProfile/>} />
           <Route path="/admin/courses/add" element={<CourseAdd />} />
+          <Route path="/admin/courses/SubscriptionPlans" element={<SubscriptionPlans />} />
           <Route path="/admin/courses" element={<Course />} />
           <Route path="/admin/categories" element={<CourseCategories />} />
           <Route path="/admin/certificates" element={<Certificate />} />
