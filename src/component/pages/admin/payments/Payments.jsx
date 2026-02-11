@@ -1,171 +1,215 @@
-import { useState } from "react";
+import React, { useState, useMemo } from "react";
 import {
-  CreditCard,
-  Wallet,
-  DollarSign,
-  CheckCircle,
-  Tag,
-  ShieldCheck,
-  Smartphone,
+  CreditCard, DollarSign, TrendingUp, Search, Download, Filter,
+  CheckCircle, XCircle, RefreshCcw, Clock, User, BookOpen
 } from "lucide-react";
 
-export default function ElearningPayment() {
-  const [method, setMethod] = useState("card");
-  const [promo, setPromo] = useState("");
-  const [applied, setApplied] = useState(false);
-  const [success, setSuccess] = useState(false);
+export default function AdminPayments() {
+  const [search, setSearch] = useState("");
+  const [statusFilter, setStatusFilter] = useState("All");
 
-  const coursePrice = 149;
-  const discount = applied ? 20 : 0;
-  const total = coursePrice - discount;
+  const payments = [
+    {
+      id: "TXN9087",
+      student: "Arjun Mehta",
+      course: "React Masterclass",
+      amount: 2999,
+      method: "UPI",
+      status: "Success",
+      time: "2 mins ago"
+    },
+    {
+      id: "TXN4421",
+      student: "Priya Sharma",
+      course: "Python Bootcamp",
+      amount: 2499,
+      method: "Credit Card",
+      status: "Success",
+      time: "10 mins ago"
+    },
+    {
+      id: "TXN7711",
+      student: "Amit Verma",
+      course: "UI/UX Design",
+      amount: 1999,
+      method: "Wallet",
+      status: "Failed",
+      time: "20 mins ago"
+    },
+    {
+      id: "TXN5521",
+      student: "Neha Patel",
+      course: "Data Science Pro",
+      amount: 4999,
+      method: "Net Banking",
+      status: "Refunded",
+      time: "1 hr ago"
+    }
+  ];
 
-  const applyPromo = () => {
-    if (promo === "LEARN20") setApplied(true);
-  };
+  // Filter Logic
+  const filteredPayments = useMemo(() => {
+    return payments.filter((p) => {
+      const matchSearch =
+        p.student.toLowerCase().includes(search.toLowerCase()) ||
+        p.course.toLowerCase().includes(search.toLowerCase()) ||
+        p.id.toLowerCase().includes(search.toLowerCase());
+
+      const matchStatus = statusFilter === "All" || p.status === statusFilter;
+
+      return matchSearch && matchStatus;
+    });
+  }, [search, statusFilter]);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-indigo-50 to-purple-100 flex items-center justify-center p-6">
-      <div className="bg-white w-full max-w-4xl rounded-3xl shadow-xl grid md:grid-cols-2 overflow-hidden">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-indigo-100 p-8">
 
-        {/* LEFT - COURSE INFO */}
-        <div className="bg-gradient-to-br from-indigo-600 to-purple-600 text-white p-10 flex flex-col justify-between">
-          <div>
-            <h2 className="text-3xl font-bold">Complete React Mastery</h2>
-            <p className="text-indigo-100 mt-2">
-              Build real-world projects & become job-ready
-            </p>
+      {/* HEADER */}
+      <h1 className="text-4xl font-extrabold text-indigo-900 mb-10 text-center">
+        Payments Dashboard
+      </h1>
 
-            <div className="mt-8 space-y-4">
-              <div className="flex justify-between">
-                <span>Course Price</span>
-                <span>${coursePrice}</span>
-              </div>
+      <div className="max-w-6xl mx-auto bg-white rounded-3xl p-10 shadow-2xl border">
 
-              <div className="flex justify-between">
-                <span>Discount</span>
-                <span className="text-green-300">-${discount}</span>
-              </div>
-
-              <div className="border-t border-indigo-400 pt-4 flex justify-between text-xl font-semibold">
-                <span>Total</span>
-                <span>${total}</span>
-              </div>
-            </div>
+        {/* TOP METRICS */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
+          <div className="p-6 rounded-2xl bg-gradient-to-r from-indigo-500 to-blue-600 text-white shadow-lg">
+            <p className="opacity-80 text-sm">Total Revenue</p>
+            <h2 className="text-3xl font-extrabold">₹1,24,540</h2>
           </div>
 
-          <div className="flex items-center gap-2 text-indigo-200 text-sm">
-            <ShieldCheck size={18} />
-            100% Secure Payment
+          <div className="p-6 rounded-2xl bg-gradient-to-r from-green-500 to-emerald-600 text-white shadow-lg">
+            <p className="opacity-80 text-sm">Successful Payments</p>
+            <h2 className="text-3xl font-extrabold">318</h2>
+          </div>
+
+          <div className="p-6 rounded-2xl bg-gradient-to-r from-orange-500 to-yellow-500 text-white shadow-lg">
+            <p className="opacity-80 text-sm">Refunds & Failures</p>
+            <h2 className="text-3xl font-extrabold">21</h2>
           </div>
         </div>
 
-        {/* RIGHT - PAYMENT FORM */}
-        <div className="p-10">
+        {/* SEARCH + FILTER BAR */}
+        <div className="flex flex-col lg:flex-row gap-4 mb-8">
 
-          {!success ? (
-            <>
-              <h3 className="text-2xl font-semibold mb-6">Choose Payment Method</h3>
+          {/* Search */}
+          <div className="relative flex-1">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={20} />
+            <input
+              placeholder="Search by student, course, or transaction ID..."
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              className="w-full pl-10 pr-4 py-3 rounded-xl bg-slate-50 border border-slate-300 focus:ring-2 focus:ring-indigo-400"
+            />
+          </div>
 
-              {/* PAYMENT METHODS */}
-              <div className="grid grid-cols-2 gap-4 mb-6">
-                {[
-                  { id: "card", label: "Card", icon: CreditCard },
-                  { id: "wallet", label: "Wallet", icon: Wallet },
-                  { id: "upi", label: "UPI", icon: Smartphone },
-                  { id: "paypal", label: "PayPal", icon: DollarSign },
-                ].map((item) => (
-                  <button
-                    key={item.id}
-                    onClick={() => setMethod(item.id)}
-                    className={`border rounded-xl p-4 flex items-center gap-3 transition
-                    ${
-                      method === item.id
-                        ? "border-indigo-600 bg-indigo-50"
-                        : "hover:border-indigo-300"
-                    }`}
-                  >
-                    <item.icon className="text-indigo-600" />
-                    {item.label}
-                  </button>
-                ))}
-              </div>
+          {/* Status Filter */}
+          <select
+            value={statusFilter}
+            onChange={(e) => setStatusFilter(e.target.value)}
+            className="px-4 py-3 rounded-xl bg-slate-50 border-slate-300 border focus:ring-2 focus:ring-indigo-400"
+          >
+            <option>All</option>
+            <option>Success</option>
+            <option>Failed</option>
+            <option>Refunded</option>
+          </select>
 
-              {/* CARD DETAILS */}
-              {method === "card" && (
-                <div className="space-y-4 mb-6">
-                  <input
-                    type="text"
-                    placeholder="Cardholder Name"
-                    className="input"
-                  />
-                  <input
-                    type="text"
-                    placeholder="Card Number"
-                    className="input"
-                  />
-                  <div className="grid grid-cols-2 gap-4">
-                    <input type="text" placeholder="MM/YY" className="input" />
-                    <input type="text" placeholder="CVV" className="input" />
-                  </div>
-                </div>
-              )}
+          {/* Export Button */}
+          <button className="flex items-center gap-2 px-6 py-3 bg-indigo-700 text-white font-semibold rounded-xl shadow hover:bg-indigo-800">
+            <Download size={18} /> Export
+          </button>
+        </div>
 
-              {/* PROMO CODE */}
-              <div className="flex gap-2 mb-6">
-                <input
-                  type="text"
-                  placeholder="Promo Code"
-                  value={promo}
-                  onChange={(e) => setPromo(e.target.value)}
-                  className="input flex-1"
-                />
-                <button
-                  onClick={applyPromo}
-                  className="bg-indigo-600 text-white px-4 rounded-lg hover:bg-indigo-700"
+        {/* PAYMENT TABLE */}
+        <div className="overflow-x-auto">
+          <table className="w-full text-left border-collapse">
+          <tbody>
+  {filteredPayments.map((p, index) => (
+    <tr
+      key={index}
+      className="border-b hover:bg-indigo-50 cursor-pointer transition text-sm"
+    >
+      <td className="py-2 px-3 font-semibold text-slate-700">{p.id}</td>
+
+      <td className="py-2 px-3 flex items-center gap-1">
+        <User size={14} className="text-indigo-500" /> 
+        <span className="text-sm">{p.student}</span>
+      </td>
+
+      <td className="py-2 px-3 flex items-center gap-1">
+        <BookOpen size={14} className="text-orange-500" /> 
+        <span className="text-sm">{p.course}</span>
+      </td>
+
+      <td className="py-2 px-3 font-bold text-slate-900 text-sm">₹{p.amount}</td>
+
+      <td className="py-2 px-3 text-sm">{p.method}</td>
+
+      <td className="py-2 px-3 text-sm">
+        {p.status === "Success" && (
+          <span className="flex items-center gap-1 text-green-600 font-medium">
+            <CheckCircle size={12} /> Success
+          </span>
+        )}
+        {p.status === "Failed" && (
+          <span className="flex items-center gap-1 text-red-600 font-medium">
+            <XCircle size={12} /> Failed
+          </span>
+        )}
+        {p.status === "Refunded" && (
+          <span className="flex items-center gap-1 text-yellow-600 font-medium">
+            <RefreshCcw size={12} /> Refunded
+          </span>
+        )}
+      </td>
+
+      <td className="py-2 px-3 text-xs text-slate-500">{p.time}</td>
+    </tr>
+  ))}
+</tbody>
+
+
+            <tbody>
+              {filteredPayments.map((p, index) => (
+                <tr
+                  key={index}
+                  className="border-b hover:bg-indigo-50 cursor-pointer transition"
                 >
-                  <Tag size={18} />
-                </button>
-              </div>
-
-              {/* PAY BUTTON */}
-              <button
-                onClick={() => setSuccess(true)}
-                className="w-full bg-gradient-to-r from-indigo-600 to-purple-600 text-white py-3 rounded-xl font-semibold hover:opacity-90 transition"
-              >
-                Pay ${total}
-              </button>
-            </>
-          ) : (
-            /* SUCCESS SCREEN */
-            <div className="flex flex-col items-center justify-center h-full text-center">
-              <CheckCircle size={80} className="text-green-500 mb-4" />
-              <h2 className="text-2xl font-bold">Payment Successful!</h2>
-              <p className="text-gray-500 mt-2">
-                You now have full access to the course 🎉
-              </p>
-
-              <button className="mt-6 bg-indigo-600 text-white px-6 py-2 rounded-lg">
-                Go To Dashboard
-              </button>
-            </div>
-          )}
+                  <td className="py-3 px-4 font-semibold text-slate-700">{p.id}</td>
+                  <td className="py-3 px-4 flex items-center gap-2">
+                    <User size={18} className="text-indigo-500" /> {p.student}
+                  </td>
+                  <td className="py-3 px-4 flex items-center gap-2">
+                    <BookOpen size={18} className="text-orange-500" /> {p.course}
+                  </td>
+                  <td className="py-3 px-4 font-bold text-slate-900">₹{p.amount}</td>
+                  <td className="py-3 px-4">{p.method}</td>
+                  <td className="py-3 px-4">
+                    {p.status === "Success" && (
+                      <span className="flex items-center gap-1 text-green-600 font-semibold">
+                        <CheckCircle size={16} /> Success
+                      </span>
+                    )}
+                    {p.status === "Failed" && (
+                      <span className="flex items-center gap-1 text-red-600 font-semibold">
+                        <XCircle size={16} /> Failed
+                      </span>
+                    )}
+                    {p.status === "Refunded" && (
+                      <span className="flex items-center gap-1 text-yellow-600 font-semibold">
+                        <RefreshCcw size={16} /> Refunded
+                      </span>
+                    )}
+                  </td>
+                  <td className="py-3 px-4 text-slate-500">{p.time}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
-      </div>
 
-      {/* INPUT STYLE */}
-      <style>{`
-        .input {
-          width: 100%;
-          border: 1px solid #ddd;
-          padding: 12px;
-          border-radius: 10px;
-          outline: none;
-        }
-        .input:focus {
-          border-color: #6366f1;
-          box-shadow: 0 0 0 2px rgba(99,102,241,0.2);
-        }
-      `}</style>
+      </div>
     </div>
   );
 }

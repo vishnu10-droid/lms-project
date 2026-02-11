@@ -1,211 +1,275 @@
-import React, { useState } from 'react';
-import { Settings as SettingsIcon, Users, BookOpen, Bell, BarChart3 } from 'lucide-react';
+import React, { useState } from "react";
+import {
+  User, Shield, Bell, Settings, Save, Key, Globe, Mail,
+  Lock, Database, Cloud, Palette, Link as LinkIcon
+} from "lucide-react";
 
-function Settings() {  // Named function (no export here)
-  const [activeTab, setActiveTab] = useState('general');
-  const [formData, setFormData] = useState({
-    platformName: 'Modern LMS',
-    language: 'English',
-    timezone: 'IST',
-    maxEnrollments: 100,
-    autoEnroll: true,
-    emailNotify: true,
-    pushNotify: false
+export default function AdminSettings() {
+  const [form, setForm] = useState({
+    name: "Admin User",
+    email: "admin@example.com",
+    language: "English",
+    timezone: "UTC +5:30",
+    enableEmails: true,
+    enableAlerts: true,
+    enablePayments: false,
+    enableTwoFactor: false,
+    theme: "light",
+    apiKey: "",
+    webhookUrl: "",
+    autoBackup: true,
+    backupFrequency: "Daily",
   });
 
-  const tabs = [
-    { id: 'general', label: 'General', icon: SettingsIcon },
-    { id: 'users', label: 'Users', icon: Users },
-    { id: 'courses', label: 'Courses', icon: BookOpen },
-    { id: 'notifications', label: 'Notifications', icon: Bell },
-    { id: 'reports', label: 'Reports', icon: BarChart3 },
-  ];
-
-  const handleInputChange = (e) => {
-    const { name, value, type, checked } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      [name]: type === 'checkbox' ? checked : value
-    }));
-  };
-
-  const saveSettings = (section) => {
-    console.log(`Saving ${section} settings:`, formData);
+  const update = (key, value) => {
+    setForm({ ...form, [key]: value });
   };
 
   return (
-    <div className="space-y-8 p-6 max-w-7xl mx-auto">
-      {/* Tabs Navigation */}
-      <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl border border-gray-200 dark:border-gray-700 p-1">
-        <div className="flex -space-x-px">
-          {tabs.map((tab) => {
-            const Icon = tab.icon;
-            const isActive = activeTab === tab.id;
-            return (
-              <button
-                key={tab.id}
-                onClick={() => setActiveTab(tab.id)}
-                className={`flex items-center px-6 py-4 font-medium rounded-2xl transition-all duration-200 group relative flex-1 ${
-                  isActive
-                    ? 'bg-gradient-to-r from-blue-500 to-blue-600 text-white shadow-2xl scale-[1.02] z-10'
-                    : 'text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-gray-50 dark:hover:bg-gray-700'
-                }`}
-              >
-                <Icon className={`w-5 h-5 mr-3 ${isActive ? 'text-white' : ''}`} />
-                {tab.label}
-                {isActive && (
-                  <div className="absolute inset-0 bg-gradient-to-r from-blue-500 to-blue-600 rounded-2xl -z-10 blur-xl opacity-50" />
-                )}
-              </button>
-            );
-          })}
-        </div>
-      </div>
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-indigo-100 p-8">
 
-      {/* General Settings */}
-      {activeTab === 'general' && (
-        <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
-          {/* Platform Info */}
-          <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl border border-gray-200 dark:border-gray-700 p-8 hover:shadow-2xl transition-all duration-300">
-            <div className="flex items-center mb-6">
-              <div className="p-3 bg-gradient-to-r from-blue-500 to-blue-600 rounded-xl text-white">
-                <SettingsIcon className="w-6 h-6" />
-              </div>
-              <h3 className="ml-4 text-xl font-bold text-gray-900 dark:text-white">Platform Settings</h3>
-            </div>
-            <div className="space-y-6">
-              <div>
-                <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">Platform Name</label>
-                <input
-                  name="platformName"
-                  value={formData.platformName}
-                  onChange={handleInputChange}
-                  className="w-full px-4 py-3 border border-gray-200 dark:border-gray-600 rounded-xl bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 transition-all"
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">Default Language</label>
-                <select name="language" value={formData.language} onChange={handleInputChange} className="w-full px-4 py-3 border border-gray-200 dark:border-gray-600 rounded-xl bg-gray-50 dark:bg-gray-700 focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500">
-                  <option>English</option>
-                  <option>Hindi</option>
-                  <option>Spanish</option>
-                </select>
-              </div>
-              <div>
-                <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">Timezone</label>
-                <select name="timezone" value={formData.timezone} onChange={handleInputChange} className="w-full px-4 py-3 border border-gray-200 dark:border-gray-600 rounded-xl bg-gray-50 dark:bg-gray-700 focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500">
-                  <option>UTC</option>
-                  <option>IST</option>
-                  <option>EST</option>
-                </select>
-              </div>
-              <button onClick={() => saveSettings('general')} className="w-full bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-semibold py-3 px-6 rounded-xl shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all">
-                Save General Settings
-              </button>
-            </div>
-          </div>
+      <h1 className="text-4xl font-extrabold text-indigo-900 mb-10 text-center">
+        Admin Settings
+      </h1>
 
-          {/* User Roles */}
-          <div className="lg:col-span-2 xl:col-span-1 bg-white dark:bg-gray-800 rounded-2xl shadow-xl border border-gray-200 dark:border-gray-700 p-8 hover:shadow-2xl transition-all">
-            <div className="flex items-center mb-6">
-              <div className="p-3 bg-gradient-to-r from-emerald-500 to-emerald-600 rounded-xl text-white">
-                <Users className="w-6 h-6" />
-              </div>
-              <h3 className="ml-4 text-xl font-bold text-gray-900 dark:text-white">User Roles</h3>
-            </div>
-            <div className="space-y-4">
-              {[
-                { role: 'Admin', permissions: 'Full Access', color: 'blue' },
-                { role: 'Instructor', permissions: 'Manage Courses', color: 'green' },
-                { role: 'Learner', permissions: 'Read Only', color: 'gray' }
-              ].map((item) => (
-                <div key={item.role} className="flex items-center justify-between p-4 bg-gradient-to-r from-gray-50 to-gray-100 dark:from-gray-700 dark:to-gray-600 rounded-xl hover:shadow-md transition-all">
-                  <div>
-                    <h4 className="font-semibold text-gray-900 dark:text-white">{item.role}</h4>
-                    <p className="text-sm text-gray-600 dark:text-gray-300">{item.permissions}</p>
-                  </div>
-                  <span className={`px-3 py-1 rounded-full text-xs font-medium bg-${item.color}-100 text-${item.color}-800`}>Active</span>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      )}
+      <div className="max-w-6xl mx-auto bg-white rounded-3xl p-10 shadow-xl border space-y-14">
 
-      {/* Courses Tab */}
-      {activeTab === 'courses' && (
-        <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl border border-gray-200 dark:border-gray-700 p-8">
-          <div className="flex items-center mb-8">
-            <div className="p-3 bg-gradient-to-r from-indigo-500 to-indigo-600 rounded-xl text-white mr-4">
-              <BookOpen className="w-6 h-6" />
-            </div>
-            <h3 className="text-2xl font-bold text-gray-900 dark:text-white">Course Configuration</h3>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+        {/* PROFILE SETTINGS */}
+        <section>
+          <h2 className="text-2xl font-bold text-indigo-800 flex items-center gap-2 mb-6">
+            <User size={22} /> Profile Settings
+          </h2>
+
+          <div className="grid gap-4 sm:grid-cols-2">
             <div>
-              <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">Max Enrollments</label>
+              <label className="text-sm font-semibold text-gray-700">Full Name</label>
               <input
-                name="maxEnrollments"
-                type="number"
-                value={formData.maxEnrollments}
-                onChange={handleInputChange}
-                className="w-full px-4 py-3 border border-gray-200 dark:border-gray-600 rounded-xl bg-gray-50 dark:bg-gray-700 focus:ring-4 focus:ring-indigo-500/10 text-lg"
+                type="text"
+                value={form.name}
+                onChange={(e) => update("name", e.target.value)}
+                className="mt-1 w-full p-3 border rounded-lg bg-gray-50 focus:ring-indigo-300"
               />
             </div>
-            <label className="flex items-center p-4 bg-gray-50 dark:bg-gray-700 rounded-xl border-2 border-dashed border-gray-200 cursor-pointer hover:border-indigo-400 md:col-span-2">
+
+            <div>
+              <label className="text-sm font-semibold text-gray-700">Email Address</label>
               <input
-                name="autoEnroll"
-                type="checkbox"
-                checked={formData.autoEnroll}
-                onChange={handleInputChange}
-                className="w-5 h-5 text-indigo-600 rounded focus:ring-indigo-500"
+                type="email"
+                value={form.email}
+                onChange={(e) => update("email", e.target.value)}
+                className="mt-1 w-full p-3 border rounded-lg bg-gray-50 focus:ring-indigo-300"
               />
-              <span className="ml-3 text-lg font-semibold text-gray-900 dark:text-white">Auto-enrollment</span>
+            </div>
+          </div>
+        </section>
+
+        {/* GENERAL SETTINGS */}
+        <section>
+          <h2 className="text-2xl font-bold text-indigo-800 flex items-center gap-2 mb-6">
+            <Settings size={22} /> General Settings
+          </h2>
+
+          <div className="grid gap-4 sm:grid-cols-2">
+            <div>
+              <label className="text-sm font-semibold text-gray-700">Language</label>
+              <select
+                value={form.language}
+                onChange={(e) => update("language", e.target.value)}
+                className="mt-1 w-full p-3 rounded-lg border bg-gray-50"
+              >
+                <option>English</option>
+                <option>Hindi</option>
+                <option>Spanish</option>
+                <option>Arabic</option>
+              </select>
+            </div>
+
+            <div>
+              <label className="text-sm font-semibold text-gray-700">Timezone</label>
+              <select
+                value={form.timezone}
+                onChange={(e) => update("timezone", e.target.value)}
+                className="mt-1 w-full p-3 rounded-lg border bg-gray-50"
+              >
+                <option>UTC +5:30</option>
+                <option>UTC +1:00</option>
+                <option>UTC -5:00</option>
+                <option>UTC +10:00</option>
+              </select>
+            </div>
+          </div>
+        </section>
+
+        {/* SECURITY SETTINGS */}
+        <section>
+          <h2 className="text-2xl font-bold text-indigo-800 flex items-center gap-2 mb-6">
+            <Shield size={22} /> Security & Authentication
+          </h2>
+
+          <div className="grid gap-4 sm:grid-cols-2">
+            <div>
+              <label className="text-sm font-semibold text-gray-700">New Password</label>
+              <input
+                type="password"
+                placeholder="Enter new password"
+                className="mt-1 w-full p-3 rounded-lg border bg-gray-50"
+              />
+            </div>
+
+            <div>
+              <label className="text-sm font-semibold text-gray-700">Confirm Password</label>
+              <input
+                type="password"
+                placeholder="Confirm password"
+                className="mt-1 w-full p-3 rounded-lg border bg-gray-50"
+              />
+            </div>
+          </div>
+
+          {/* 2FA */}
+          <label className="flex items-center gap-3 mt-4">
+            <input
+              type="checkbox"
+              checked={form.enableTwoFactor}
+              onChange={(e) => update("enableTwoFactor", e.target.checked)}
+              className="w-5 h-5"
+            />
+            <span className="font-medium text-gray-700">Enable Two-Factor Authentication (2FA)</span>
+          </label>
+        </section>
+
+        {/* NOTIFICATION SETTINGS */}
+        <section>
+          <h2 className="text-2xl font-bold text-indigo-800 flex items-center gap-2 mb-6">
+            <Bell size={22} /> Notifications
+          </h2>
+
+          <div className="space-y-3">
+            <label className="flex items-center gap-3">
+              <input
+                type="checkbox"
+                checked={form.enableEmails}
+                onChange={(e) => update("enableEmails", e.target.checked)}
+                className="w-5 h-5"
+              />
+              <span>Email Alerts</span>
+            </label>
+
+            <label className="flex items-center gap-3">
+              <input
+                type="checkbox"
+                checked={form.enableAlerts}
+                onChange={(e) => update("enableAlerts", e.target.checked)}
+                className="w-5 h-5"
+              />
+              <span>System & Error Alerts</span>
+            </label>
+
+            <label className="flex items-center gap-3">
+              <input
+                type="checkbox"
+                checked={form.enablePayments}
+                onChange={(e) => update("enablePayments", e.target.checked)}
+                className="w-5 h-5"
+              />
+              <span>Payment Notifications</span>
             </label>
           </div>
-          <button onClick={() => saveSettings('courses')} className="bg-gradient-to-r from-indigo-500 to-indigo-600 hover:from-indigo-600 hover:to-indigo-700 text-white font-semibold py-4 px-8 rounded-xl shadow-xl hover:shadow-2xl transform hover:-translate-y-1 transition-all text-lg">
-            Save Course Settings
+        </section>
+
+        {/* APPEARANCE SETTINGS */}
+        <section>
+          <h2 className="text-2xl font-bold text-indigo-800 flex items-center gap-2 mb-6">
+            <Palette size={22} /> Appearance
+          </h2>
+
+          <div className="grid gap-4 sm:grid-cols-2">
+            <div>
+              <label className="text-sm font-semibold text-gray-700">Theme</label>
+              <select
+                value={form.theme}
+                onChange={(e) => update("theme", e.target.value)}
+                className="mt-1 w-full p-3 rounded-lg border bg-gray-50"
+              >
+                <option value="light">Light</option>
+                <option value="dark">Dark</option>
+                <option value="system">System Default</option>
+              </select>
+            </div>
+          </div>
+        </section>
+
+        {/* INTEGRATIONS */}
+        <section>
+          <h2 className="text-2xl font-bold text-indigo-800 flex items-center gap-2 mb-6">
+            <LinkIcon size={22} /> Integrations (API / Webhooks)
+          </h2>
+
+          <div className="grid gap-4 sm:grid-cols-2">
+
+            <div>
+              <label className="text-sm font-semibold text-gray-700">API Key</label>
+              <input
+                type="text"
+                placeholder="Your API key..."
+                value={form.apiKey}
+                onChange={(e) => update("apiKey", e.target.value)}
+                className="mt-1 w-full p-3 border rounded-lg bg-gray-50"
+              />
+            </div>
+
+            <div>
+              <label className="text-sm font-semibold text-gray-700">Webhook URL</label>
+              <input
+                type="text"
+                placeholder="https://example.com/webhook"
+                value={form.webhookUrl}
+                onChange={(e) => update("webhookUrl", e.target.value)}
+                className="mt-1 w-full p-3 border rounded-lg bg-gray-50"
+              />
+            </div>
+
+          </div>
+        </section>
+
+        {/* STORAGE & BACKUP */}
+        <section>
+          <h2 className="text-2xl font-bold text-indigo-800 flex items-center gap-2 mb-6">
+            <Database size={22} /> Storage & Backup
+          </h2>
+
+          <label className="flex items-center gap-3">
+            <input
+              type="checkbox"
+              checked={form.autoBackup}
+              onChange={(e) => update("autoBackup", e.target.checked)}
+              className="w-5 h-5"
+            />
+            <span>Enable Auto Backup</span>
+          </label>
+
+          <div className="mt-4">
+            <label className="text-sm font-semibold">Backup Frequency</label>
+            <select
+              value={form.backupFrequency}
+              onChange={(e) => update("backupFrequency", e.target.value)}
+              className="mt-1 w-full p-3 rounded-lg border bg-gray-50"
+            >
+              <option>Daily</option>
+              <option>Weekly</option>
+              <option>Monthly</option>
+            </select>
+          </div>
+        </section>
+
+        {/* SAVE BUTTON */}
+        <div className="pt-6 text-center">
+          <button className="flex items-center gap-2 mx-auto bg-indigo-700 hover:bg-indigo-800 text-white px-8 py-3 rounded-xl font-semibold text-lg shadow-lg transition">
+            <Save size={20} /> Save Changes
           </button>
         </div>
-      )}
 
-      {/* Notifications Tab */}
-      {activeTab === 'notifications' && (
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8">
-            <div className="flex items-center mb-8">
-              <Bell className="w-8 h-8 mr-3 text-orange-500" />
-              <h3 className="text-2xl font-bold text-gray-900 dark:text-white">Email Notifications</h3>
-            </div>
-            <label className="flex items-center p-4 bg-gradient-to-r from-orange-50 to-orange-100 dark:from-orange-900/30 rounded-xl border border-orange-200">
-              <input
-                name="emailNotify"
-                type="checkbox"
-                checked={formData.emailNotify}
-                onChange={handleInputChange}
-                className="w-5 h-5 text-orange-600 rounded focus:ring-orange-500"
-              />
-              <span className="ml-4 text-lg font-semibold text-gray-900 dark:text-white">Enrollment Confirmation</span>
-            </label>
-          </div>
-          <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8">
-            <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-8 flex items-center">
-              Push Notifications
-            </h3>
-            <label className="flex items-center p-4 bg-gradient-to-r from-blue-50 to-blue-100 dark:from-blue-900/30 rounded-xl border border-blue-200">
-              <input
-                name="pushNotify"
-                type="checkbox"
-                checked={formData.pushNotify}
-                onChange={handleInputChange}
-                className="w-5 h-5 text-blue-600 rounded focus:ring-blue-500"
-              />
-              <span className="ml-4 text-lg font-semibold text-gray-900 dark:text-white">Real-time Updates</span>
-            </label>
-          </div>
-        </div>
-      )}
+      </div>
     </div>
   );
 }
-export default Settings; 
