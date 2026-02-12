@@ -9,7 +9,6 @@ import Payments from "./component/pages/admin/payments/Payments";
 import Instructorid from "./component/pages/admin/instrouctor/Instructor";
 import CourseAdd from "./component/pages/admin/courses/CourseAdd";
 import Course from "./component/pages/admin/courses/Course";
-import CourseCategories from "./component/pages/admin/courses/CourseCategories";
 import StudentPayments from "./component/pages/admin/students/StudentPayments";
 import InstrouctorProlife from "./component/pages/admin/instrouctor/InstrouctorProlife";
 import Schedule from "./component/pages/admin/schedule/Calendar";
@@ -35,17 +34,18 @@ export default function App() {
     <ScrollToTop/>
 
       <Routes>
-        <Route element={<Layout />}>
+        <Route path="/admin/Course/video/player" element={<VideoPlayer />} />
+
+          <Route element={<Layout />}>
           <Route path="/" element={<Admin />} />
           <Route path="/login" element={<Login/>} />
           <Route path="/admin/profile" element={<AdminProfile/>} />
           <Route path="/admin/courses/add" element={<CourseAdd />} />
           <Route path="/admin/courses/SubscriptionPlans" element={<SubscriptionPlans />} />
           <Route path="/admin/courses" element={<Course />} />
-          <Route path="/admin/Course/Categories/Fullstack" element={<CourseCategoriesFullstack />} />
-        <Route path="/admin/Course/video/player" element={<VideoPlayer />} />
+          <Route path="/admin/Categories" element={<CourseCategoriesFullstack />} />
 
-          <Route path="/admin/categories" element={<CourseCategories />} />
+          {/* <Route path="/admin/categories" element={<CourseCategories />} /> */}
           <Route path="/admin/certificates" element={<Certificate />} />
           <Route path="/admin/students/id" element={<Students/>} />
           <Route path="/admin/instructors" element={<Instructorid />} />
@@ -63,8 +63,9 @@ export default function App() {
           />
           <Route path="/admin/reports" element={<Reports />} />
 
+
           {/* Schedule */}
-          
+
           <Route path="/admin/schedulepage/eventmodal" element={<EventModal />} />
           <Route path="/admin/schedule/dayview" element={<DayView />} />
           <Route path="/admin/schedule/monthview" element={<MonthView />} />
