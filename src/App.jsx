@@ -24,9 +24,10 @@ import Login from "./component/layout/Login";
 import Settings from './component/pages/admin/settings/Setting';  // ✅ Works now
 import PlayList from "./component/pages/admin/courses/PlayList";
 import CourseCategoriesFullstack from "./component/pages/admin/courses/CourseCategoriesFullstack";
-import VideoPlayer from "./component/pages/admin/courses/VideoPlayer";
+// import VideoPlayer from "./component/pages/admin/courses/VideoPlayer";
 import ScrollToTop from "./component/jsx/ScrollToTop";
 import SubscriptionPlans from "./component/pages/admin/courses/SubscriptionPlans";
+import VideoPlayer from "./component/pages/admin/courses/VideoPlayer/VideoPlayer";
 
 export default function App() {
   return (
@@ -34,7 +35,7 @@ export default function App() {
     <ScrollToTop/>
 
       <Routes>
-        <Route path="/admin/Course/video/player" element={<VideoPlayer />} />
+        <Route path="/admin/Course/video/player" element={<VideoPlayer/>} />
 
           <Route element={<Layout />}>
           <Route path="/" element={<Admin />} />
