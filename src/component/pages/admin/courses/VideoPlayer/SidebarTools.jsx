@@ -1,6 +1,7 @@
 import React from 'react';
 import { Terminal, Sidebar, Bot, CheckCircle, Send } from 'lucide-react';
 import CodeEditor from './CodeEditor'; // Import the new component
+import DevAi from './DevAi';
 
 const SidebarTools = ({ 
   sidebarTab, setSidebarTab, isFocusMode, setIsFocusMode, 
@@ -70,14 +71,7 @@ const SidebarTools = ({
         )}
 
         {sidebarTab === 'ai' && (
-          <div className="flex-1 flex flex-col p-6 items-center justify-center text-center">
-             <Bot size={60} className="text-blue-400 mb-4" />
-             <h3 className="text-xl font-bold mb-2">DevMaster AI</h3>
-             <div className="w-full flex gap-2 mt-4">
-                <input placeholder="Ask me anything..." className="flex-1 bg-slate-900 border border-slate-700 rounded-lg px-4 py-2 text-sm outline-none focus:border-blue-500" />
-                <button className="bg-blue-600 p-2 rounded-lg text-white"><Send size={18}/></button>
-             </div>
-          </div>
+          <DevAi/>
         )}
       </div>
     </div>
