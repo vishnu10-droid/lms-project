@@ -1,140 +1,108 @@
 import React, { useState } from 'react';
-import { Plus, Trash2, Calendar, Users, BookOpen, Clock } from 'lucide-react';
+import { Users, Calendar, Clock, BookOpen, PlusCircle, CheckCircle } from 'lucide-react';
 
 const AddBatches = () => {
-  const [batchData, setBatchData] = useState({
-    batchName: '',
-    course: '',
-    startDate: '',
-    maxSeats: '',
-    instructor: '',
-    schedule: []
-  });
+  // Sample Data: Ye data aap backend API se bhi la sakte hain
+  const initialCourses = [
+    { id: 1, title: "Full Stack Web Development", category: "Programming", duration: "6 Months", students: 120, image: "https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=400&q=80" },
+    { id: 2, title: "Advanced UI/UX Design", category: "Design", duration: "3 Months", students: 85, image: "https://images.unsplash.com/photo-1561070791-2526d30994b5?auto=format&fit=crop&w=400&q=80" },
+    { id: 3, title: "Data Science Masters", category: "Data Science", duration: "8 Months", students: 200, image: "https://images.unsplash.com/photo-1551288049-bbbda5366392?auto=format&fit=crop&w=400&q=80" },
+    { id: 4, title: "Digital Marketing Pro", category: "Marketing", duration: "4 Months", students: 150, image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=400&q=80" },
+  ];
 
-  const [modules, setModules] = useState([{ id: 1, title: '', duration: '' }]);
+  const [addedCourses, setAddedCourses] = useState([]);
 
-  const addModule = () => {
-    setModules([...modules, { id: Date.now(), title: '', duration: '' }]);
-  };
-
-  const removeModule = (id) => {
-    setModules(modules.filter(m => m.id !== id));
+  // Function to handle adding course to a batch
+  const handleAddCourse = (courseId) => {
+    if (!addedCourses.includes(courseId)) {
+      setAddedCourses([...addedCourses, courseId]);
+      // Yahan aap apni API call kar sakte hain: axios.post('/api/add-to-batch', { courseId })
+      console.log(`Course ${courseId} added to batch!`);
+    }
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 p-4 md:p-8">
-      <div className="max-w-4xl mx-auto bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
-        
-        {/* Header */}
-        <div className="bg-gradient-to-r from-indigo-600 to-violet-600 p-6 text-white">
-          <h1 className="text-2xl font-bold">Create New Batch</h1>
-          <p className="text-indigo-100 text-sm">Schedule and organize your upcoming learning cohort.</p>
-        </div>
+    <div className="p-6 bg-gray-50 min-h-screen">
+      {/* Header Section */}
+      <div className="mb-10 text-center">
+        <h1 className="text-3xl font-extrabold text-gray-800">Select Courses for New Batch</h1>
+        <p className="text-gray-500 mt-2">Choose the courses you want to include in this upcoming academic cycle.</p>
+      </div>
 
-        <form className="p-6 md:p-10 space-y-8">
-          
-          {/* Section 1: Basic Information */}
-          <section>
-            <div className="flex items-center gap-2 mb-4 text-indigo-600 font-semibold">
-              <BookOpen size={20} />
-              <h2>General Details</h2>
+      {/* Responsive Grid */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+        {initialCourses.map((course) => (
+          <div 
+            key={course.id} 
+            className="bg-white rounded-2xl shadow-md hover:shadow-xl transition-shadow duration-300 overflow-hidden border border-gray-100 flex flex-col"
+          >
+            {/* Course Image */}
+            <div className="relative h-48 overflow-hidden">
+              <img 
+                src={course.image} 
+                alt={course.title} 
+                className="w-full h-full object-cover transform hover:scale-110 transition-transform duration-500"
+              />
+              <span className="absolute top-3 left-3 bg-indigo-600 text-white text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">
+                {course.category}
+              </span>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div className="flex flex-col gap-1">
-                <label className="text-sm font-medium text-gray-700">Batch Name</label>
-                <input 
-                  type="text" 
-                  placeholder="e.g. Fullstack Web Dev - Fall 2026"
-                  className="w-full p-3 rounded-lg border border-gray-200 focus:ring-2 focus:ring-indigo-500 outline-none transition"
-                />
+
+            {/* Card Body */}
+            <div className="p-5 flex-grow">
+              <h3 className="text-xl font-bold text-gray-800 mb-2 leading-tight">
+                {course.title}
+              </h3>
+              
+              <div className="space-y-2 mt-4">
+                <div className="flex items-center text-gray-500 text-sm">
+                  <Clock size={16} className="mr-2 text-indigo-500" />
+                  <span>{course.duration}</span>
+                </div>
+                <div className="flex items-center text-gray-500 text-sm">
+                  <Users size={16} className="mr-2 text-indigo-500" />
+                  <span>{course.students} Students Enrolled</span>
+                </div>
               </div>
-              <div className="flex flex-col gap-1">
-                <label className="text-sm font-medium text-gray-700">Select Course</label>
-                <select className="w-full p-3 rounded-lg border border-gray-200 focus:ring-2 focus:ring-indigo-500 outline-none transition bg-white">
-                  <option>React Mastery</option>
-                  <option>UI/UX Design Fundamentals</option>
-                  <option>Data Science Bootcamp</option>
-                </select>
-              </div>
             </div>
-          </section>
 
-          {/* Section 2: Logistics */}
-          <section className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div className="flex flex-col gap-1">
-              <label className="text-sm font-medium text-gray-700 flex items-center gap-1">
-                <Calendar size={14} /> Start Date
-              </label>
-              <input type="date" className="p-3 rounded-lg border border-gray-200 focus:ring-2 focus:ring-indigo-500 outline-none" />
-            </div>
-            <div className="flex flex-col gap-1">
-              <label className="text-sm font-medium text-gray-700 flex items-center gap-1">
-                <Users size={14} /> Max Capacity
-              </label>
-              <input type="number" placeholder="30" className="p-3 rounded-lg border border-gray-200 focus:ring-2 focus:ring-indigo-500 outline-none" />
-            </div>
-            <div className="flex flex-col gap-1">
-              <label className="text-sm font-medium text-gray-700 flex items-center gap-1">
-                <Clock size={14} /> Duration (Weeks)
-              </label>
-              <input type="number" placeholder="12" className="p-3 rounded-lg border border-gray-200 focus:ring-2 focus:ring-indigo-500 outline-none" />
-            </div>
-          </section>
-
-          <hr className="border-gray-100" />
-
-          {/* Section 3: Dynamic Module List */}
-          <section>
-            <div className="flex justify-between items-center mb-4">
-              <div className="flex items-center gap-2 text-indigo-600 font-semibold">
-                <Plus size={20} />
-                <h2>Batch Curriculum / Modules</h2>
-              </div>
-              <button 
-                type="button"
-                onClick={addModule}
-                className="text-sm bg-indigo-50 text-indigo-600 px-4 py-2 rounded-full font-medium hover:bg-indigo-100 transition"
+            {/* Action Footer */}
+            <div className="p-5 bg-gray-50 border-t border-gray-100">
+              <button
+                onClick={() => handleAddCourse(course.id)}
+                disabled={addedCourses.includes(course.id)}
+                className={`w-full flex items-center justify-center gap-2 py-3 rounded-xl font-bold transition-all duration-300 ${
+                  addedCourses.includes(course.id)
+                    ? 'bg-green-100 text-green-600 cursor-default'
+                    : 'bg-indigo-600 text-white hover:bg-indigo-700 active:scale-95 shadow-lg shadow-indigo-100'
+                }`}
               >
-                + Add Module
+                {addedCourses.includes(course.id) ? (
+                  <>
+                    <CheckCircle size={20} />
+                    Added to Batch
+                  </>
+                ) : (
+                  <>
+                    <PlusCircle size={20} />
+                    Add Course
+                  </>
+                )}
               </button>
             </div>
-
-            <div className="space-y-3">
-              {modules.map((module, index) => (
-                <div key={module.id} className="flex gap-4 items-end animate-in fade-in slide-in-from-top-2">
-                  <div className="flex-1 grid grid-cols-1 md:grid-cols-2 gap-4 bg-gray-50 p-4 rounded-xl">
-                    <input 
-                      placeholder={`Module ${index + 1} Title`}
-                      className="bg-transparent border-b border-gray-300 focus:border-indigo-500 outline-none py-1"
-                    />
-                    <input 
-                      placeholder="Duration (e.g. 2 hours)"
-                      className="bg-transparent border-b border-gray-300 focus:border-indigo-500 outline-none py-1"
-                    />
-                  </div>
-                  <button 
-                    type="button"
-                    onClick={() => removeModule(module.id)}
-                    className="p-3 text-red-400 hover:text-red-600 transition"
-                  >
-                    <Trash2 size={20} />
-                  </button>
-                </div>
-              ))}
-            </div>
-          </section>
-
-          {/* Action Buttons */}
-          <div className="flex flex-col md:flex-row gap-4 pt-6">
-            <button className="flex-1 bg-indigo-600 text-white font-bold py-4 rounded-xl hover:bg-indigo-700 shadow-lg shadow-indigo-200 transition-all active:scale-[0.98]">
-              Publish Batch
-            </button>
-            <button className="px-8 py-4 text-gray-500 font-medium hover:bg-gray-100 rounded-xl transition">
-              Save as Draft
-            </button>
           </div>
-        </form>
+        ))}
       </div>
+
+      {/* Summary Footer (Sticky) */}
+      {addedCourses.length > 0 && (
+        <div className="fixed bottom-6 left-1/2 transform -translate-x-1/2 bg-gray-900 text-white px-8 py-4 rounded-full shadow-2xl flex items-center gap-6 animate-bounce-subtle">
+          <p className="font-medium">{addedCourses.length} Course(s) Selected</p>
+          <button className="bg-indigo-500 hover:bg-indigo-400 text-white px-6 py-2 rounded-full text-sm font-bold transition">
+            Create Batch Now
+          </button>
+        </div>
+      )}
     </div>
   );
 };

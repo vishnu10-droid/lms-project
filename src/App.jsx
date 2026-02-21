@@ -34,6 +34,7 @@ import HelpCenter from "./component/pages/admin/help/HelpCenter";
 import Chats from "./component/pages/admin/chats/Chats";
 import AddBatches from "./component/pages/admin/courses/batches/AddBatches";
 import Batches from "./component/pages/admin/courses/batches/Batches";
+import Payments from "./component/pages/admin/payments/Payments";
 
 export default function App() {
   return (
@@ -91,6 +92,7 @@ export default function App() {
           <Route path="/admin/schedule" element={<Schedule />} />
           <Route path="/admin/helpcenter" element={<HelpCenter />} />
           <Route path="/admin/chats" element={<Chats />} />
+                <Route path="/admin/PAYMENT" element={<Payments />} />
 
           <Route path="/admin/courses/playlist" element={<PlayList />} />
         </Route>
