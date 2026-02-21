@@ -74,7 +74,6 @@ const menu = [
     path: "/",
     ...COLORS.dashboard,
   },
-
   {
     title: "Courses",
     icon: BookOpen,
@@ -106,7 +105,6 @@ const menu = [
       },
     ],
   },
-
   {
     title: "Students",
     icon: Users,
@@ -130,7 +128,6 @@ const menu = [
       },
     ],
   },
-
   {
     title: "Instructors",
     icon: UserCheck,
@@ -154,35 +151,30 @@ const menu = [
       },
     ],
   },
-
   {
     title: "Schedule",
     icon: Calendar,
     path: "/admin/schedule",
     ...COLORS.schedule,
   },
-
   {
     title: "Notifications",
     icon: Bell,
     path: "/admin/notifications",
     ...COLORS.notifications,
   },
-
   {
     title: "Reports",
     icon: BarChart3,
     path: "/admin/reports",
     ...COLORS.reports,
   },
-   {
+  {
     title: "Payment",
     icon: Phone,
     path: "/admin/payment",
     ...COLORS.dashboard,
   },
-
-
   {
     title: "Settings",
     icon: Settings,
@@ -201,10 +193,10 @@ export default function Sidebar() {
   const location = useLocation();
 
   return (
-    <aside className="w-72 h-screen bg-white border-r px-5 py-6 flex flex-col">
+    <aside className="w-64 h-screen bg-white border-r px-4 py-5 flex flex-col">
       {/* LOGO */}
-      <div className="flex items-center gap-3 mb-6">
-        <div className="w-12 h-12 rounded-xl overflow-hidden shadow">
+      <div className="flex items-center gap-2 mb-5">
+        <div className="w-10 h-10 rounded-lg overflow-hidden shadow">
           <img
             src={logo}
             alt="AI Scholar"
@@ -212,13 +204,13 @@ export default function Sidebar() {
           />
         </div>
         <div>
-          <h2 className="text-xl font-bold text-gray-800">AI Scholar</h2>
-          <p className="text-sm text-gray-500">Admin Portal</p>
+          <h2 className="text-lg font-bold text-gray-800">AI Scholar</h2>
+          <p className="text-xs text-gray-500">Admin Portal</p>
         </div>
       </div>
 
-      {/* MENU (SCROLL ENABLED) */}
-      <nav className="flex-1 space-y-2 overflow-y-auto pr-2">
+      {/* MENU */}
+      <nav className="flex-1 space-y-1 overflow-y-auto pr-1">
         {menu.map((item, i) => {
           const isSubActive =
             item.submenu &&
@@ -226,12 +218,11 @@ export default function Sidebar() {
 
           return (
             <div key={i}>
-              {/* NORMAL ITEM */}
               {!item.submenu && (
                 <NavLink
                   to={item.path}
                   className={({ isActive }) =>
-                    `flex items-center gap-4 px-4 py-3 rounded-xl transition
+                    `flex items-center gap-3 px-3 py-2.5 rounded-lg transition
                     ${
                       isActive
                         ? `${item.active} text-white shadow`
@@ -240,16 +231,21 @@ export default function Sidebar() {
                   }
                 >
                   <div
-                    className={`w-10 h-10 flex items-center justify-center rounded-lg
-                    ${location.pathname === item.path ? "bg-white/20 text-white" : item.text}`}
+                    className={`w-8 h-8 flex items-center justify-center rounded-md
+                    ${
+                      location.pathname === item.path
+                        ? "bg-white/20 text-white"
+                        : item.text
+                    }`}
                   >
-                    <item.icon size={20} />
+                    <item.icon size={18} />
                   </div>
-                  <span className="font-medium">{item.title}</span>
+                  <span className="text-sm font-medium">
+                    {item.title}
+                  </span>
                 </NavLink>
               )}
 
-              {/* COURSES DROPDOWN */}
               {item.submenu && (
                 <>
                   <button
@@ -261,24 +257,31 @@ export default function Sidebar() {
                       if (item.title === "Instructors")
                         setOpenInstructors(!openInstructors);
                     }}
-                    className={`w-full flex items-center justify-between px-4 py-3 rounded-xl transition
-                   ${
-                     isSubActive
-                       ? `${item.active} text-white shadow`
-                       : `text-gray-700 ${item.hover}`
-                   }`}
+                    className={`w-full flex items-center justify-between px-3 py-2.5 rounded-lg transition
+                    ${
+                      isSubActive
+                        ? `${item.active} text-white shadow`
+                        : `text-gray-700 ${item.hover}`
+                    }`}
                   >
-                    <div className="flex items-center gap-4">
+                    <div className="flex items-center gap-3">
                       <div
-                        className={`w-10 h-10 flex items-center justify-center rounded-lg
-                       ${isSubActive ? "bg-white/20 text-white" : item.text}`}
+                        className={`w-8 h-8 flex items-center justify-center rounded-md
+                        ${
+                          isSubActive
+                            ? "bg-white/20 text-white"
+                            : item.text
+                        }`}
                       >
-                        <item.icon size={20} />
+                        <item.icon size={18} />
                       </div>
-                      <span className="font-medium">{item.title}</span>
+                      <span className="text-sm font-medium">
+                        {item.title}
+                      </span>
                     </div>
 
                     <ChevronDown
+                      size={16}
                       className={`transition ${
                         (item.title === "Courses" && openCourses) ||
                         (item.title === "Students" && openStudents) ||
@@ -292,13 +295,13 @@ export default function Sidebar() {
                   {((item.title === "Courses" && openCourses) ||
                     (item.title === "Students" && openStudents) ||
                     (item.title === "Instructors" && openInstructors)) && (
-                    <div className="ml-12 mt-2 space-y-2">
+                    <div className="ml-10 mt-1 space-y-1">
                       {item.submenu.map((sub, j) => (
                         <NavLink
                           key={j}
                           to={sub.path}
                           className={({ isActive }) =>
-                            `flex items-center gap-3 px-3 py-2 rounded-lg transition
+                            `flex items-center gap-2 px-2 py-2 rounded-md transition
                             ${
                               isActive
                                 ? `${sub.active} text-white shadow`
@@ -307,12 +310,18 @@ export default function Sidebar() {
                           }
                         >
                           <div
-                            className={`w-9 h-9 flex items-center justify-center rounded-md
-                            ${location.pathname === sub.path ? "bg-white/20 text-white" : sub.text}`}
+                            className={`w-7 h-7 flex items-center justify-center rounded
+                            ${
+                              location.pathname === sub.path
+                                ? "bg-white/20 text-white"
+                                : sub.text
+                            }`}
                           >
-                            <sub.icon size={16} />
+                            <sub.icon size={14} />
                           </div>
-                          <span className="text-sm">{sub.title}</span>
+                          <span className="text-xs">
+                            {sub.title}
+                          </span>
                         </NavLink>
                       ))}
                     </div>
