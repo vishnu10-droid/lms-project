@@ -1,417 +1,258 @@
-import React, { useState, useMemo } from "react";
-import { motion } from "framer-motion"; // Dynamic Animations
-import { Download } from "lucide-react";
+import React, { useState, useMemo } from 'react';
+import {
+  Search, Plus, Mail, Phone, ChevronLeft, ChevronRight, 
+  Edit2, Trash2, Eye, X, Check, BookOpen, AlertCircle, 
+  Download, Trash, Filter, Calendar, TrendingUp, Users, 
+  DollarSign, ArrowUpRight, MoreVertical
+} from "lucide-react";
 
-// --- UPDATED DATA WITH COURSES ---
-const INITIAL_STUDENTS = [
-  {
-    id: 1,
-    name: "Amit Sharma",
-    course: "Web Development",
-    email: "amit@example.com",
-    totalFee: 5000,
-    paid: 5000,
-    balance: 0,
-    status: "Fully Paid",
-  },
-  {
-    id: 2,
-    name: "Priya Verma",
-    course: "Data Science",
-    email: "priya@example.com",
-    totalFee: 5000,
-    paid: 2000,
-    balance: 3000,
-    status: "Partial",
-  },
-  {
-    id: 3,
-    name: "Rohit Singh",
-    course: "UI/UX Design",
-    email: "rohit@example.com",
-    totalFee: 4500,
-    paid: 4500,
-    balance: 0,
-    status: "Fully Paid",
-  },
-  {
-    id: 4,
-    name: "Sana Khan",
-    course: "Digital Marketing",
-    email: "sana@example.com",
-    totalFee: 6000,
-    paid: 0,
-    balance: 6000,
-    status: "Unpaid",
-  },
-  {
-    id: 5,
-    name: "Vikas Yadav",
-    course: "Cyber Security",
-    email: "vikas@example.com",
-    totalFee: 5000,
-    paid: 5000,
-    balance: 0,
-    status: "Fully Paid",
-  },
-  {
-    id: 6,
-    name: "Neha Gupta",
-    course: "Web Development",
-    email: "neha@example.com",
-    totalFee: 5500,
-    paid: 2500,
-    balance: 3000,
-    status: "Partial",
-  },
-  {
-    id: 7,
-    name: "Ankit Mehra",
-    course: "Data Science",
-    email: "ankit@example.com",
-    totalFee: 7000,
-    paid: 7000,
-    balance: 0,
-    status: "Fully Paid",
-  },
-  {
-    id: 8,
-    name: "Simran Kaur",
-    course: "UI/UX Design",
-    email: "simran@example.com",
-    totalFee: 4000,
-    paid: 1000,
-    balance: 3000,
-    status: "Partial",
-  },
-  {
-    id: 9,
-    name: "Karthik Nair",
-    course: "Digital Marketing",
-    email: "karthik@example.com",
-    totalFee: 5000,
-    paid: 5000,
-    balance: 0,
-    status: "Fully Paid",
-  },
-  {
-    id: 10,
-    name: "Jasmin Ali",
-    course: "Cyber Security",
-    email: "jasmin@example.com",
-    totalFee: 6500,
-    paid: 0,
-    balance: 6500,
-    status: "Unpaid",
-  },
-  {
-    id: 11,
-    name: "Arun Kumar",
-    course: "Web Development",
-    email: "arun@example.com",
-    totalFee: 8000,
-    paid: 4000,
-    balance: 4000,
-    status: "Partial",
-  },
-  {
-    id: 12,
-    name: "Pooja Patel",
-    course: "Data Science",
-    email: "pooja@example.com",
-    totalFee: 5000,
-    paid: 5000,
-    balance: 0,
-    status: "Fully Paid",
-  },
-  {
-    id: 13,
-    name: "Rahul Mishra",
-    course: "UI/UX Design",
-    email: "rahul@example.com",
-    totalFee: 7500,
-    paid: 7500,
-    balance: 0,
-    status: "Fully Paid",
-  },
-  {
-    id: 14,
-    name: "Divya Sharma",
-    course: "Digital Marketing",
-    email: "divya@example.com",
-    totalFee: 5500,
-    paid: 1000,
-    balance: 4500,
-    status: "Partial",
-  },
-  {
-    id: 15,
-    name: "Kunal Roy",
-    course: "Cyber Security",
-    email: "kunal@example.com",
-    totalFee: 9000,
-    paid: 0,
-    balance: 9000,
-    status: "Unpaid",
-  },
-  {
-    id: 16,
-    name: "Ishaan Dev",
-    course: "Web Development",
-    email: "ishaan@example.com",
-    totalFee: 5000,
-    paid: 5000,
-    balance: 0,
-    status: "Fully Paid",
-  },
-  {
-    id: 17,
-    name: "Meera Joshi",
-    course: "Data Science",
-    email: "meera@example.com",
-    totalFee: 4800,
-    paid: 2400,
-    balance: 2400,
-    status: "Partial",
-  },
-  {
-    id: 18,
-    name: "Siddharth Rao",
-    course: "UI/UX Design",
-    email: "sid@example.com",
-    totalFee: 6200,
-    paid: 0,
-    balance: 6200,
-    status: "Unpaid",
-  },
-  {
-    id: 19,
-    name: "Tanya Bajaj",
-    course: "Digital Marketing",
-    email: "tanya@example.com",
-    totalFee: 5500,
-    paid: 5500,
-    balance: 0,
-    status: "Fully Paid",
-  },
-  {
-    id: 20,
-    name: "Yash Chopra",
-    course: "Cyber Security",
-    email: "yash@example.com",
-    totalFee: 7200,
-    paid: 3600,
-    balance: 3600,
-    status: "Partial",
-  },
-];
-
-// --- HELPER: COURSE STYLE ---
-const getCourseStyle = (course) => {
-  const map = {
-    "Web Development": "bg-blue-100 text-blue-700",
-    "Data Science": "bg-purple-100 text-purple-700",
-    "UI/UX Design": "bg-pink-100 text-pink-700",
-    "Digital Marketing": "bg-orange-100 text-orange-700",
-    "Cyber Security": "bg-slate-100 text-slate-700",
-  };
-  return map[course] || "bg-gray-100 text-gray-700";
+// Colors & Constants
+const statusColors = {
+  Active: "bg-emerald-100 text-emerald-700 dark:bg-emerald-500/10 dark:text-emerald-400",
+  Inactive: "bg-slate-100 text-slate-700 dark:bg-slate-500/10 dark:text-slate-400",
+  Overdue: "bg-rose-100 text-rose-700 dark:bg-rose-500/10 dark:text-rose-400",
+  Graduated: "bg-blue-100 text-blue-700 dark:bg-blue-500/10 dark:text-blue-400",
 };
 
-export default function StudentPayments() {
-  const [searchTerm, setSearchTerm] = useState("");
-  const [filterCourse, setFilterCourse] = useState("all");
+// Initial Dynamic Data Generator
+const initialStudents = Array.from({ length: 32 }, (_, i) => {
+  const status = ["Active", "Inactive", "Overdue", "Graduated"][Math.floor(Math.random() * 4)];
+  const joinedDate = new Date(2025, Math.floor(Math.random() * 12), Math.floor(Math.random() * 28) + 1);
+  return {
+    id: `STU-${2401 + i}`,
+    name: ["Arjun Mehta", "Sana Khan", "Rahul Sharma", "Priya Das", "Vikram Singh", "Ananya Iyer"][i % 6] + " " + (i + 1),
+    email: `student${i + 1}@lms.edu`,
+    phone: `+91 98765-${10000 + i}`,
+    courses: Math.floor(Math.random() * 8) + 1,
+    status,
+    balance: status === "Overdue" ? Math.floor(Math.random() * 5000) + 1000 : 0,
+    totalPaid: Math.floor(Math.random() * 15000) + 2000,
+    joined: joinedDate.toLocaleDateString("en-IN", { day: '2-digit', month: 'short', year: 'numeric' }),
+    joinedRaw: joinedDate,
+    avatar: "ST"
+  };
+});
 
-  // Filter Logic: Now filters by Name OR Course
-  const filteredData = useMemo(() => {
-    return INITIAL_STUDENTS.filter((s) => {
-      const matchesSearch = s.name
-        .toLowerCase()
-        .includes(searchTerm.toLowerCase());
-      const matchesCourse = filterCourse === "all" || s.course === filterCourse;
-      return matchesSearch && matchesCourse;
+export default function Students() {
+  const [studentList, setStudentList] = useState(initialStudents);
+  const [search, setSearch] = useState("");
+  const [statusFilter, setStatusFilter] = useState("All");
+  const [dateFilter, setDateFilter] = useState("All Time");
+  const [page, setPage] = useState(1);
+  const [selectedIds, setSelectedIds] = useState([]);
+  const PAGE_SIZE = 8;
+
+  // --- ADVANCED FILTER LOGIC ---
+  const filtered = useMemo(() => {
+    return studentList.filter((s) => {
+      const matchesSearch = s.name.toLowerCase().includes(search.toLowerCase()) || s.id.toLowerCase().includes(search.toLowerCase());
+      const matchesStatus = statusFilter === "All" || s.status === statusFilter;
+      
+      let matchesDate = true;
+      const today = new Date();
+      if (dateFilter === "Last 30 Days") {
+        const thirtyDaysAgo = new Date(today.setDate(today.getDate() - 30));
+        matchesDate = s.joinedRaw >= thirtyDaysAgo;
+      }
+      
+      return matchesSearch && matchesStatus && matchesDate;
     });
-  }, [searchTerm, filterCourse]);
+  }, [studentList, search, statusFilter, dateFilter]);
 
-  // Unique Courses for the dropdown
-  const courseList = [
-    "Web Development",
-    "Data Science",
-    "UI/UX Design",
-    "Digital Marketing",
-    "Cyber Security",
-  ];
+  const paginated = filtered.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
+  const totalPages = Math.ceil(filtered.length / PAGE_SIZE);
+
+  // --- ACTIONS ---
+  const exportToCSV = () => {
+    const csvRows = [
+      ["ID", "Name", "Email", "Status", "Joined", "Balance"].join(","),
+      ...filtered.map(s => [s.id, s.name, s.email, s.status, s.joined, s.balance].join(","))
+    ].join("\n");
+    const blob = new Blob([csvRows], { type: 'text/csv' });
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `Students_Data.csv`;
+    a.click();
+  };
+
+  const deleteSelected = () => {
+    if(confirm(`Delete ${selectedIds.length} students?`)) {
+      setStudentList(prev => prev.filter(s => !selectedIds.includes(s.id)));
+      setSelectedIds([]);
+    }
+  };
 
   return (
-
-  <div className="p-6 max-w-7xl mx-auto space-y-6 bg-slate-50/50  text-slate-900">
-         {/* Dynamic Background Shapes */}
-         <div className="max-w-7xl mx-auto space-y-8 relative z-10">
-           {/* Header Section */}
-   
-           <div className="max-w-7xl mx-auto space-y-8 relative z-10">
-             {/* Floating Glow (Parallax) */}
-             <motion.div
-               initial={{ opacity: 0 }}
-               animate={{ opacity: 0.4 }}
-               className="absolute -top-14 -right-14 w-56 h-56 bg-indigo-500/30 
-                  rounded-full blur-3xl"
-             />
-   
-             {/* Header Content */}
-             <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-8 relative z-20">
-               {/* Left — Text */}
-               <motion.div
-                 initial={{ y: -20, opacity: 0 }}
-                 animate={{ y: 0, opacity: 1 }}
-                 transition={{ duration: 0.6 }}
-                 className="space-y-2"
-               >
-                 <motion.h1
-                   initial={{ x: -25 }}
-                   animate={{ x: 0 }}
-                   transition={{ type: "spring", stiffness: 60 }}
-                   className="text-4xl font-extrabold tracking-tight 
-                      bg-gradient-to-r from-blue-500 via-indigo-500 to-purple-600 
-                      bg-clip-text text-transparent drop-shadow-lg"
-                 >
-                    Financial Ledger
-                 </motion.h1>
-   
-                 <p className="text-sm text-slate-600 font-medium">
-                    Managing payments across
-                 </p>
-               </motion.div>
-          {/* RIGHT ACTION BUTTON */}
-          <motion.button
-            initial={{ opacity: 0, y: 8 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.3 }}
-            className="px-6 py-3 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl 
-                 text-sm font-bold shadow-lg shadow-indigo-300/30 
-                 hover:-translate-y-0.5 active:scale-95 transition-all flex items-center gap-2"
-          >
-            <Download className="w-4 h-4" />
-            Export Report
-          </motion.button>
-        </div>
-      </div>
-</div>
-      {/* Filter Controls */}
-      <div className="bg-white p-5 rounded-3xl shadow-sm border border-gray-100 mb-8 flex flex-col md:flex-row gap-4">
-        <div className="flex-1 relative">
-          <span className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400">
-            🔍
-          </span>
-          <input
-            type="text"
-            placeholder="Search student name..."
-            className="w-full bg-gray-50 border-none rounded-2xl pl-10 pr-4 py-4 focus:ring-2 focus:ring-indigo-500 outline-none transition-all"
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-          />
-        </div>
-
-        <select
-          className="bg-gray-50 border-none rounded-2xl px-6 py-4 outline-none cursor-pointer font-bold text-gray-600 appearance-none min-w-[200px]"
-          value={filterCourse}
-          onChange={(e) => setFilterCourse(e.target.value)}
-        >
-          <option value="all">All Courses</option>
-          {courseList.map((c) => (
-            <option key={c} value={c}>
-              {c}
-            </option>
-          ))}
-        </select>
-      </div>
-
-      {/* Student List */}
-      <div className="grid grid-cols-1 gap-4">
-        {filteredData.map((student) => (
-          <div
-            key={student.id}
-            className="bg-white p-5 rounded-3xl border border-gray-100 flex flex-col lg:flex-row items-center justify-between gap-6 hover:shadow-xl hover:scale-[1.01] transition-all"
-          >
-            {/* Left: Info */}
-            <div className="flex items-center gap-5 w-full lg:w-1/3">
-              <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-indigo-500 to-purple-600 text-white flex items-center justify-center text-xl font-bold shadow-lg shadow-indigo-100">
-                {student.name.charAt(0)}
-              </div>
-              <div className="overflow-hidden">
-                <h4 className="font-black text-gray-900 truncate">
-                  {student.name}
-                </h4>
-                <div
-                  className={`inline-block px-3 py-1 rounded-lg text-[10px] font-bold mt-1 uppercase ${getCourseStyle(student.course)}`}
-                >
-                  {student.course}
-                </div>
-              </div>
+    <div className="p-6 space-y-8 bg-slate-50 dark:bg-slate-950 min-h-screen transition-colors duration-300">
+      
+      {/* --- QUICK STATS SECTION --- */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        {[
+          { label: "Total Active", val: studentList.filter(s=>s.status==="Active").length, icon: Users, color: "text-blue-600" },
+          { label: "Revenue", val: "₹" + studentList.reduce((acc, s)=>acc + s.totalPaid, 0).toLocaleString(), icon: DollarSign, color: "text-emerald-600" },
+          { label: "Avg Courses", val: (studentList.reduce((acc,s)=>acc+s.courses, 0)/studentList.length).toFixed(1), icon: BookOpen, color: "text-violet-600" },
+          { label: "Fees Pending", val: "₹" + studentList.reduce((acc, s)=>acc + s.balance, 0).toLocaleString(), icon: AlertCircle, color: "text-rose-600" }
+        ].map((stat, i) => (
+          <div key={i} className="bg-white dark:bg-slate-900 p-6 rounded-3xl shadow-sm border border-slate-200 dark:border-slate-800 flex items-center justify-between">
+            <div>
+              <p className="text-sm font-medium text-slate-500">{stat.label}</p>
+              <h3 className="text-2xl font-black mt-1">{stat.val}</h3>
             </div>
-
-            {/* Middle: Money */}
-            <div className="flex flex-1 justify-around w-full items-center text-center px-4">
-              <div>
-                <p className="text-[10px] uppercase font-black text-gray-400 mb-1">
-                  Total Due
-                </p>
-                <p className="font-bold text-gray-900 text-lg">
-                  ₹{student.totalFee.toLocaleString()}
-                </p>
-              </div>
-              <div className="h-8 w-[1px] bg-gray-100 hidden sm:block" />
-              <div>
-                <p className="text-[10px] uppercase font-black text-gray-400 mb-1">
-                  Paid
-                </p>
-                <p className="font-bold text-emerald-500 text-lg">
-                  ₹{student.paid.toLocaleString()}
-                </p>
-              </div>
-              <div className="h-8 w-[1px] bg-gray-100 hidden sm:block" />
-              <div>
-                <p className="text-[10px] uppercase font-black text-gray-400 mb-1">
-                  Balance
-                </p>
-                <p
-                  className={`font-bold text-lg ${student.balance > 0 ? "text-rose-500" : "text-gray-300"}`}
-                >
-                  ₹{student.balance.toLocaleString()}
-                </p>
-              </div>
-            </div>
-
-            {/* Right: Status & Actions */}
-            <div className="flex items-center gap-4 w-full lg:w-auto justify-end">
-              <span
-                className={`px-4 py-2 rounded-xl text-[10px] font-black uppercase tracking-wider ${
-                  student.status === "Fully Paid"
-                    ? "bg-green-100 text-green-600"
-                    : student.status === "Partial"
-                      ? "bg-yellow-100 text-yellow-600"
-                      : "bg-red-100 text-red-600"
-                }`}
-              >
-                {student.status}
-              </span>
-              <button className="p-3 bg-gray-900 text-white rounded-xl hover:bg-gray-700 transition-colors shadow-md">
-                📄
-              </button>
+            <div className={`p-3 rounded-2xl bg-slate-50 dark:bg-slate-800 ${stat.color}`}>
+              <stat.icon size={24} />
             </div>
           </div>
         ))}
       </div>
 
-      {/* Empty State */}
-      {filteredData.length === 0 && (
-        <div className="text-center py-32">
-          <div className="text-6xl mb-4 text-gray-200">📂</div>
-          <h3 className="text-xl font-bold text-gray-400">
-            No students found in this course.
-          </h3>
+      {/* --- HEADER & CONTROLS --- */}
+      <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+        <div>
+          <h2 className="text-3xl font-black tracking-tight">Student Directory</h2>
+          <p className="text-slate-500">Manage and monitor student enrollments</p>
         </div>
-      )}
+        <div className="flex flex-wrap gap-3">
+          <button onClick={exportToCSV} className="flex items-center gap-2 px-5 py-2.5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl font-bold text-sm hover:bg-slate-50 transition-all shadow-sm">
+            <Download size={18} /> Export
+          </button>
+          <button className="flex items-center gap-2 px-5 py-2.5 bg-blue-600 text-white rounded-xl font-bold text-sm hover:bg-blue-700 transition-all shadow-lg shadow-blue-500/20">
+            <Plus size={18} /> Add New Student
+          </button>
+        </div>
+      </div>
+
+      {/* --- ADVANCED FILTERS BAR --- */}
+      <div className="bg-white dark:bg-slate-900 p-4 rounded-2xl border border-slate-200 dark:border-slate-800 flex flex-wrap items-center gap-4">
+        <div className="relative flex-1 min-w-[280px]">
+          <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
+          <input 
+            type="text" 
+            placeholder="Search by name, ID or email..." 
+            className="w-full pl-11 pr-4 py-2.5 bg-slate-50 dark:bg-slate-950 rounded-xl border-none outline-none focus:ring-2 focus:ring-blue-500 transition-all"
+            onChange={(e) => setSearch(e.target.value)}
+          />
+        </div>
+        
+        <select 
+          className="px-4 py-2.5 bg-slate-50 dark:bg-slate-950 rounded-xl border-none outline-none font-medium text-sm cursor-pointer"
+          onChange={(e) => setStatusFilter(e.target.value)}
+        >
+          <option value="All">All Status</option>
+          <option value="Active">Active</option>
+          <option value="Overdue">Overdue</option>
+          <option value="Graduated">Graduated</option>
+        </select>
+
+        <select 
+          className="px-4 py-2.5 bg-slate-50 dark:bg-slate-950 rounded-xl border-none outline-none font-medium text-sm cursor-pointer"
+          onChange={(e) => setDateFilter(e.target.value)}
+        >
+          <option value="All Time">All Time</option>
+          <option value="Last 30 Days">Last 30 Days</option>
+          <option value="This Year">This Year</option>
+        </select>
+
+        {selectedIds.length > 0 && (
+          <button onClick={deleteSelected} className="flex items-center gap-2 px-4 py-2.5 bg-rose-500 text-white rounded-xl font-bold text-sm animate-in zoom-in-95">
+            <Trash size={16} /> Delete ({selectedIds.length})
+          </button>
+        )}
+      </div>
+
+      {/* --- DATA TABLE --- */}
+      <div className="bg-white dark:bg-slate-900 rounded-[2rem] border border-slate-200 dark:border-slate-800 overflow-hidden shadow-sm">
+        <div className="overflow-x-auto">
+          <table className="w-full text-left border-collapse">
+            <thead>
+              <tr className="bg-slate-50/50 dark:bg-slate-800/50 border-b border-slate-200 dark:border-slate-800 text-slate-500 uppercase text-[11px] font-black tracking-widest">
+                <th className="px-6 py-4">
+                  <input 
+                    type="checkbox" 
+                    onChange={(e) => setSelectedIds(e.target.checked ? paginated.map(s=>s.id) : [])}
+                    className="rounded border-slate-300 text-blue-600 focus:ring-blue-500"
+                  />
+                </th>
+                <th className="px-6 py-4">Student Details</th>
+                <th className="px-6 py-4">Courses</th>
+                <th className="px-6 py-4">Joining Date</th>
+                <th className="px-6 py-4">Status</th>
+                <th className="px-6 py-4 text-right">Actions</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
+              {paginated.map((student) => (
+                <tr key={student.id} className="group hover:bg-slate-50/50 dark:hover:bg-slate-800/20 transition-colors">
+                  <td className="px-6 py-5">
+                    <input 
+                      type="checkbox" 
+                      checked={selectedIds.includes(student.id)}
+                      onChange={() => setSelectedIds(prev => prev.includes(student.id) ? prev.filter(id => id !== student.id) : [...prev, student.id])}
+                      className="rounded border-slate-300 text-blue-600 focus:ring-blue-500"
+                    />
+                  </td>
+                  <td className="px-6 py-5">
+                    <div className="flex items-center gap-4">
+                      <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center text-white font-bold text-xs shadow-md">
+                        {student.name.split(' ').map(n=>n[0]).join('')}
+                      </div>
+                      <div>
+                        <p className="font-bold text-slate-900 dark:text-white leading-tight">{student.name}</p>
+                        <p className="text-xs text-slate-500">{student.id} • {student.email}</p>
+                      </div>
+                    </div>
+                  </td>
+                  <td className="px-6 py-5">
+                    <div className="flex items-center gap-2">
+                      <div className="w-full max-w-[60px] bg-slate-100 dark:bg-slate-800 h-1.5 rounded-full overflow-hidden">
+                        <div className="bg-blue-500 h-full rounded-full" style={{ width: `${(student.courses/8)*100}%` }} />
+                      </div>
+                      <span className="text-xs font-bold">{student.courses}</span>
+                    </div>
+                  </td>
+                  <td className="px-6 py-5">
+                    <p className="text-sm font-medium">{student.joined}</p>
+                  </td>
+                  <td className="px-6 py-5">
+                    <span className={`px-3 py-1 rounded-lg text-[10px] font-black uppercase tracking-wider ${statusColors[student.status]}`}>
+                      {student.status}
+                    </span>
+                  </td>
+                  <td className="px-6 py-5 text-right">
+                    <div className="flex items-center justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                      <button className="p-2 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg text-slate-600 dark:text-slate-400"><Edit2 size={16}/></button>
+                      <button className="p-2 hover:bg-rose-100 dark:hover:bg-rose-500/20 rounded-lg text-rose-500"><Trash2 size={16}/></button>
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+
+        {/* --- PAGINATION --- */}
+        <div className="p-6 bg-slate-50/50 dark:bg-slate-800/50 border-t border-slate-200 dark:border-slate-800 flex items-center justify-between">
+          <p className="text-xs font-bold text-slate-500 uppercase tracking-widest">
+            Showing {paginated.length} of {filtered.length} Results
+          </p>
+          <div className="flex gap-2">
+            <button 
+              disabled={page === 1}
+              onClick={() => setPage(p => p - 1)}
+              className="p-2 rounded-xl border border-slate-200 dark:border-slate-700 disabled:opacity-30 hover:bg-white dark:hover:bg-slate-900 transition-all"
+            >
+              <ChevronLeft size={18} />
+            </button>
+            <button 
+              disabled={page === totalPages}
+              onClick={() => setPage(p => p + 1)}
+              className="p-2 rounded-xl border border-slate-200 dark:border-slate-700 disabled:opacity-30 hover:bg-white dark:hover:bg-slate-900 transition-all"
+            >
+              <ChevronRight size={18} />
+            </button>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }

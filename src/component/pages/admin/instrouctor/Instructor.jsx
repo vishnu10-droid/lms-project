@@ -71,12 +71,12 @@ export default function TeacherGrid() {
                 <input 
                   type="text" 
                   placeholder="Search name..." 
-                  className="pl-10 pr-4 py-2.5 bg-white border-none rounded-2xl shadow-sm focus:ring-2 focus:ring-indigo-500 w-full md:w-64 transition-all"
+                  className="pl-10 pr-4 py-2.5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 text-slate-800 dark:text-slate-100 rounded-2xl shadow-sm focus:ring-2 focus:ring-indigo-500 w-full md:w-64 transition-all"
                   value={search}
                   onChange={(e) => setSearch(e.target.value)}
                 />
              </div>
-             <button className="bg-indigo-600 hover:bg-indigo-700 text-white p-2.5 rounded-2xl shadow-lg shadow-indigo-200 transition-all">
+             <button className="bg-indigo-600 hover:bg-indigo-700 text-white p-2.5 rounded-2xl shadow-lg shadow-indigo-200 dark:shadow-indigo-900/30 transition-all">
                <Plus size={24} />
              </button>
                  </div>
@@ -106,7 +106,7 @@ export default function TeacherGrid() {
               className={`px-5 py-2 rounded-full text-xs font-bold transition-all whitespace-nowrap ${
                 activeCategory === cat 
                 ? "bg-slate-900 text-white shadow-lg" 
-                : "bg-white text-slate-500 hover:bg-slate-50"
+                : "bg-white dark:bg-slate-900 text-slate-500 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800"
               }`}
             >
               {cat}
@@ -148,11 +148,11 @@ export default function TeacherGrid() {
 
 function QuickStat({ icon, label, value, bg }) {
   return (
-    <div className={`p-5 rounded-[2rem] bg-white border border-slate-100 shadow-sm flex items-center gap-4`}>
+    <div className={`p-5 rounded-[2rem] bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-700 shadow-sm flex items-center gap-4`}>
       <div className={`p-3 rounded-2xl ${bg}`}>{icon}</div>
       <div>
-        <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">{label}</p>
-        <p className="text-xl font-black text-slate-900">{value}</p>
+        <p className="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest">{label}</p>
+        <p className="text-xl font-black text-slate-900 dark:text-slate-100">{value}</p>
       </div>
     </div>
   );
@@ -172,14 +172,14 @@ function TeacherCard({ teacher, onClick }) {
       animate={{ opacity: 1, scale: 1 }}
       exit={{ opacity: 0, scale: 0.9 }}
       whileHover={{ y: -10 }}
-      className="group bg-white rounded-[2.5rem] p-6 shadow-sm border border-slate-100 hover:shadow-2xl transition-all duration-300 cursor-pointer relative"
+      className="group bg-white dark:bg-slate-900 rounded-[2.5rem] p-6 shadow-sm border border-slate-100 dark:border-slate-700 hover:shadow-2xl transition-all duration-300 cursor-pointer relative"
       onClick={onClick}
     >
       <div className="flex justify-between items-start mb-6">
         <div className={`px-3 py-1 rounded-full text-[9px] font-black uppercase tracking-tighter flex items-center gap-1.5 ${statusColors[teacher.status]} text-white`}>
           <span className="w-1.5 h-1.5 bg-white rounded-full animate-pulse" /> {teacher.status}
         </div>
-        <div className="p-2 bg-slate-50 rounded-xl text-slate-300 group-hover:text-indigo-600 transition-colors">
+        <div className="p-2 bg-slate-50 dark:bg-slate-800 rounded-xl text-slate-300 dark:text-slate-500 group-hover:text-indigo-600 transition-colors">
           <ArrowUpRight size={18} />
         </div>
       </div>
@@ -189,22 +189,22 @@ function TeacherCard({ teacher, onClick }) {
           <img 
             src={teacher.pic} 
             alt={teacher.name} 
-            className="w-24 h-24 rounded-[2rem] object-cover ring-8 ring-slate-50 group-hover:ring-indigo-50 transition-all"
+            className="w-24 h-24 rounded-[2rem] object-cover ring-8 ring-slate-50 dark:ring-slate-800 group-hover:ring-indigo-50 dark:group-hover:ring-indigo-900/40 transition-all"
           />
-          <div className="absolute -bottom-1 -right-1 bg-white p-1 rounded-xl shadow-md">
+          <div className="absolute -bottom-1 -right-1 bg-white dark:bg-slate-900 p-1 rounded-xl shadow-md">
             <ShieldCheck size={18} className="text-indigo-600 fill-indigo-50" />
           </div>
         </div>
-        <h3 className="text-xl font-black text-slate-800 tracking-tight">{teacher.name}</h3>
+        <h3 className="text-xl font-black text-slate-800 dark:text-slate-100 tracking-tight">{teacher.name}</h3>
         <p className="text-indigo-500 font-bold text-[10px] uppercase tracking-widest mt-1">{teacher.subject}</p>
       </div>
 
       <div className="space-y-4">
         <div className="flex justify-between items-end">
-          <p className="text-[10px] font-bold text-slate-400 uppercase">Satisfaction</p>
-          <p className="text-xs font-black text-slate-700">{teacher.performance}%</p>
+          <p className="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase">Satisfaction</p>
+          <p className="text-xs font-black text-slate-700 dark:text-slate-300">{teacher.performance}%</p>
         </div>
-        <div className="h-1.5 w-full bg-slate-100 rounded-full overflow-hidden">
+        <div className="h-1.5 w-full bg-slate-100 dark:bg-slate-700 rounded-full overflow-hidden">
           <motion.div 
             initial={{ width: 0 }}
             animate={{ width: `${teacher.performance}%` }}
@@ -213,12 +213,12 @@ function TeacherCard({ teacher, onClick }) {
         </div>
       </div>
 
-      <div className="flex items-center justify-between mt-6 pt-4 border-t border-slate-50">
+      <div className="flex items-center justify-between mt-6 pt-4 border-t border-slate-50 dark:border-slate-700">
         <div className="flex items-center gap-1 text-amber-500">
           <Star size={14} className="fill-current" />
-          <span className="text-xs font-black text-slate-700">{teacher.rating}</span>
+          <span className="text-xs font-black text-slate-700 dark:text-slate-300">{teacher.rating}</span>
         </div>
-        <div className="flex items-center gap-1 text-slate-400">
+        <div className="flex items-center gap-1 text-slate-400 dark:text-slate-500">
           <Users size={14} />
           <span className="text-xs font-bold">{teacher.students}</span>
         </div>
@@ -234,47 +234,47 @@ function DetailModal({ teacher, onClose }) {
         initial={{ x: "100%" }}
         animate={{ x: 0 }}
         exit={{ x: "100%" }}
-        className="bg-white w-full max-w-md h-full rounded-[3rem] shadow-2xl p-8 overflow-y-auto"
+        className="bg-white dark:bg-slate-900 w-full max-w-md h-full rounded-[3rem] shadow-2xl p-8 overflow-y-auto border border-slate-200 dark:border-slate-700"
       >
         <div className="flex justify-between items-center mb-8">
-          <button onClick={onClose} className="p-3 bg-slate-100 rounded-2xl text-slate-500 hover:bg-slate-200 transition-all">
+          <button onClick={onClose} className="p-3 bg-slate-100 dark:bg-slate-800 rounded-2xl text-slate-500 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 transition-all">
             <X size={20} />
           </button>
           <button className="text-indigo-600 font-bold text-sm">Edit Profile</button>
         </div>
 
         <div className="text-center mb-10">
-          <img src={teacher.pic} className="w-32 h-32 rounded-[3rem] mx-auto mb-4 ring-8 ring-indigo-50" />
-          <h2 className="text-3xl font-black text-slate-900">{teacher.name}</h2>
+          <img src={teacher.pic} className="w-32 h-32 rounded-[3rem] mx-auto mb-4 ring-8 ring-indigo-50 dark:ring-indigo-900/40" />
+          <h2 className="text-3xl font-black text-slate-900 dark:text-slate-100">{teacher.name}</h2>
           <p className="text-indigo-600 font-bold tracking-widest uppercase text-xs mt-2">{teacher.subject}</p>
         </div>
 
         <div className="grid grid-cols-2 gap-4 mb-10">
-          <div className="p-6 bg-slate-50 rounded-[2rem] text-center">
-            <p className="text-2xl font-black text-slate-900">{teacher.courses}</p>
-            <p className="text-[10px] font-bold text-slate-400 uppercase">Courses</p>
+          <div className="p-6 bg-slate-50 dark:bg-slate-800 rounded-[2rem] text-center">
+            <p className="text-2xl font-black text-slate-900 dark:text-slate-100">{teacher.courses}</p>
+            <p className="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase">Courses</p>
           </div>
-          <div className="p-6 bg-slate-50 rounded-[2rem] text-center">
-            <p className="text-2xl font-black text-slate-900">{teacher.rating}</p>
-            <p className="text-[10px] font-bold text-slate-400 uppercase">Rating</p>
+          <div className="p-6 bg-slate-50 dark:bg-slate-800 rounded-[2rem] text-center">
+            <p className="text-2xl font-black text-slate-900 dark:text-slate-100">{teacher.rating}</p>
+            <p className="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase">Rating</p>
           </div>
         </div>
 
         <div className="space-y-6">
-          <h4 className="font-black text-slate-900 uppercase tracking-widest text-xs">Recent Performance</h4>
+          <h4 className="font-black text-slate-900 dark:text-slate-100 uppercase tracking-widest text-xs">Recent Performance</h4>
           {[
             { label: "Content Quality", val: "94%" },
             { label: "Response Time", val: "2.4h" },
             { label: "Student Growth", val: "+12%" }
           ].map((item, i) => (
-            <div key={i} className="flex justify-between items-center p-4 border border-slate-100 rounded-2xl">
-              <span className="text-sm font-bold text-slate-500">{item.label}</span>
+            <div key={i} className="flex justify-between items-center p-4 border border-slate-100 dark:border-slate-700 rounded-2xl">
+              <span className="text-sm font-bold text-slate-500 dark:text-slate-400">{item.label}</span>
               <span className="text-sm font-black text-indigo-600">{item.val}</span>
             </div>
           ))}
         </div>
 
-        <button className="w-full bg-slate-900 text-white py-5 rounded-[2rem] font-black uppercase tracking-widest mt-10 hover:bg-indigo-600 transition-all shadow-xl shadow-slate-200">
+        <button className="w-full bg-slate-900 dark:bg-slate-700 text-white py-5 rounded-[2rem] font-black uppercase tracking-widest mt-10 hover:bg-indigo-600 transition-all shadow-xl shadow-slate-200 dark:shadow-slate-950">
           Download Full Report
         </button>
       </motion.div>
