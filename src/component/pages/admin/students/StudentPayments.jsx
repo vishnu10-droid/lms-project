@@ -5,6 +5,7 @@ import {
   Download, Trash, Filter, Calendar, TrendingUp, Users, 
   DollarSign, ArrowUpRight, MoreVertical
 } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
 
 // Colors & Constants
 const statusColors = {
@@ -84,46 +85,91 @@ export default function Students() {
   };
 
   return (
-    <div className="p-6 space-y-8 bg-slate-50 dark:bg-slate-950 min-h-screen transition-colors duration-300">
+    <div className="p-6 max-w-7xl mx-auto space-y-6  min-h-screens font-sans text-slate-900">
       
-      {/* --- QUICK STATS SECTION --- */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        {[
-          { label: "Total Active", val: studentList.filter(s=>s.status==="Active").length, icon: Users, color: "text-blue-600" },
-          { label: "Revenue", val: "₹" + studentList.reduce((acc, s)=>acc + s.totalPaid, 0).toLocaleString(), icon: DollarSign, color: "text-emerald-600" },
-          { label: "Avg Courses", val: (studentList.reduce((acc,s)=>acc+s.courses, 0)/studentList.length).toFixed(1), icon: BookOpen, color: "text-violet-600" },
-          { label: "Fees Pending", val: "₹" + studentList.reduce((acc, s)=>acc + s.balance, 0).toLocaleString(), icon: AlertCircle, color: "text-rose-600" }
-        ].map((stat, i) => (
-          <div key={i} className="bg-white dark:bg-slate-900 p-6 rounded-3xl shadow-sm border border-slate-200 dark:border-slate-800 flex items-center justify-between">
-            <div>
-              <p className="text-sm font-medium text-slate-500">{stat.label}</p>
-              <h3 className="text-2xl font-black mt-1">{stat.val}</h3>
-            </div>
-            <div className={`p-3 rounded-2xl bg-slate-50 dark:bg-slate-800 ${stat.color}`}>
-              <stat.icon size={24} />
-            </div>
-          </div>
-        ))}
-      </div>
+ <motion.div
+  initial={{ opacity: 0 }}
+  animate={{ opacity: 1 }}
+  transition={{ duration: 0.4 }}
+  className="relative overflow-hidden   mb-8    shadow-lg"
+>
 
-      {/* --- HEADER & CONTROLS --- */}
-      <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
-        <div>
-          <h2 className="text-3xl font-black tracking-tight">Student Directory</h2>
-          <p className="text-slate-500">Manage and monitor student enrollments</p>
-        </div>
-        <div className="flex flex-wrap gap-3">
-          <button onClick={exportToCSV} className="flex items-center gap-2 px-5 py-2.5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl font-bold text-sm hover:bg-slate-50 transition-all shadow-sm">
-            <Download size={18} /> Export
-          </button>
-          <button className="flex items-center gap-2 px-5 py-2.5 bg-blue-600 text-white rounded-xl font-bold text-sm hover:bg-blue-700 transition-all shadow-lg shadow-blue-500/20">
-            <Plus size={18} /> Add New Student
-          </button>
-        </div>
-      </div>
+  {/* Floating Glow Effect */}
+  <motion.div
+    initial={{ opacity: 0, scale: 0.9 }}
+    animate={{ opacity: 0.45, scale: 1 }}
+    transition={{ duration: 0.8 }}
+    className="absolute -top-10 -right-10 w-60 h-60 blur-3xl pointer-events-none"
+  />
 
-      {/* --- ADVANCED FILTERS BAR --- */}
-      <div className="bg-white dark:bg-slate-900 p-4 rounded-2xl border border-slate-200 dark:border-slate-800 flex flex-wrap items-center gap-4">
+  {/* HEADER CONTENT */}
+  <div className="relative z-20 flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+
+    {/* LEFT TEXT SECTION */}
+    <motion.div
+      initial={{ y: -20, opacity: 0 }}
+      animate={{ y: 0, opacity: 1 }}
+      transition={{ duration: 0.6 }}
+    >
+      <motion.h2
+        initial={{ x: -25 }}
+        animate={{ x: 0 }}
+        transition={{ type: "spring", stiffness: 60 }}
+        className="text-3xl font-black tracking-tight 
+                   bg-gradient-to-r from-blue-500 via-indigo-500 to-purple-600 
+                   bg-clip-text text-transparent drop-shadow"
+      >
+        Student Directory
+      </motion.h2>
+
+      <p className="text-slate-600 dark:text-slate-400 text-sm mt-1 font-medium">
+        Manage and monitor student enrollments
+      </p>
+    </motion.div>
+
+    {/* RIGHT SIDE BUTTONS */}
+    <motion.div
+      initial={{ opacity: 0, y: 8 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: 0.3 }}
+      className="flex flex-wrap gap-3"
+    >
+      {/* Export Button */}
+      <motion.button
+        whileHover={{ scale: 1.05 }}
+        whileTap={{ scale: 0.97 }}
+        onClick={exportToCSV}
+        className="flex items-center gap-2 px-5 py-2.5 bg-white dark:bg-slate-900 
+                   border border-slate-200 dark:border-slate-800 rounded-xl 
+                   font-bold text-sm hover:bg-slate-50 dark:hover:bg-slate-800 
+                   transition-all shadow-sm"
+      >
+        <Download size={18} /> Export
+      </motion.button>
+
+      {/* Add Button */}
+      <motion.button
+        whileHover={{ scale: 1.05 }}
+        whileTap={{ scale: 0.95 }}
+        className="flex items-center gap-2 px-5 py-2.5 bg-blue-600 text-white 
+                   rounded-xl font-bold text-sm hover:bg-blue-700 
+                   transition-all shadow-lg shadow-blue-500/20"
+      >
+        <Plus size={18} /> Add New Student
+      </motion.button>
+    </motion.div>
+
+  </div>
+
+</motion.div>
+
+
+
+
+
+
+
+<div className="bg-white dark:bg-slate-900 p-4 rounded-2xl border border-slate-200 dark:border-slate-800 flex flex-wrap items-center gap-4">
         <div className="relative flex-1 min-w-[280px]">
           <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
           <input 
@@ -160,6 +206,33 @@ export default function Students() {
         )}
       </div>
 
+
+
+      {/* --- QUICK STATS SECTION --- */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        {[
+          { label: "Total Active", val: studentList.filter(s=>s.status==="Active").length, icon: Users, color: "text-blue-600" },
+          { label: "Revenue", val: "₹" + studentList.reduce((acc, s)=>acc + s.totalPaid, 0).toLocaleString(), icon: DollarSign, color: "text-emerald-600" },
+          { label: "Avg Courses", val: (studentList.reduce((acc,s)=>acc+s.courses, 0)/studentList.length).toFixed(1), icon: BookOpen, color: "text-violet-600" },
+          { label: "Fees Pending", val: "₹" + studentList.reduce((acc, s)=>acc + s.balance, 0).toLocaleString(), icon: AlertCircle, color: "text-rose-600" }
+        ].map((stat, i) => (
+          <div key={i} className="bg-white dark:bg-slate-900 p-6 rounded-3xl shadow-sm border border-slate-200 dark:border-slate-800 flex items-center justify-between">
+            <div>
+              <p className="text-sm font-medium text-slate-500">{stat.label}</p>
+              <h3 className="text-2xl font-black mt-1">{stat.val}</h3>
+            </div>
+            <div className={`p-3 rounded-2xl bg-slate-50 dark:bg-slate-800 ${stat.color}`}>
+              <stat.icon size={24} />
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* --- HEADER & CONTROLS --- */}
+     
+
+      {/* --- ADVANCED FILTERS BAR --- */}
+      
       {/* --- DATA TABLE --- */}
       <div className="bg-white dark:bg-slate-900 rounded-[2rem] border border-slate-200 dark:border-slate-800 overflow-hidden shadow-sm">
         <div className="overflow-x-auto">

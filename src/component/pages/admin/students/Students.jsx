@@ -58,7 +58,7 @@ const AdminStudents = () => {
   };
 
   return (
-    <div className="p-6 max-w-7xl mx-auto space-y-6 bg-slate-50/50 text-slate-900 min-h-screen">
+    <div className="p-6 max-w-7xl mx-auto space-y-6  text-slate-900 min-h-screen">
       
       {/* --- HEADER SECTION --- */}
       <header className="relative space-y-8 overflow-hidden">

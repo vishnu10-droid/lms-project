@@ -109,7 +109,7 @@ export default function Reports() {
       initial="hidden" 
       animate="visible" 
       variants={containerVariants}
-      className="p-6 bg-slate-50 min-h-screen space-y-8 font-sans"
+      className="p-6 bg-slate-50 min-h-screen space-y-8font-sans"
     >
       {/* Header */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
