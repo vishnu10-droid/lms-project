@@ -1,316 +1,363 @@
-import { useState } from "react";
+
+
+
+
+
+
+
+
+
+
+
+
+
+import React, { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion"; // Dynamic Animations
 import {
-  Settings as SettingsIcon,
-  Users,
-  CreditCard,
-  BookOpen,
-  Bell,
-  Shield,
-  Mail,
-  Zap,
-  Palette,
-  Database,
+  TrendingUp, Users, BookOpen, DollarSign, Download,
+  BarChart2, ArrowUpRight, Award, Star
 } from "lucide-react";
+import {
+  AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
+  BarChart, Bar, PieChart, Pie, Cell, Legend
+} from "recharts";
 
-/* ----------------------------------------
-   SIMPLE TOGGLE BUTTON (REUSABLE)
----------------------------------------- */
-function Toggle({ on, onChange }) {
-  return (
-    <button
-      onClick={() => onChange(!on)}
-      className={`relative w-10 h-5 rounded-full transition ${
-        on ? "bg-blue-600" : "bg-gray-300"
-      }`}
-    >
-      <div
-        className={`absolute top-0.5 left-0.5 w-4 h-4 rounded-full bg-white shadow transition ${
-          on ? "translate-x-5" : ""
-        }`}
-      />
-    </button>
-  );
-}
-
-/* ----------------------------------------
-   CARD WRAPPER (REUSABLE)
----------------------------------------- */
-function Card({ title, children }) {
-  return (
-    <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-200 space-y-5">
-      <h2 className="text-lg font-bold flex items-center gap-2 text-gray-800">
-        <span className="w-1 h-5 bg-blue-600 rounded-full" />
-        {title}
-      </h2>
-      {children}
-    </div>
-  );
-}
-
-/* ----------------------------------------
-   ALL TAB COMPONENTS (IN SINGLE FILE)
----------------------------------------- */
-
-function GeneralTab({ state, setState }) {
-  return (
-    <Card title="General Settings">
-      <div className="space-y-5">
-        <div>
-          <p className="font-semibold text-sm">Platform Name</p>
-          <input
-            className="w-full px-3 py-2 border rounded-lg"
-            defaultValue="My LMS"
-          />
-        </div>
-
-        <div>
-          <p className="font-semibold text-sm">Tagline</p>
-          <input
-            className="w-full px-3 py-2 border rounded-lg"
-            defaultValue="Next-gen learning"
-          />
-        </div>
-
-        <div className="flex justify-between items-center pt-4 border-t">
-          <p className="font-semibold text-sm">Maintenance Mode</p>
-          <Toggle
-            on={state.maintenanceMode}
-            onChange={(v) => setState({ ...state, maintenanceMode: v })}
-          />
-        </div>
-      </div>
-    </Card>
-  );
-}
-
-function UsersTab({ state, setState }) {
-  return (
-    <Card title="User Management">
-      {/* Email Verification */}
-      <div className="flex justify-between py-4 border-b">
-        <div>
-          <p className="font-semibold text-sm">Email Verification</p>
-          <p className="text-xs text-gray-500">
-            Require users to confirm email.
-          </p>
-        </div>
-
-        <Toggle
-          on={state.emailVerification}
-          onChange={(v) => setState({ ...state, emailVerification: v })}
-        />
-      </div>
-
-      {/* Default Role */}
-      <div className="mt-6">
-        <p className="text-xs uppercase font-semibold text-gray-500 mb-2">
-          Default Role
-        </p>
-
-        <div className="flex gap-3">
-          {["Student", "Instructor", "Admin"].map((role) => (
-            <button
-              key={role}
-              onClick={() => setState({ ...state, role })}
-              className={`flex-1 py-3 rounded-xl border text-sm font-medium transition ${
-                state.role === role
-                  ? "bg-blue-600 text-white border-blue-600"
-                  : "bg-gray-50 text-gray-700 border-gray-300"
-              }`}
-            >
-              {role}
-            </button>
-          ))}
-        </div>
-      </div>
-
-      {/* Session Settings */}
-      <div className="bg-gray-50 border p-5 rounded-xl mt-6">
-        <p className="text-xs uppercase font-semibold text-gray-500 mb-3">
-          Session Settings
-        </p>
-
-        <div className="grid grid-cols-2 gap-4">
-          <div>
-            <label className="text-xs text-gray-600">Timeout (minutes)</label>
-            <input
-              className="w-full px-3 py-2 border rounded-lg"
-              defaultValue="30"
-            />
-          </div>
-
-          <div>
-            <label className="text-xs text-gray-600">Max Login Attempts</label>
-            <input
-              className="w-full px-3 py-2 border rounded-lg"
-              defaultValue="5"
-            />
-          </div>
-        </div>
-      </div>
-    </Card>
-  );
-}
-
-function PaymentsTab() {
-  return (
-    <Card title="Payment Gateways">
-      {["Stripe", "Razorpay", "PayPal"].map((name) => (
-        <div key={name} className="flex justify-between border-b pb-3 mb-2">
-          <p className="font-semibold text-gray-700">{name}</p>
-          <button className="px-4 py-1.5 text-sm border rounded-lg hover:bg-gray-100">
-            Configure
-          </button>
-        </div>
-      ))}
-    </Card>
-  );
-}
-
-function CoursesTab() {
-  return (
-    <Card title="Course Settings">
-      <div className="space-y-5">
-        <div>
-          <p className="font-semibold text-sm">Max Video Size (MB)</p>
-          <input className="w-full p-2 border rounded-lg" defaultValue="2048" />
-        </div>
-
-        <div>
-          <p className="font-semibold text-sm">Allowed Formats</p>
-          <input
-            className="w-full p-2 border rounded-lg"
-            defaultValue="mp4, webm"
-          />
-        </div>
-      </div>
-    </Card>
-  );
-}
-
-function NotificationsTab() {
-  return (
-    <Card title="Notifications">
-      <p className="text-gray-600">Email, SMS & push notifications</p>
-    </Card>
-  );
-}
-
-function SecurityTab() {
-  return (
-    <Card title="Security">
-      <p className="text-gray-600">2FA, login rules, password policy…</p>
-    </Card>
-  );
-}
-
-function EmailTab() {
-  return (
-    <Card title="SMTP Server">
-      <div>
-        <p className="font-semibold">SMTP Host</p>
-        <input
-          className="w-full px-3 py-2 border rounded-lg"
-          defaultValue="smtp.gmail.com"
-        />
-      </div>
-    </Card>
-  );
-}
-
-function IntegrationsTab() {
-  return (
-    <Card title="Integrations">
-      <p className="text-gray-600">Stripe, Slack, Zoom, AWS integrations</p>
-    </Card>
-  );
-}
-
-function AppearanceTab() {
-  return (
-    <Card title="Appearance">
-      <p className="text-gray-600">Theme, fonts, color system</p>
-    </Card>
-  );
-}
-
-function BackupTab() {
-  return (
-    <Card title="Backups & Logs">
-      <p className="text-gray-600">Database backups & system logs</p>
-    </Card>
-  );
-}
-
-/* ----------------------------------------
-   TAB COMPONENT MAP
----------------------------------------- */
-const TAB_COMPONENTS = {
-  general: GeneralTab,
-  users: UsersTab,
-  payments: PaymentsTab,
-  courses: CoursesTab,
-  notifications: NotificationsTab,
-  security: SecurityTab,
-  email: EmailTab,
-  integrations: IntegrationsTab,
-  appearance: AppearanceTab,
-  backup: BackupTab,
-};
-
-/* ----------------------------------------
-   SIDEBAR BUTTONS LIST
----------------------------------------- */
-const SIDEBAR = [
-  { id: "general", label: "General", icon: SettingsIcon },
-  { id: "users", label: "Users", icon: Users },
-  { id: "payments", label: "Payments", icon: CreditCard },
-  { id: "courses", label: "Courses", icon: BookOpen },
-  { id: "notifications", label: "Notifications", icon: Bell },
-  { id: "security", label: "Security", icon: Shield },
-  { id: "email", label: "Email / SMTP", icon: Mail },
-  { id: "integrations", label: "Integrations", icon: Zap },
-  { id: "appearance", label: "Appearance", icon: Palette },
-  { id: "backup", label: "Backup & Logs", icon: Database },
+// --- Data Constants (Original) ---
+const enrollmentData = [
+  { month: "Jan", enrollments: 320, completions: 210, dropouts: 45 },
+  { month: "Feb", enrollments: 410, completions: 280, dropouts: 38 },
+  { month: "Mar", enrollments: 380, completions: 260, dropouts: 42 },
+  { month: "Apr", enrollments: 520, completions: 380, dropouts: 35 },
+  { month: "May", enrollments: 490, completions: 350, dropouts: 40 },
+  { month: "Jun", enrollments: 600, completions: 445, dropouts: 32 },
+  { month: "Jul", enrollments: 570, completions: 420, dropouts: 36 },
+  { month: "Aug", enrollments: 680, completions: 510, dropouts: 28 },
+  { month: "Sep", enrollments: 640, completions: 480, dropouts: 31 },
+  { month: "Oct", enrollments: 750, completions: 580, dropouts: 25 },
+  { month: "Nov", enrollments: 820, completions: 630, dropouts: 22 },
+  { month: "Dec", enrollments: 900, completions: 710, dropouts: 18 },
 ];
 
-export default function Settings() {
-  const [active, setActive] = useState("general");
+const revenueVsTarget = [
+  { month: "Jan", revenue: 42000, target: 40000 },
+  { month: "Feb", revenue: 51000, target: 45000 },
+  { month: "Mar", revenue: 47000, target: 50000 },
+  { month: "Apr", revenue: 63000, target: 55000 },
+  { month: "May", revenue: 58000, target: 60000 },
+  { month: "Jun", revenue: 72000, target: 65000 },
+  { month: "Jul", revenue: 68000, target: 70000 },
+  { month: "Aug", revenue: 81000, target: 75000 },
+  { month: "Sep", revenue: 76000, target: 80000 },
+  { month: "Oct", revenue: 89000, target: 85000 },
+  { month: "Nov", revenue: 94000, target: 90000 },
+  { month: "Dec", revenue: 102000, target: 95000 },
+];
 
-  const [state, setState] = useState({
-    maintenanceMode: false,
-    emailVerification: true,
-    role: "Student",
-  });
+const categoryDistribution = [
+  { name: "Machine Learning", value: 35, color: "#3b82f6" },
+  { name: "Web Development", value: 28, color: "#10b981" },
+  { name: "Data Science", value: 18, color: "#f59e0b" },
+  { name: "Design", value: 12, color: "#8b5cf6" },
+  { name: "Others", value: 7, color: "#6b7280" },
+];
 
-  const ActiveTabComponent = TAB_COMPONENTS[active];
+const topPerformers = [
+  { name: "Sarah Chen", course: "Machine Learning", score: 98, revenue: "$8,420", students: 342 },
+  { name: "Marcus Johnson", course: "React Patterns", score: 96, revenue: "$6,180", students: 278 },
+  { name: "Priya Patel", course: "Data Science", score: 94, revenue: "$11,240", students: 410 },
+  { name: "Emma Wilson", course: "UI/UX Design", score: 93, revenue: "$5,360", students: 215 },
+  { name: "David Kim", course: "Node.js", score: 91, revenue: "$7,890", students: 298 },
+];
+
+const kpis = [
+  { label: "Total Revenue", value: "$843,000", change: "+24.8%", positive: true, icon: DollarSign, color: "blue" },
+  { label: "Total Enrollments", value: "6,480", change: "+18.2%", positive: true, icon: Users, color: "indigo" },
+  { label: "Completion Rate", value: "76.4%", change: "+3.1%", positive: true, icon: TrendingUp, color: "green" },
+  { label: "Avg. Rating", value: "4.78", change: "+0.12", positive: true, icon: Star, color: "orange" },
+];
+
+// --- Animation Variants ---
+const containerVariants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: { 
+    opacity: 1, 
+    y: 0, 
+    transition: { staggerChildren: 0.1, duration: 0.5 } 
+  }
+};
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 15 },
+  visible: { opacity: 1, y: 0 }
+};
+
+const CustomTooltip = ({ active, payload, label }) => {
+  if (active && payload && payload.length) {
+    return (
+      <div className="bg-white/90 backdrop-blur-md border border-gray-200 rounded-xl p-3 shadow-2xl text-xs">
+        <p className="font-bold text-gray-900 mb-2 border-b pb-1">{label}</p>
+        {payload.map((p, i) => (
+          <div key={i} className="flex items-center gap-2 mb-1">
+            <div className="w-2 h-2 rounded-full" style={{ background: p.color || p.fill }} />
+            <span className="text-gray-600 font-medium">
+              {p.name}: <span className="text-gray-900 font-bold">
+                {typeof p.value === "number" && p.value > 1000 ? `$${p.value.toLocaleString()}` : p.value.toLocaleString()}
+              </span>
+            </span>
+          </div>
+        ))}
+      </div>
+    );
+  }
+  return null;
+};
+
+export default function Reports() {
+  const [exportFormat, setExportFormat] = useState("csv");
 
   return (
-    <div className="p-10 bg-gray-50 min-h-screen flex gap-8">
-
-      {/* Sidebar */}
-      <div className="w-64 bg-white rounded-xl border shadow-sm p-4 space-y-1">
-        {SIDEBAR.map((t) => (
-          <button
-            key={t.id}
-            onClick={() => setActive(t.id)}
-            className={`w-full flex items-center gap-3 px-4 py-2 rounded-lg text-sm transition
-              ${
-                active === t.id
-                  ? "bg-blue-600 text-white"
-                  : "text-gray-700 hover:bg-gray-100"
-              }`}
+    <motion.div 
+      initial="hidden" 
+      animate="visible" 
+      variants={containerVariants}
+      className="p-6 bg-slate-50 min-h-screen space-y-8 text-slate-800 font-sans"
+    >
+      {/* Header */}
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+          <motion.h1 
+            initial={{ x: -20 }} 
+            animate={{ x: 0 }} 
+            className="text-3xl font-extrabold tracking-tight bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent"
           >
-            <t.icon className="w-4 h-4" />
-            {t.label}
-          </button>
+            Reports & Analytics
+          </motion.h1>
+          <p className="text-sm text-slate-500 font-medium">Insights and growth tracking dashboard</p>
+        </div>
+        <div className="flex items-center gap-3">
+          <div className="flex bg-slate-200 rounded-xl p-1 gap-1 shadow-inner">
+            {["csv", "pdf"].map((f) => (
+              <button
+                key={f}
+                onClick={() => setExportFormat(f)}
+                className={`px-4 py-1.5 rounded-lg text-xs font-bold uppercase transition-all duration-300 ${
+                  exportFormat === f ? "bg-white text-blue-600 shadow-md scale-105" : "text-slate-500 hover:text-slate-700"
+                }`}
+              >
+                {f}
+              </button>
+            ))}
+          </div>
+          <motion.button 
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-5 py-2.5 rounded-xl text-sm font-bold shadow-lg shadow-blue-200 transition-all"
+          >
+            <Download className="w-4 h-4" /> Export {exportFormat.toUpperCase()}
+          </motion.button>
+        </div>
+      </div>
+
+      {/* KPI Cards */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        {kpis.map((kpi, idx) => (
+          <motion.div 
+            key={kpi.label} 
+            variants={itemVariants}
+            whileHover={{ y: -5, boxShadow: "0 20px 25px -5px rgb(0 0 0 / 0.1)" }}
+            className="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm relative overflow-hidden group transition-all"
+          >
+            <div className="absolute top-0 right-0 w-24 h-24 bg-blue-50/50 rounded-full -mr-10 -mt-10 group-hover:scale-110 transition-transform duration-500" />
+            <div className="flex items-center justify-between mb-4 relative">
+              <div className={`w-12 h-12 rounded-2xl bg-${kpi.color}-50 flex items-center justify-center`}>
+                <kpi.icon className={`w-6 h-6 text-${kpi.color}-600`} />
+              </div>
+              <motion.span 
+                initial={{ opacity: 0 }} 
+                animate={{ opacity: 1 }}
+                className="flex items-center gap-1 text-xs font-bold px-2 py-1 bg-green-50 text-green-600 rounded-full"
+              >
+                <ArrowUpRight className="w-3 h-3" />{kpi.change}
+              </motion.span>
+            </div>
+            <p className="text-xs text-slate-400 font-bold tracking-wide uppercase">{kpi.label}</p>
+            <p className="text-2xl font-black text-slate-900 mt-1">{kpi.value}</p>
+          </motion.div>
         ))}
       </div>
 
-      {/* Content */}
-      <div className="flex-1">
-        <ActiveTabComponent state={state} setState={setState} />
+      {/* Charts Row 1 */}
+      <div className="grid grid-cols-1 xl:grid-cols-2 gap-8">
+        <motion.div variants={itemVariants} className="bg-white p-6 rounded-3xl border border-slate-100 shadow-sm hover:shadow-md transition-shadow">
+          <div className="flex justify-between items-start mb-6">
+            <div>
+              <h2 className="text-lg font-bold text-slate-800">Enrollment Trends</h2>
+              <p className="text-xs text-slate-400 font-medium">Growth analysis over 12 months</p>
+            </div>
+            <Award className="w-5 h-5 text-blue-500 opacity-50" />
+          </div>
+          <div className="h-[250px]">
+            <ResponsiveContainer width="100%" height="100%">
+              <AreaChart data={enrollmentData}>
+                <defs>
+                  <linearGradient id="enGrad" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="5%" stopColor="#3b82f6" stopOpacity={0.3} />
+                    <stop offset="95%" stopColor="#3b82f6" stopOpacity={0} />
+                  </linearGradient>
+                </defs>
+                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
+                <XAxis dataKey="month" tick={{ fontSize: 11, fontWeight: 600, fill: "#94a3b8" }} axisLine={false} tickLine={false} />
+                <YAxis tick={{ fontSize: 11, fontWeight: 600, fill: "#94a3b8" }} axisLine={false} tickLine={false} />
+                <Tooltip content={<CustomTooltip />} cursor={{ stroke: '#cbd5e1', strokeWidth: 1 }} />
+                <Area 
+                  type="monotone" 
+                  dataKey="enrollments" 
+                  stroke="#3b82f6" 
+                  strokeWidth={4} 
+                  fill="url(#enGrad)" 
+                  animationDuration={2000}
+                />
+              </AreaChart>
+            </ResponsiveContainer>
+          </div>
+        </motion.div>
+
+        <motion.div variants={itemVariants} className="bg-white p-6 rounded-3xl border border-slate-100 shadow-sm hover:shadow-md transition-shadow">
+          <div className="flex justify-between items-start mb-6">
+            <div>
+              <h2 className="text-lg font-bold text-slate-800">Revenue Performance</h2>
+              <p className="text-xs text-slate-400 font-medium">Actual revenue vs Monthly target</p>
+            </div>
+            <DollarSign className="w-5 h-5 text-green-500 opacity-50" />
+          </div>
+          <div className="h-[250px]">
+            <ResponsiveContainer width="100%" height="100%">
+              <BarChart data={revenueVsTarget} barGap={10}>
+                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
+                <XAxis dataKey="month" tick={{ fontSize: 11, fontWeight: 600, fill: "#94a3b8" }} axisLine={false} tickLine={false} />
+                <YAxis tick={{ fontSize: 11, fontWeight: 600, fill: "#94a3b8" }} axisLine={false} tickLine={false} tickFormatter={(v) => `$${v / 1000}k`} />
+                <Tooltip content={<CustomTooltip />} />
+                <Bar 
+                  dataKey="revenue" 
+                  fill="#3b82f6" 
+                  radius={[6, 6, 0, 0]} 
+                  maxBarSize={15} 
+                  animationBegin={500}
+                />
+                <Bar 
+                  dataKey="target" 
+                  fill="#e2e8f0" 
+                  radius={[6, 6, 0, 0]} 
+                  maxBarSize={15} 
+                />
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
+        </motion.div>
       </div>
-    </div>
+
+      {/* Charts Row 2 */}
+      <div className="grid grid-cols-1 xl:grid-cols-3 gap-8">
+        <motion.div variants={itemVariants} className="bg-white p-6 rounded-3xl border border-slate-100 shadow-sm">
+          <h2 className="text-lg font-bold text-slate-800 mb-1">Course Mix</h2>
+          <p className="text-xs text-slate-400 font-medium mb-6">Enrollment distribution</p>
+          <div className="h-[200px]">
+            <ResponsiveContainer width="100%" height="100%">
+              <PieChart>
+                <Pie 
+                  data={categoryDistribution} 
+                  cx="50%" cy="50%" 
+                  innerRadius={60} 
+                  outerRadius={85} 
+                  paddingAngle={8} 
+                  dataKey="value"
+                  animationBegin={800}
+                >
+                  {categoryDistribution.map((entry, i) => (
+                    <Cell key={i} fill={entry.color} stroke="none" />
+                  ))}
+                </Pie>
+                <Tooltip />
+              </PieChart>
+            </ResponsiveContainer>
+          </div>
+          <div className="grid grid-cols-2 gap-3 mt-6">
+            {categoryDistribution.map((c) => (
+              <div key={c.name} className="flex flex-col p-2 rounded-xl bg-slate-50 hover:bg-slate-100 transition-colors">
+                <div className="flex items-center gap-2 mb-1">
+                  <div className="w-2 h-2 rounded-full shadow-sm" style={{ background: c.color }} />
+                  <span className="text-[10px] text-slate-500 font-bold uppercase truncate">{c.name}</span>
+                </div>
+                <span className="text-sm font-black text-slate-800">{c.value}%</span>
+              </div>
+            ))}
+          </div>
+        </motion.div>
+
+        <motion.div variants={itemVariants} className="xl:col-span-2 bg-white rounded-3xl border border-slate-100 shadow-sm overflow-hidden">
+          <div className="p-6 border-b border-slate-50 flex items-center justify-between">
+            <div>
+              <h2 className="text-lg font-bold text-slate-800">Top Instructors</h2>
+              <p className="text-xs text-slate-400 font-medium">Performance leaderboard</p>
+            </div>
+            <button className="text-xs font-bold text-blue-600 hover:underline">View All</button>
+          </div>
+          <div className="overflow-x-auto">
+            <table className="w-full text-left">
+              <thead>
+                <tr className="text-slate-400 text-[10px] uppercase tracking-widest font-black">
+                  <th className="px-6 py-4">Instructor</th>
+                  <th className="px-4 py-4">Course</th>
+                  <th className="px-4 py-4">Rating</th>
+                  <th className="px-4 py-4">Revenue</th>
+                  <th className="px-4 py-4 text-right">Students</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-slate-50">
+                {topPerformers.map((p, i) => (
+                  <motion.tr 
+                    whileHover={{ backgroundColor: "rgba(248, 250, 252, 0.8)" }}
+                    key={p.name} 
+                    className="group"
+                  >
+                    <td className="px-6 py-4">
+                      <div className="flex items-center gap-3">
+                        <div className="w-9 h-9 rounded-full bg-gradient-to-tr from-blue-600 to-indigo-400 flex items-center justify-center text-white text-xs font-black shadow-md shadow-blue-100 group-hover:scale-110 transition-transform">
+                          {p.name.split(" ").map(n => n[0]).join("")}
+                        </div>
+                        <div>
+                          <p className="text-sm font-bold text-slate-800">{p.name}</p>
+                          <p className="text-[10px] text-slate-400 font-bold">TOP PERFORMER</p>
+                        </div>
+                      </div>
+                    </td>
+                    <td className="px-4 py-4">
+                      <span className="text-xs font-bold px-2 py-1 bg-slate-100 rounded-lg text-slate-600 truncate inline-block max-w-[120px]">
+                        {p.course}
+                      </span>
+                    </td>
+                    <td className="px-4 py-4">
+                      <div className="flex items-center gap-2">
+                        <div className="w-12 bg-slate-100 rounded-full h-1.5 overflow-hidden">
+                          <motion.div 
+                            initial={{ width: 0 }} 
+                            animate={{ width: `${p.score}%` }}
+                            transition={{ duration: 1, delay: 0.5 }}
+                            className="h-full bg-orange-400" 
+                          />
+                        </div>
+                        <span className="text-[11px] font-black text-slate-800">{p.score}</span>
+                      </div>
+                    </td>
+                    <td className="px-4 py-4 text-xs font-black text-green-600">{p.revenue}</td>
+                    <td className="px-4 py-4 text-xs font-black text-slate-800 text-right">{p.students.toLocaleString()}</td>
+                  </motion.tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </motion.div>
+      </div>
+    </motion.div>
   );
 }

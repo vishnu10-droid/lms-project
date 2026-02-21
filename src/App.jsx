@@ -28,6 +28,7 @@ import ScrollToTop from "./component/jsx/ScrollToTop";
 import SubscriptionPlans from "./component/pages/admin/courses/SubscriptionPlans";
 import VideoPlayer from "./component/pages/admin/courses/VideoPlayer/VideoPlayer";
 import Settings from "./component/pages/admin/settings/Setting";
+import StudentForm from "./component/pages/admin/students/StudentForm";
 
 export default function App() {
   return (
@@ -36,7 +37,7 @@ export default function App() {
 
       <Routes>
         <Route path="/admin/Course/video/player" element={<VideoPlayer />} />
-
+        <Route path="/admin/settings" element={<Settings />} />
         <Route element={<Layout />}>
           <Route path="/" element={<Admin />} />
           <Route path="/login" element={<Login />} />
@@ -50,16 +51,14 @@ export default function App() {
           <Route
             path="/admin/Categories"
             element={<CourseCategoriesFullstack />}
-          />
-
-          {/* <Route path="/admin/categories" element={<CourseCategories />} /> */}
+          /> {/* <Route path="/admin/categories" element={<CourseCategories />} /> */}
           <Route path="/admin/certificates" element={<Certificate />} />
           <Route path="/admin/students/id" element={<Students />} />
+          <Route path="/admin/students/form" element={<StudentForm />} />
           <Route path="/admin/instructors" element={<Instructorid />} />
           <Route path="/admin/analytics" element={<Analytics />} />
           <Route path="/admin/payment" element={<Payments />} />
           <Route path="/admin/notifications" element={<AdminNotifications />} />
-          <Route path="/admin/settings" element={<Settings/>} />
           <Route
             path="/admin/students/payments"
             element={<StudentPayments />}
