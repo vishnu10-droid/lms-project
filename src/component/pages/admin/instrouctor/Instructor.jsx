@@ -34,26 +34,39 @@ export default function TeacherGrid() {
   }, [search, activeCategory, teachers]);
 
   return (
-    <div className="p-4 md:p-10 bg-[#F1F5F9] min-h-screen font-sans">
-      <div className="max-w-7xl mx-auto">
-        
-        {/* --- STATS SUMMARY --- */}
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-10">
-          <QuickStat icon={<Users className="text-blue-600"/>} label="Total Faculty" value={teachers.length} bg="bg-blue-50" />
-          <QuickStat icon={<Award className="text-amber-600"/>} label="Avg Rating" value="4.8" bg="bg-amber-50" />
-          <QuickStat icon={<TrendingUp className="text-emerald-600"/>} label="Total Students" value="6.4k" bg="bg-emerald-50" />
-          <QuickStat icon={<Clock className="text-purple-600"/>} label="Live Lessons" value="24" bg="bg-purple-50" />
-        </div>
+    <div className="p-6 max-w-7xl mx-auto space-y-6 bg-slate-50/50 min-h-screens text-slate-900font-sans">
+          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
+         
 
-        {/* --- HEADER & FILTERS --- */}
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-8">
-          <div>
-            <h1 className="text-3xl font-black text-slate-900 tracking-tight">Faculty Management</h1>
-            <p className="text-slate-500 font-medium">Monitor and manage instructor performance</p>
-          </div>
-          
-          <div className="flex items-center gap-3">
-             <div className="relative">
+
+
+            <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 0.5 }}
+        className="absolute -top-10 -right-10 w-60 h-60 bg-indigo-500/30 rounded-full blur-3xl"
+      />
+
+      {/* Header Parallax */}
+      <motion.div
+        initial={{ y: -20, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ duration: 0.6 }}
+        className="relative z-10"
+      >
+        <motion.h1
+          initial={{ x: -25 }}
+          animate={{ x: 0 }}
+          transition={{ type: "spring", stiffness: 60 }}
+          className="text-4xl font-extrabold tracking-tight bg-gradient-to-r from-blue-500 via-indigo-500 to-purple-600 bg-clip-text text-transparent drop-shadow-lg"
+        >
+         Faculty Management
+        </motion.h1>
+
+        <p className="text-sm text-slate-600 dark:text-slate-400 font-medium mt-1">
+     Monitor and manage instructor performance
+        </p>
+      </motion.div>
+       <div className="relative">
                 <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
                 <input 
                   type="text" 
@@ -66,8 +79,23 @@ export default function TeacherGrid() {
              <button className="bg-indigo-600 hover:bg-indigo-700 text-white p-2.5 rounded-2xl shadow-lg shadow-indigo-200 transition-all">
                <Plus size={24} />
              </button>
-          </div>
+                 </div>
+      <div className="max-w-7xl mx-auto">
+        
+        {/* --- STATS SUMMARY --- */}
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-10">
+          <QuickStat icon={<Users className="text-blue-600"/>} label="Total Faculty" value={teachers.length} bg="bg-blue-50" />
+          <QuickStat icon={<Award className="text-amber-600"/>} label="Avg Rating" value="4.8" bg="bg-amber-50" />
+          <QuickStat icon={<TrendingUp className="text-emerald-600"/>} label="Total Students" value="6.4k" bg="bg-emerald-50" />
+          <QuickStat icon={<Clock className="text-purple-600"/>} label="Live Lessons" value="24" bg="bg-purple-50" />
         </div>
+
+        {/* --- HEADER & FILTERS --- */}
+     
+
+        {/* Simple Header */}
+    
+
 
         {/* --- CATEGORY CHIPS --- */}
         <div className="flex items-center gap-2 overflow-x-auto pb-4 no-scrollbar">

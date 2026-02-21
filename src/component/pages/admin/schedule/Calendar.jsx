@@ -3,6 +3,7 @@ import {
   ChevronLeft, ChevronRight, Plus, X, Users, Video,
   FileText, Check, Calendar as CalIcon, Target, Trash2, Search, Download, AlertCircle, Edit3, Clock, Layout
 } from "lucide-react";
+import { motion } from "framer-motion"; // Dynamic Animations
 
 // Types and Config
 const DAYS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
@@ -84,46 +85,87 @@ export default function Schedule() {
   };
 
   return (
-    <div className="min-h-screen bg-[#f1f5f9] p-4 md:p-8 font-sans text-slate-900 selection:bg-blue-100">
+    <div className="p-6 max-w-7xl mx-auto space-y-6 bg-slate-50/50 min-h-screens text-slate-900">
       {/* Dynamic Background Shapes */}
-      <div className="fixed inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-blue-400/5 rounded-full blur-[120px] animate-pulse" />
-        <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-purple-400/5 rounded-full blur-[120px] animate-pulse delay-700" />
-      </div>
-
       <div className="max-w-7xl mx-auto space-y-8 relative z-10">
        
         {/* Header Section */}
-        <header className="flex flex-col lg:flex-row lg:items-center justify-between gap-8 animate-in fade-in slide-in-from-top-4 duration-700">
-          <div className="space-y-1">
-            <div className="flex items-center gap-3">
-              <div className="p-2.5 bg-blue-600 rounded-2xl shadow-lg shadow-blue-200">
-                <Layout className="w-6 h-6 text-white" />
-              </div>
-              <h1 className="text-4xl font-black tracking-tight text-slate-900">
-                Workforce <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600">Planner</span>
-              </h1>
-            </div>
-            <p className="text-slate-500 font-medium pl-12">Precision academic management system.</p>
-          </div>
-         
-          <div className="flex flex-wrap items-center gap-4 bg-white/50 backdrop-blur-md p-2 rounded-[2.5rem] border border-white shadow-xl shadow-slate-200/50">
-            <div className="relative group">
-              <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 group-focus-within:text-blue-500 transition-colors" />
-              <input
-                type="text"
-                placeholder="Search resources..."
-                className="pl-11 pr-6 py-3 bg-white border-none rounded-[1.8rem] text-sm focus:ring-2 focus:ring-blue-500/20 outline-none transition-all w-64 shadow-inner"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-              />
-            </div>
-            <button onClick={() => { setIsEditing(null); setNewEvent({ title: "", date: "", time: "", type: "Lecture", instructor: "" }); setShowAddModal(true); }}
-                    className="flex items-center gap-2 bg-slate-900 text-white px-8 py-3 rounded-[1.8rem] font-bold text-sm hover:bg-blue-600 hover:-translate-y-0.5 active:scale-95 transition-all shadow-lg">
-              <Plus className="w-4 h-4" /> New Event
-            </button>
-          </div>
-        </header>
+        {/* ========== NEW ATTRACTIVE PARALLAX HEADER ========== */}
+<header className=" flex-col md:flex-row  justify-between gap-4 mb-8">
+
+  {/* Floating Glow (Parallax) */}
+  <motion.div
+    initial={{ opacity: 0 }}
+    animate={{ opacity: 0.4 }}
+    className="absolute -top-14 -right-14 w-56 h-56 bg-indigo-500/30 
+               rounded-full blur-3xl"
+  />
+
+  {/* Header Content */}
+  <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-8 relative z-20">
+
+    {/* Left — Title + Subtitle */}
+    <motion.div
+      initial={{ y: -20, opacity: 0 }}
+      animate={{ y: 0, opacity: 1 }}
+      transition={{ duration: 0.6 }}
+      className="space-y-2"
+    >
+      <motion.h1
+        initial={{ x: -25 }}
+        animate={{ x: 0 }}
+        transition={{ type: "spring", stiffness: 60 }}
+        className="text-4xl font-extrabold tracking-tight 
+                   bg-gradient-to-r from-blue-500 via-indigo-500 to-purple-600 
+                   bg-clip-text text-transparent drop-shadow-lg"
+      >
+        Workforce Planner
+      </motion.h1>
+
+      <p className="text-sm text-slate-600 font-medium">
+        Precision academic management system
+      </p>
+    </motion.div>
+
+    {/* Search + Button */}
+    <div className="flex flex-wrap items-center gap-4 bg-white/60 backdrop-blur-xl 
+                    p-3 rounded-3xl border border-white shadow-xl shadow-slate-200/50">
+
+      {/* Search Bar */}
+      <div className="relative group">
+        <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 
+                           text-slate-400 group-focus-within:text-blue-500 transition" />
+        <input
+          type="text"
+          placeholder="Search resources..."
+          className="pl-11 pr-6 py-3 bg-white border-none rounded-[1.8rem] text-sm 
+                     focus:ring-2 focus:ring-blue-500/20 outline-none transition-all 
+                     w-64 shadow-inner"
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+        />
+      </div>
+
+      {/* Add Event Button */}
+      <motion.button
+        initial={{ opacity: 0, y: 12 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.25 }}
+        onClick={() => { 
+            setIsEditing(null); 
+            setNewEvent({ title: "", date: "", time: "", type: "Lecture", instructor: "" }); 
+            setShowAddModal(true); 
+        }}
+        className="flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700
+                 text-white px-8 py-3 rounded-[1.8rem] font-bold text-sm 
+                 shadow-lg hover:-translate-y-0.5 active:scale-95 transition-all"
+      >
+        <Plus className="w-4 h-4" /> New Event
+      </motion.button>
+
+    </div>
+  </div>
+</header>
 
         <div className="grid grid-cols-1 xl:grid-cols-4 gap-8">
           {/* Calendar View */}

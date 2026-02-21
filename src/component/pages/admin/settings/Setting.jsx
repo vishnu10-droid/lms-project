@@ -1,4 +1,5 @@
 // src/settings/Settings.jsx
+import { motion, AnimatePresence } from "framer-motion"; // Dynamic Animations
 
 import { useState } from "react";
 import {
@@ -79,31 +80,58 @@ export default function Settings() {
     <div className="space-y-6">
 
      {/* HEADER */}
-<div className="flex items-center justify-between animate-fade-in-up
-                bg-white border border-[#eef1f6] shadow-sm
-                rounded-2xl px-6 py-4">
+{/* SETTINGS HEADER — Converted to Payments Parallax Style */}
 
-  <div>
-    <h1 className="page-title text-[26px] font-bold text-[#1e293b]">
-      Settings
-    </h1>
-    <p className="page-subtitle text-[14px] text-[#64748b]">
-      Configure your AI Scholar platform
-    </p>
+<div className="relative overflow-hidden rounded-2xl p-6 bg-gradient-to-br 
+               
+                border border-white/20 shadow-lg backdrop-blur-xl
+                transition-all duration-300 hover:shadow-2xl hover:scale-[1.01]">
+
+  {/* Floating Glow */}
+  <motion.div
+    initial={{ opacity: 0 }}
+    animate={{ opacity: 0.4 }}
+    className="absolute -top-14 -right-14 w-56 h-56 bg-indigo-500/30 
+               rounded-full blur-3xl"
+  />
+
+  {/* Content */}
+  <div className="relative z-20 flex items-center justify-between">
+
+    {/* LEFT TEXT */}
+    <div className="space-y-1">
+      <motion.h1
+        initial={{ x: -20, opacity: 0 }}
+        animate={{ x: 0, opacity: 1 }}
+        transition={{ type: "spring", stiffness: 60 }}
+        className="text-[28px] font-extrabold tracking-tight 
+                   bg-gradient-to-r from-blue-500 via-indigo-500 to-purple-600
+                   bg-clip-text text-transparent"
+      >
+        Settings
+      </motion.h1>
+
+      <p className="text-[14px] text-slate-600 dark:text-slate-400">
+        Configure your AI Scholar platform
+      </p>
+    </div>
+
+    {/* RIGHT BUTTON */}
+    <motion.button
+      initial={{ opacity: 0, y: 10 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: 0.2 }}
+      onClick={handleSave}
+      className={`px-5 py-2.5 rounded-xl flex items-center gap-2 
+                  text-white text-sm font-semibold shadow-lg transition-all
+                  ${saved ? "bg-green-600" : "bg-indigo-600 hover:bg-indigo-700"}`}
+    >
+      {saved ? <Check className="w-4 h-4" /> : <Save className="w-4 h-4" />}
+      {saved ? "Saved!" : "Save Changes"}
+    </motion.button>
+    
   </div>
-
-  <button
-    onClick={handleSave}
-    className={`btn-primary transition-all flex items-center gap-2
-                px-5 py-2.5 rounded-xl text-white text-sm font-semibold 
-                shadow-md cursor-pointer
-                ${saved ? "bg-success" : "bg-blue-600 hover:bg-blue-700"}`}
-  >
-    {saved ? <Check className="w-4 h-4" /> : <Save className="w-4 h-4" />}
-    {saved ? "Saved!" : "Save Changes"}
-  </button>
 </div>
-
       {/* BODY */}
       <div className="flex gap-6 animate-fade-in-up delay-100">
 

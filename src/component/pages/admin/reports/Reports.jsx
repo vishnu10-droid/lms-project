@@ -1,16 +1,5 @@
 
 
-
-
-
-
-
-
-
-
-
-
-
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion"; // Dynamic Animations
 import {
@@ -124,30 +113,34 @@ export default function Reports() {
     >
       {/* Header */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-        <div>
-          <motion.h1 
-            initial={{ x: -20 }} 
-            animate={{ x: 0 }} 
-            className="text-3xl font-extrabold tracking-tight bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent"
-          >
-            Reports & Analytics
-          </motion.h1>
-          <p className="text-sm text-slate-500 font-medium">Insights and growth tracking dashboard</p>
-        </div>
-        <div className="flex items-center gap-3">
-          <div className="flex bg-slate-200 rounded-xl p-1 gap-1 shadow-inner">
-            {["csv", "pdf"].map((f) => (
-              <button
-                key={f}
-                onClick={() => setExportFormat(f)}
-                className={`px-4 py-1.5 rounded-lg text-xs font-bold uppercase transition-all duration-300 ${
-                  exportFormat === f ? "bg-white text-blue-600 shadow-md scale-105" : "text-slate-500 hover:text-slate-700"
-                }`}
-              >
-                {f}
-              </button>
-            ))}
-          </div>
+      
+              <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 0.5 }}
+                  className="absolute -top-10 -right-10 w-60 h-60 bg-indigo-500/30 rounded-full blur-3xl"
+                />
+          
+                {/* Header Parallax */}
+                <motion.div
+                  initial={{ y: -20, opacity: 0 }}
+                  animate={{ y: 0, opacity: 1 }}
+                  transition={{ duration: 0.6 }}
+                  className="relative z-10"
+                >
+                  <motion.h1
+                    initial={{ x: -25 }}
+                    animate={{ x: 0 }}
+                    transition={{ type: "spring", stiffness: 60 }}
+                    className="text-4xl font-extrabold tracking-tight bg-gradient-to-r from-blue-500 via-indigo-500 to-purple-600 bg-clip-text text-transparent drop-shadow-lg"
+                  >
+                    Reports & Analytics
+                  </motion.h1>
+          
+                  <p className="text-sm text-slate-600 dark:text-slate-400 font-medium mt-1">
+                    Insights and growth tracking dashboard
+                  </p>
+                </motion.div>
+          
           <motion.button 
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
@@ -156,7 +149,8 @@ export default function Reports() {
             <Download className="w-4 h-4" /> Export {exportFormat.toUpperCase()}
           </motion.button>
         </div>
-      </div>
+
+
 
       {/* KPI Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">

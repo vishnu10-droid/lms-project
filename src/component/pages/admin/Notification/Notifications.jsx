@@ -4,6 +4,7 @@ import {
   Trash2, RefreshCw, Archive, Search, Inbox, Clock, 
   Download, Reply, X, Shield, Zap, ChevronRight
 } from 'lucide-react';
+import { motion, AnimatePresence } from "framer-motion"; // Dynamic Animations
 
 // Simplified color palette for better readability
 const PRIORITY_THEMES = {
@@ -63,17 +64,43 @@ const AdminNotifications = () => {
     newSet.has(id) ? newSet.delete(id) : newSet.add(id);
     setSelectedIds(newSet);
   };
-
+// space-y-6  bg-slate-50/50 min-h-screens
   return (
-    <div className="min-h-screen bg-slate-50 font-sans text-slate-900">
-      <div className="max-w-5xl mx-auto p-4 md:p-8">
+    <div className="p-6 max-w-7xl mx-auto space-y-6 bg-slate-50/50 min-h-screens text-slate-900">
+      <div>
         
         {/* Simple Header */}
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
-          <div>
-            <h1 className="text-3xl font-bold tracking-tight">Notifications</h1>
-            <p className="text-slate-500">Manage your system alerts and student messages</p>
-          </div>
+         
+
+
+
+            <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 0.5 }}
+        className="absolute -top-10 -right-10 w-60 h-60 bg-indigo-500/30 rounded-full blur-3xl"
+      />
+
+      {/* Header Parallax */}
+      <motion.div
+        initial={{ y: -20, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ duration: 0.6 }}
+        className="relative z-10"
+      >
+        <motion.h1
+          initial={{ x: -25 }}
+          animate={{ x: 0 }}
+          transition={{ type: "spring", stiffness: 60 }}
+          className="text-4xl font-extrabold tracking-tight bg-gradient-to-r from-blue-500 via-indigo-500 to-purple-600 bg-clip-text text-transparent drop-shadow-lg"
+        >
+          Notifications
+        </motion.h1>
+
+        <p className="text-sm text-slate-600 dark:text-slate-400 font-medium mt-1">
+      Manage your system alerts and student messages
+        </p>
+      </motion.div>
           <button className="flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg font-medium transition-colors shadow-sm w-fit">
             <Archive size={18} />
             Archived

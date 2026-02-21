@@ -37,7 +37,6 @@ export default function App() {
 
       <Routes>
         <Route path="/admin/Course/video/player" element={<VideoPlayer />} />
-        <Route path="/admin/settings" element={<Settings />} />
         <Route element={<Layout />}>
           <Route path="/" element={<Admin />} />
           <Route path="/login" element={<Login />} />
@@ -47,6 +46,8 @@ export default function App() {
             path="/admin/courses/SubscriptionPlans"
             element={<SubscriptionPlans />}
           />
+        <Route path="/admin/settings" element={<Settings />} />
+
           <Route path="/admin/courses" element={<Course />} />
           <Route
             path="/admin/Categories"

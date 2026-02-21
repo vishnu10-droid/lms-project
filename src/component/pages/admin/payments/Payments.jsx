@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { motion } from "framer-motion";
 import {
   Search, Download, Eye, X, RefreshCw,
   CheckCircle, XCircle, Clock, CreditCard, DollarSign,
@@ -74,15 +75,33 @@ export default function Payments() {
   return (
     <div className="p-6 max-w-7xl mx-auto space-y-6 bg-slate-50/50 min-h-screen">
       {/* Header */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-        <div>
-          <h1 className="text-2xl font-bold text-slate-900 tracking-tight">Payment Management</h1>
-          <p className="text-slate-500 text-sm">Track transactions, refunds and gateway performance</p>
-        </div>
-        <button className="flex items-center justify-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg text-sm font-semibold transition-all shadow-sm">
-          <Download className="w-4 h-4" /> Export Data
-        </button>
-      </div>
+    {/* Soft Floating Glow */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 0.5 }}
+        className="absolute -top-10 -right-10 w-60 h-60 bg-indigo-500/30 rounded-full blur-3xl"
+      />
+
+      {/* Header Parallax */}
+      <motion.div
+        initial={{ y: -20, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ duration: 0.6 }}
+        className="relative z-10"
+      >
+        <motion.h1
+          initial={{ x: -25 }}
+          animate={{ x: 0 }}
+          transition={{ type: "spring", stiffness: 60 }}
+          className="text-4xl font-extrabold tracking-tight bg-gradient-to-r from-blue-500 via-indigo-500 to-purple-600 bg-clip-text text-transparent drop-shadow-lg"
+        >
+          Payments & Revenue
+        </motion.h1>
+
+        <p className="text-sm text-slate-600 dark:text-slate-400 font-medium mt-1">
+          Real-time transactions, revenue insights & performance analytics
+        </p>
+      </motion.div>
 
       {/* Summary Cards */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
