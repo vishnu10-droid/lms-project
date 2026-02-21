@@ -34,7 +34,7 @@ export default function TeacherGrid() {
   }, [search, activeCategory, teachers]);
 
   return (
-    <div className="p-6 max-w-7xl mx-auto space-y-6 bg-slate-50/50 min-h-screens text-slate-900font-sans">
+    <div className="p-6 max-w-7xl mx-auto space-y-6 min-h-screens text-slate-900font-sans">
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
          
 

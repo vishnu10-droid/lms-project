@@ -85,7 +85,7 @@ export default function Schedule() {
   };
 
   return (
-    <div className="p-6 max-w-7xl mx-auto space-y-6 bg-slate-50/50 min-h-screens text-slate-900">
+    <div className="p-6 max-w-7xl mx-auto space-y-6 min-h-screens text-slate-900">
       {/* Dynamic Background Shapes */}
       <div className="max-w-7xl mx-auto space-y-8 relative z-10">
        
@@ -128,7 +128,7 @@ export default function Schedule() {
     </motion.div>
 
     {/* Search + Button */}
-    <div className="flex flex-wrap items-center gap-4 bg-white/60 backdrop-blur-xl 
+    <div className="flex flex-wrap items-center gap-4
                     p-3 rounded-3xl border border-white shadow-xl shadow-slate-200/50">
 
       {/* Search Bar */}
