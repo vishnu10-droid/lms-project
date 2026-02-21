@@ -4,6 +4,7 @@ import {
   Trash2, AlertCircle, Edit3, MoreVertical, 
   Plus, Users, UserCheck, UserMinus, Filter
 } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 const AdminStudents = () => {
   // 1. Expanded State Management
@@ -39,7 +40,7 @@ const AdminStudents = () => {
       setStudents(students.filter(s => s.id !== id));
     }
   };
-
+const navigator=useNavigate()
   return (
     <div className="min-h-screen bg-[#F8FAFC] p-4 md:p-10 font-sans text-slate-900">
       <div className="max-w-7xl mx-auto space-y-8">
@@ -50,7 +51,7 @@ const AdminStudents = () => {
             <h1 className="text-3xl font-bold tracking-tight text-slate-900">Student Directory</h1>
             <p className="text-slate-500 mt-1">Manage, filter, and monitor student enrollments.</p>
           </div>
-          <button className="flex items-center justify-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white px-5 py-2.5 rounded-xl font-semibold transition-all shadow-lg shadow-indigo-200">
+          <button onClick={()=>navigator("/admin/students/form")} className="flex items-center justify-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white px-5 py-2.5 rounded-xl font-semibold transition-all shadow-lg shadow-indigo-200">
             <Plus size={18} /> Add New Student
           </button>
         </div>

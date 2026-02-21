@@ -2,6 +2,7 @@ import React from "react";
 import { Outlet } from "react-router-dom";
 import Sidebar from "./Sidebar";
 import Navbar from "./Navbar"; // ✅ Correct spelling
+import FloatThemeButton from "../common/FloatThemeButton";
 
 export default function Layout() {
   return (
@@ -22,6 +23,7 @@ export default function Layout() {
             "
           >
             <Outlet />
+            <FloatThemeButton/>
           </div>
         </main>
       </div>
