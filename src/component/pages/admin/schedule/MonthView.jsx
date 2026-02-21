@@ -3,9 +3,9 @@ export default function MonthView({ events, onEventClick }) {
   const week = ["Sat", "Sun", "Mon", "Tue", "Wed", "Thu", "Fri"];
 
   return (
-    <div className="bg-white p-6 rounded-2xl shadow">
+    <div className="bg-white dark:bg-slate-900 p-6 rounded-2xl shadow border border-slate-200 dark:border-slate-700 transition-colors duration-300">
       
-      <div className="grid grid-cols-7 text-center text-gray-600 font-semibold mb-2">
+      <div className="grid grid-cols-7 text-center text-gray-600 dark:text-slate-400 font-semibold mb-2">
         {week.map((d) => <div key={d}>{d}</div>)}
       </div>
 
@@ -19,9 +19,9 @@ export default function MonthView({ events, onEventClick }) {
           return (
             <div
               key={day}
-              className="h-28 border rounded-xl p-2 relative hover:shadow transition"
+              className="h-28 border border-slate-200 dark:border-slate-700 rounded-xl p-2 relative hover:shadow transition"
             >
-              <span className="font-semibold">{day}</span>
+              <span className="font-semibold text-slate-700 dark:text-slate-200">{day}</span>
 
               {dayEvents.map((ev) => {
                 const isStart = ev.startDay === day;

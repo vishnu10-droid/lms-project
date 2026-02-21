@@ -24,44 +24,44 @@ import {
 
 const COLORS = {
   dashboard: {
-    hover: "hover:bg-blue-100",
+    hover: "hover:bg-blue-100 dark:hover:bg-blue-500/20",
     active: "bg-blue-500",
-    text: "text-blue-600",
+    text: "text-blue-600 dark:text-blue-300",
   },
   courses: {
-    hover: "hover:bg-green-100",
+    hover: "hover:bg-green-100 dark:hover:bg-green-500/20",
     active: "bg-green-500",
-    text: "text-green-600",
+    text: "text-green-600 dark:text-green-300",
   },
   students: {
-    hover: "hover:bg-cyan-100",
+    hover: "hover:bg-cyan-100 dark:hover:bg-cyan-500/20",
     active: "bg-cyan-500",
-    text: "text-cyan-600",
+    text: "text-cyan-600 dark:text-cyan-300",
   },
   instructors: {
-    hover: "hover:bg-purple-100",
+    hover: "hover:bg-purple-100 dark:hover:bg-purple-500/20",
     active: "bg-purple-500",
-    text: "text-purple-600",
+    text: "text-purple-600 dark:text-purple-300",
   },
   schedule: {
-    hover: "hover:bg-orange-100",
+    hover: "hover:bg-orange-100 dark:hover:bg-orange-500/20",
     active: "bg-orange-500",
-    text: "text-orange-600",
+    text: "text-orange-600 dark:text-orange-300",
   },
   notifications: {
-    hover: "hover:bg-red-100",
+    hover: "hover:bg-red-100 dark:hover:bg-red-500/20",
     active: "bg-red-500",
-    text: "text-red-600",
+    text: "text-red-600 dark:text-red-300",
   },
   reports: {
-    hover: "hover:bg-pink-100",
+    hover: "hover:bg-pink-100 dark:hover:bg-pink-500/20",
     active: "bg-pink-500",
-    text: "text-pink-600",
+    text: "text-pink-600 dark:text-pink-300",
   },
   settings: {
-    hover: "hover:bg-gray-100",
+    hover: "hover:bg-gray-100 dark:hover:bg-gray-700/60",
     active: "bg-gray-500",
-    text: "text-gray-600",
+    text: "text-gray-600 dark:text-gray-300",
   },
 };
 
@@ -83,25 +83,33 @@ const menu = [
         title: "All Courses",
         icon: BookOpen,
         path: "/admin/courses",
-        hover: "hover:bg-emerald-100",
+        hover: "hover:bg-emerald-100 dark:hover:bg-emerald-500/20",
         active: "bg-emerald-500",
-        text: "text-emerald-600",
+        text: "text-emerald-600 dark:text-emerald-300",
       },
       {
         title: "Add Course",
         icon: PlusCircle,
         path: "/admin/courses/add",
-        hover: "hover:bg-teal-100",
+        hover: "hover:bg-teal-100 dark:hover:bg-teal-500/20",
         active: "bg-teal-500",
-        text: "text-teal-600",
+        text: "text-teal-600 dark:text-teal-300",
       },
       {
         title: "Categories",
         icon: Layers,
         path: "/admin/categories",
-        hover: "hover:bg-lime-100",
+        hover: "hover:bg-lime-100 dark:hover:bg-lime-500/20",
         active: "bg-lime-500",
-        text: "text-lime-600",
+        text: "text-lime-600 dark:text-lime-300",
+      },
+      {
+      title: "Add Batches",
+        icon: Layers,
+        path: "/admin/batches",
+        hover: "hover:bg-lime-100 dark:hover:bg-lime-500/20",
+        active: "bg-lime-500",
+        text: "text-lime-600 dark:text-lime-300",
       },
     ],
   },
@@ -114,17 +122,17 @@ const menu = [
         title: "Student ID",
         icon: IdCard,
         path: "/admin/students/id",
-        hover: "hover:bg-sky-100",
+        hover: "hover:bg-sky-100 dark:hover:bg-sky-500/20",
         active: "bg-sky-500",
-        text: "text-sky-600",
+        text: "text-sky-600 dark:text-sky-300",
       },
       {
         title: "Student Payments",
         icon: CreditCard,
         path: "/admin/students/payments",
-        hover: "hover:bg-amber-100",
+        hover: "hover:bg-amber-100 dark:hover:bg-amber-500/20",
         active: "bg-amber-500",
-        text: "text-amber-600",
+        text: "text-amber-600 dark:text-amber-300",
       },
     ],
   },
@@ -137,17 +145,17 @@ const menu = [
         title: "Instructor List",
         icon: Users,
         path: "/admin/instructors",
-        hover: "hover:bg-purple-100",
+        hover: "hover:bg-purple-100 dark:hover:bg-purple-500/20",
         active: "bg-purple-500",
-        text: "text-purple-600",
+        text: "text-purple-600 dark:text-purple-300",
       },
       {
         title: "View Profile",
         icon: User,
         path: "/admin/instructors/profile",
-        hover: "hover:bg-fuchsia-100",
+        hover: "hover:bg-fuchsia-100 dark:hover:bg-fuchsia-500/20",
         active: "bg-fuchsia-500",
-        text: "text-fuchsia-600",
+        text: "text-fuchsia-600 dark:text-fuchsia-300",
       },
     ],
   },
@@ -162,6 +170,12 @@ const menu = [
     icon: Bell,
     path: "/admin/notifications",
     ...COLORS.notifications,
+  },
+    {
+    title: "Chats",
+    icon: Calendar,
+    path: "/admin/chats",
+    ...COLORS.schedule,
   },
   {
     title: "Reports",
@@ -181,6 +195,7 @@ const menu = [
     path: "/admin/settings",
     ...COLORS.settings,
   },
+
 ];
 
 /* ---------------- COMPONENT ---------------- */
@@ -193,19 +208,19 @@ export default function Sidebar() {
   const location = useLocation();
 
   return (
-    <aside className="w-64 h-screen bg-white border-r px-4 py-5 flex flex-col">
+    <aside className="w-64 h-screen bg-white dark:bg-gray-900 border-r border-gray-200 dark:border-gray-800 px-4 py-5 flex flex-col transition-colors duration-300">
       {/* LOGO */}
       <div className="flex items-center gap-2 mb-5">
-        <div className="w-10 h-10 rounded-lg overflow-hidden shadow">
+        <div className="w-10 h-10 rounded-lg overflow-hidden bg-white shadow-sm border border-slate-200 dark:border-slate-600 ring-1 ring-black/5 dark:ring-white/10 transition-all duration-300">
           <img
             src={logo}
             alt="AI Scholar"
-            className="w-full h-full object-contain"
+            className="w-full h-full object-contain p-1.5 drop-shadow-[0_1px_1px_rgba(0,0,0,0.12)]"
           />
         </div>
         <div>
-          <h2 className="text-lg font-bold text-gray-800">AI Scholar</h2>
-          <p className="text-xs text-gray-500">Admin Portal</p>
+          <h2 className="text-lg font-bold text-gray-800 dark:text-gray-100">AI Scholar</h2>
+          <p className="text-xs text-gray-500 dark:text-gray-400">Admin Portal</p>
         </div>
       </div>
 
@@ -226,7 +241,7 @@ export default function Sidebar() {
                     ${
                       isActive
                         ? `${item.active} text-white shadow`
-                        : `text-gray-700 ${item.hover}`
+                        : `text-gray-700 dark:text-gray-300 ${item.hover}`
                     }`
                   }
                 >
@@ -261,7 +276,7 @@ export default function Sidebar() {
                     ${
                       isSubActive
                         ? `${item.active} text-white shadow`
-                        : `text-gray-700 ${item.hover}`
+                        : `text-gray-700 dark:text-gray-300 ${item.hover}`
                     }`}
                   >
                     <div className="flex items-center gap-3">
@@ -305,7 +320,7 @@ export default function Sidebar() {
                             ${
                               isActive
                                 ? `${sub.active} text-white shadow`
-                                : `text-gray-700 ${sub.hover}`
+                                : `text-gray-700 dark:text-gray-300 ${sub.hover}`
                             }`
                           }
                         >

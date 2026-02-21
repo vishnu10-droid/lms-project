@@ -5,7 +5,6 @@ import { Route, Routes } from "react-router-dom";
 import Admin from "./component/pages/admin/dashboard/Admin";
 import Certificate from "./component/pages/admin/certificate/Certificate";
 import Analytics from "./component/pages/admin/Analytics/Analytics";
-import Payments from "./component/pages/admin/payments/Payments";
 import Instructorid from "./component/pages/admin/instrouctor/Instructor";
 import CourseAdd from "./component/pages/admin/courses/CourseAdd";
 import Course from "./component/pages/admin/courses/Course";
@@ -29,11 +28,19 @@ import SubscriptionPlans from "./component/pages/admin/courses/SubscriptionPlans
 import VideoPlayer from "./component/pages/admin/courses/VideoPlayer/VideoPlayer";
 import Settings from "./component/pages/admin/settings/Setting";
 import StudentForm from "./component/pages/admin/students/StudentForm";
+import FloatThemeButton from "./component/common/FloatThemeButton";
+import FloatAIChatButton from "./component/common/FloatAIChatButton";
+import HelpCenter from "./component/pages/admin/help/HelpCenter";
+import Chats from "./component/pages/admin/chats/Chats";
+import AddBatches from "./component/pages/admin/courses/batches/AddBatches";
+import Batches from "./component/pages/admin/courses/batches/Batches";
 
 export default function App() {
   return (
     <>
       <ScrollToTop />
+      <FloatAIChatButton />
+      <FloatThemeButton />
 
       <Routes>
         <Route path="/admin/Course/video/player" element={<VideoPlayer />} />
@@ -43,6 +50,9 @@ export default function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/admin/profile" element={<AdminProfile />} />
           <Route path="/admin/courses/add" element={<CourseAdd />} />
+          <Route path="/admin/addbatches" element={<AddBatches />} />
+          <Route path="/admin/batches" element={<Batches />} />
+
           <Route
             path="/admin/courses/SubscriptionPlans"
             element={<SubscriptionPlans />}
@@ -57,7 +67,6 @@ export default function App() {
           <Route path="/admin/students/form" element={<StudentForm />} />
           <Route path="/admin/instructors" element={<Instructorid />} />
           <Route path="/admin/analytics" element={<Analytics />} />
-          <Route path="/admin/payment" element={<Payments />} />
           <Route path="/admin/notifications" element={<AdminNotifications />} />
           <Route
             path="/admin/students/payments"
@@ -79,6 +88,9 @@ export default function App() {
           <Route path="/admin/schedule/monthview" element={<MonthView />} />
           <Route path="/admin/schedule/weekview" element={<WeekView />} />
           <Route path="/admin/schedule" element={<Schedule />} />
+          <Route path="/admin/helpcenter" element={<HelpCenter />} />
+          <Route path="/admin/chats" element={<Chats />} />
+
           <Route path="/admin/courses/playlist" element={<PlayList />} />
         </Route>
       </Routes>

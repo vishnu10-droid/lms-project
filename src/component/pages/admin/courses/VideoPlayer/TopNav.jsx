@@ -11,7 +11,7 @@ const TopNav = ({ progress, userLevel = 12, userXP = 70 }) => {
         <div className="flex items-center gap-3 group cursor-pointer">
           <div className="relative">
             <div className="absolute -inset-1 bg-gradient-to-r from-blue-600 to-cyan-400 rounded-xl blur opacity-25 group-hover:opacity-50 transition duration-1000 group-hover:duration-200"></div>
-            <div className="relative bg-slate-900 p-2 rounded-xl border border-slate-700/50 group-hover:scale-105 transition-transform">
+            <div className="relative bg-white p-2 rounded-xl border border-slate-200 ring-1 ring-black/5 group-hover:scale-105 transition-transform">
               <img src={logo} alt="AISCHOLAR Logo" className="w-5 h-5 object-contain" />
             </div>
           </div>
