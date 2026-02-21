@@ -80,7 +80,6 @@ export default function App() {
           />
           <Route path="/admin/reports" element={<Reports />} />
 
-          {/* Schedule */}
 
           <Route
             path="/admin/schedulepage/eventmodal"

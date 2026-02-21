@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { 
   Maximize2, Save, Trash2, Clock, Trophy, FileText, 
   MessageSquare, PlayCircle, Download, Zap, Settings 
@@ -46,23 +46,6 @@ const MediaContent = ({
       videoRef.current.play();
     }
   };
-
-  const courseData = [
-  {
-    id: 1,
-    title: "Introduction to AI Agents",
-    duration: "12:45",
-    completed: true,
-    videoUrl: "https://example.com/video1.mp4"
-  },
-  {
-    id: 2,
-    title: "Building your first Neural Network",
-    duration: "18:20",
-    completed: false,
-    videoUrl: "https://example.com/video2.mp4"
-  }
-];
 
   return (
     <div className={`transition-all duration-500 flex flex-col h-full bg-slate-950 overflow-y-auto no-scrollbar ${isFocusMode ? 'lg:w-0 lg:opacity-0' : 'flex-1'}`}>

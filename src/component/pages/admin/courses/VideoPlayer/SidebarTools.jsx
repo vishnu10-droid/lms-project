@@ -1,11 +1,11 @@
 import React from 'react';
-import { Terminal, Sidebar, Bot, CheckCircle, Send } from 'lucide-react';
-import CodeEditor from './CodeEditor'; // Import the new component
+import { Terminal, Sidebar, Bot, CheckCircle } from 'lucide-react';
+import CodeEditor from './CodeEditor';
 import DevAi from './DevAi';
 
 const SidebarTools = ({ 
   sidebarTab, setSidebarTab, isFocusMode, setIsFocusMode, 
-  code, setCode, runCode, output, 
+  editorAction, onEditorAction, onCompilerStateChange, compilerState,
   curriculum, activeVideo, setActiveVideo 
 }) => {
   return (
@@ -39,10 +39,8 @@ const SidebarTools = ({
       <div className="flex-1 flex flex-col overflow-hidden">
         {sidebarTab === 'compiler' && (
           <CodeEditor 
-            code={code} 
-            setCode={setCode} 
-            runCode={runCode} 
-            output={output} 
+            editorAction={editorAction}
+            onCompilerStateChange={onCompilerStateChange}
           />
         )}
 
@@ -71,7 +69,11 @@ const SidebarTools = ({
         )}
 
         {sidebarTab === 'ai' && (
-          <DevAi/>
+          <DevAi
+            activeVideo={activeVideo}
+            onEditorAction={onEditorAction}
+            compilerState={compilerState}
+          />
         )}
       </div>
     </div>

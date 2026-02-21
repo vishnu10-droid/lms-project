@@ -2,7 +2,7 @@ import React from 'react';
 import { Trophy, Sparkles, Bell, LayoutDashboard, ChevronDown } from 'lucide-react';
 import logo from "../../../../../assets/fevicon.png";
 
-const TopNav = ({ progress, userLevel = 12, userXP = 70 }) => {
+const TopNav = ({ userLevel = 12, userXP = 70 }) => {
   return (
     <nav className="h-16 border-b border-slate-800/60 bg-slate-950/80 backdrop-blur-xl flex items-center justify-between px-6 z-50 sticky top-0">
       

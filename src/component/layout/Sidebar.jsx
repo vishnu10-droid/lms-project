@@ -186,7 +186,7 @@ const menu = [
   {
     title: "Payment",
     icon: Phone,
-    path: "/admin/payment",
+    path: "/admin/PAYMENT",
     ...COLORS.dashboard,
   },
   {
@@ -215,7 +215,7 @@ export default function Sidebar() {
           <img
             src={logo}
             alt="AI Scholar"
-            className="w-full h-full object-contain p-1.5 drop-shadow-[0_1px_1px_rgba(0,0,0,0.12)]"
+            className="w-full h-full object-contain p-1.5 drop-shadow-[0_1px_1px_rgba(0,0,0,0.12)] dark:brightness-110 dark:contrast-110"
           />
         </div>
         <div>
