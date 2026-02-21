@@ -1,5 +1,6 @@
 import React, { useState, useMemo } from 'react';
 import { Users, Clock, PlusCircle, CheckCircle, Search, Plus, LayoutGrid } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 const AddBatches = () => {
   const initialCourses = [
@@ -22,7 +23,7 @@ const AddBatches = () => {
       setAddedCourses([...addedCourses, courseId]);
     }
   };
-
+const navi=useNavigate();
   return (
     <div className="p-4 md:p-8 bg-gray-50 min-h-screen">
       
@@ -38,7 +39,7 @@ const AddBatches = () => {
 
         {/* TOP BUTTON: Add New Batch */}
         <button 
-          onClick={() => alert("Redirecting to Batch Creation Form...")}
+          onClick={() => navi("/admin/addbatches")}
           className="flex items-center justify-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-3 rounded-xl font-bold shadow-lg shadow-indigo-200 transition-all active:scale-95"
         >
           <Plus size={20} strokeWidth={3} />
