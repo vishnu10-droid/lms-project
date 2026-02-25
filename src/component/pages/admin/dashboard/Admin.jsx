@@ -54,7 +54,7 @@ export default function ModernAdminDashboard() {
         <header className="flex flex-col md:flex-row justify-between items-start md:items-end gap-4">
           <MotionDiv initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }}>
             <h2 className="text-sm font-bold text-indigo-600 uppercase tracking-widest mb-1">Overview Dashboard</h2>
-            <h1 className="text-3xl md:text-4xl font-black text-slate-900 dark:text-slate-100 tracking-tight">Good Morning, Chief! </h1>
+            <h1 className="text-3xl md:text-4xl font-black text-slate-900 dark:text-slate-100 tracking-tight">Welcome,  <span className="text-blue-800"> Ai Scholar!</span>  </h1>
             <p className="text-slate-500 dark:text-slate-400 font-medium mt-1">Here's what is happening with your platform today.</p>
           </MotionDiv>
           <div className="flex gap-3 w-full md:w-auto">

@@ -35,6 +35,7 @@ import Chats from "./component/pages/admin/chats/Chats";
 import AddBatches from "./component/pages/admin/courses/batches/AddBatches";
 import Batches from "./component/pages/admin/courses/batches/Batches";
 import Payments from "./component/pages/admin/payments/Payments";
+import Role from "./component/pages/admin/settings/role/Role";
 
 export default function App() {
   return (
@@ -58,6 +59,7 @@ export default function App() {
             element={<SubscriptionPlans />}
           />
         <Route path="/admin/settings" element={<Settings />} />
+        <Route path="/admin/role" element={<Role />} />
 
           <Route path="/admin/courses" element={<Course />} />
           <Route

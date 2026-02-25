@@ -18,6 +18,8 @@ import {
   CreditCard,
   User,
   Phone,
+  ShieldCheck,
+  HelpCircle,
 } from "lucide-react";
 
 /* ---------------- COLORS ---------------- */
@@ -104,7 +106,7 @@ const menu = [
         text: "text-lime-600 dark:text-lime-300",
       },
       {
-      title: "Add Batches",
+        title: "Add Batches",
         icon: Layers,
         path: "/admin/batches",
         hover: "hover:bg-lime-100 dark:hover:bg-lime-500/20",
@@ -171,7 +173,7 @@ const menu = [
     path: "/admin/notifications",
     ...COLORS.notifications,
   },
-    {
+  {
     title: "Chats",
     icon: Calendar,
     path: "/admin/chats",
@@ -192,10 +194,35 @@ const menu = [
   {
     title: "Settings",
     icon: Settings,
-    path: "/admin/settings",
     ...COLORS.settings,
-  },
 
+    submenu: [
+      {
+        title: "Setting",
+        icon: Settings,
+        path: "/admin/settings",
+        hover: "hover:bg-fuchsia-100 dark:hover:bg-fuchsia-500/20",
+        active: "bg-fuchsia-500",
+        text: "text-fuchsia-600 dark:text-fuchsia-300",
+      },
+      {
+        title: "Roles & Permissions",
+        icon: ShieldCheck,
+        path: "/admin/role",
+        hover: "hover:bg-emerald-100 dark:hover:bg-emerald-500/20",
+        active: "bg-emerald-500",
+        text: "text-emerald-600 dark:text-emerald-300",
+      },
+      {
+        title: "Help Center",
+        icon: HelpCircle,
+        path: "/admin/helpcenter",
+        hover: "hover:bg-lime-100 dark:hover:bg-lime-500/20",
+        active: "bg-lime-500",
+        text: "text-lime-600 dark:text-lime-300",
+      },
+    ],
+  },
 ];
 
 /* ---------------- COMPONENT ---------------- */
@@ -204,6 +231,7 @@ export default function Sidebar() {
   const [openCourses, setOpenCourses] = useState(false);
   const [openStudents, setOpenStudents] = useState(false);
   const [openInstructors, setOpenInstructors] = useState(false);
+  const [openSettings, setOpenSettings] = useState(false);
 
   const location = useLocation();
 
@@ -219,8 +247,12 @@ export default function Sidebar() {
           />
         </div>
         <div>
-          <h2 className="text-lg font-bold text-gray-800 dark:text-gray-100">AI Scholar</h2>
-          <p className="text-xs text-gray-500 dark:text-gray-400">Admin Portal</p>
+          <h2 className="text-lg font-bold text-gray-800 dark:text-gray-100">
+            AI Scholar
+          </h2>
+          <p className="text-xs text-gray-500 dark:text-gray-400">
+            Admin Portal
+          </p>
         </div>
       </div>
 
@@ -255,94 +287,88 @@ export default function Sidebar() {
                   >
                     <item.icon size={18} />
                   </div>
-                  <span className="text-sm font-medium">
-                    {item.title}
-                  </span>
+                  <span className="text-sm font-medium">{item.title}</span>
                 </NavLink>
               )}
 
-              {item.submenu && (
-                <>
-                  <button
-                    onClick={() => {
-                      if (item.title === "Courses")
-                        setOpenCourses(!openCourses);
-                      if (item.title === "Students")
-                        setOpenStudents(!openStudents);
-                      if (item.title === "Instructors")
-                        setOpenInstructors(!openInstructors);
-                    }}
-                    className={`w-full flex items-center justify-between px-3 py-2.5 rounded-lg transition
-                    ${
-                      isSubActive
-                        ? `${item.active} text-white shadow`
-                        : `text-gray-700 dark:text-gray-300 ${item.hover}`
-                    }`}
-                  >
-                    <div className="flex items-center gap-3">
-                      <div
-                        className={`w-8 h-8 flex items-center justify-center rounded-md
-                        ${
-                          isSubActive
-                            ? "bg-white/20 text-white"
-                            : item.text
-                        }`}
-                      >
-                        <item.icon size={18} />
-                      </div>
-                      <span className="text-sm font-medium">
-                        {item.title}
-                      </span>
-                    </div>
+             {item.submenu && (
+  <>
+    {/* TOGGLE BUTTON */}
+    <button
+      onClick={() => {
+        if (item.title === "Courses") setOpenCourses(!openCourses);
+        if (item.title === "Students") setOpenStudents(!openStudents);
+        if (item.title === "Instructors") setOpenInstructors(!openInstructors);
+        if (item.title === "Settings") setOpenSettings(!openSettings);
+      }}
+      className={`w-full flex items-center justify-between px-3 py-2.5 rounded-lg transition
+        ${
+          isSubActive
+            ? `${item.active} text-white shadow`
+            : `text-gray-700 dark:text-gray-300 ${item.hover}`
+        }`}
+    >
+      <div className="flex items-center gap-3">
+        <div
+          className={`w-8 h-8 flex items-center justify-center rounded-md
+          ${isSubActive ? "bg-white/20 text-white" : item.text}`}
+        >
+          <item.icon size={18} />
+        </div>
+        <span className="text-sm font-medium">{item.title}</span>
+      </div>
 
-                    <ChevronDown
-                      size={16}
-                      className={`transition ${
-                        (item.title === "Courses" && openCourses) ||
-                        (item.title === "Students" && openStudents) ||
-                        (item.title === "Instructors" && openInstructors)
-                          ? "rotate-180"
-                          : ""
-                      }`}
-                    />
-                  </button>
+      {/* CHEVRON ROTATE (ALL INCLUDED) */}
+      <ChevronDown
+        size={16}
+        className={`transition ${
+          (item.title === "Courses" && openCourses) ||
+          (item.title === "Students" && openStudents) ||
+          (item.title === "Instructors" && openInstructors) ||
+          (item.title === "Settings" && openSettings)
+            ? "rotate-180"
+            : ""
+        }`}
+      />
+    </button>
 
-                  {((item.title === "Courses" && openCourses) ||
-                    (item.title === "Students" && openStudents) ||
-                    (item.title === "Instructors" && openInstructors)) && (
-                    <div className="ml-10 mt-1 space-y-1">
-                      {item.submenu.map((sub, j) => (
-                        <NavLink
-                          key={j}
-                          to={sub.path}
-                          className={({ isActive }) =>
-                            `flex items-center gap-2 px-2 py-2 rounded-md transition
-                            ${
-                              isActive
-                                ? `${sub.active} text-white shadow`
-                                : `text-gray-700 dark:text-gray-300 ${sub.hover}`
-                            }`
-                          }
-                        >
-                          <div
-                            className={`w-7 h-7 flex items-center justify-center rounded
-                            ${
-                              location.pathname === sub.path
-                                ? "bg-white/20 text-white"
-                                : sub.text
-                            }`}
-                          >
-                            <sub.icon size={14} />
-                          </div>
-                          <span className="text-xs">
-                            {sub.title}
-                          </span>
-                        </NavLink>
-                      ))}
-                    </div>
-                  )}
-                </>
-              )}
+    {/* DROPDOWN BOX — ALL IN ONE */}
+    {((item.title === "Courses" && openCourses) ||
+      (item.title === "Students" && openStudents) ||
+      (item.title === "Instructors" && openInstructors) ||
+      (item.title === "Settings" && openSettings)) && (
+      <div className="ml-10 mt-1 space-y-1">
+        {item.submenu.map((sub, j) => (
+          <NavLink
+            key={j}
+            to={sub.path}
+            className={({ isActive }) =>
+              `flex items-center gap-2 px-2 py-2 rounded-md transition
+              ${
+                isActive
+                  ? `${sub.active} text-white shadow`
+                  : `text-gray-700 dark:text-gray-300 ${sub.hover}`
+              }`
+            }
+          >
+            <div
+              className={`w-7 h-7 flex items-center justify-center rounded
+              ${
+                location.pathname === sub.path
+                  ? "bg-white/20 text-white"
+                  : sub.text
+              }`}
+            >
+              <sub.icon size={14} />
+            </div>
+
+            <span className="text-xs">{sub.title}</span>
+          </NavLink>
+        ))}
+      </div>
+    )}
+  </>
+)}
             </div>
           );
         })}

@@ -1,12 +1,13 @@
+
 import { useState, useMemo } from "react";
 import {
   ChevronLeft, ChevronRight, Plus, X, Users, Video,
-  FileText, Check, Calendar as CalIcon, Target, Trash2, Search, Download, AlertCircle, Edit3, Clock, Layout
+  FileText, Check, Calendar as CalIcon, Target, Trash2,
+  Search, Download, AlertCircle, Edit3, Clock, Layout
 } from "lucide-react";
-import { motion } from "framer-motion"; // Dynamic Animations
+import { motion } from "framer-motion";
 
-// Types and Config
-const DAYS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+const DAYS = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
 const MONTHS = ["January","February","March","April","May","June","July","August","September","October","November","December"];
 
 const eventTypes = [
@@ -32,21 +33,32 @@ const initialEvents = [
 ];
 
 export default function Schedule() {
+
   const realToday = new Date();
   const [viewDate, setViewDate] = useState(new Date(realToday.getFullYear(), realToday.getMonth(), 1));
   const [events, setEvents] = useState(initialEvents);
+
   const [showAddModal, setShowAddModal] = useState(false);
   const [selectedEvent, setSelectedEvent] = useState(null);
   const [searchQuery, setSearchQuery] = useState("");
   const [isEditing, setIsEditing] = useState(null);
-  const [newEvent, setNewEvent] = useState({ title: "", date: "", time: "", type: "Lecture", instructor: "" });
+
+  const [newEvent, setNewEvent] = useState({
+    title: "",
+    date: "",
+    time: "",
+    type: "Lecture",
+    instructor: ""
+  });
 
   const year = viewDate.getFullYear();
   const month = viewDate.getMonth();
   const firstDay = new Date(year, month, 1).getDay();
   const daysInMonth = new Date(year, month + 1, 0).getDate();
+
   const monthProgress = Math.round((realToday.getDate() / daysInMonth) * 100);
 
+  // Generate calendar days
   const calDays = useMemo(() => {
     const days = [];
     for (let i = 0; i < firstDay; i++) days.push(null);
@@ -54,35 +66,53 @@ export default function Schedule() {
     return days;
   }, [year, month, firstDay, daysInMonth]);
 
+  // Search filter
   const filteredEvents = events.filter(e =>
     e.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
     e.instructor.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
-  const getEventsForDay = (d) => filteredEvents.filter(e => e.date.toDateString() === d.toDateString());
+  // FIXED — Correct date matching
+  const getEventsForDay = (d) => filteredEvents.filter(e =>
+    e.date.getFullYear() === d.getFullYear() &&
+    e.date.getMonth() === d.getMonth() &&
+    e.date.getDate() === d.getDate()
+  );
 
+  // FIXED — Add + Edit event
   const addEvent = () => {
     if (!newEvent.title || !newEvent.date) return;
-    const dateObj = new Date(newEvent.date);
-    dateObj.setMinutes(dateObj.getMinutes() + dateObj.getTimezoneOffset());
-   
+
+    const [y, m, d] = newEvent.date.split("-").map(Number);
+    const finalDate = new Date(y, m - 1, d);
+
+    const data = {
+      id: isEditing || Date.now(),
+      ...newEvent,
+      date: finalDate,
+      duration: newEvent.duration || "1h",
+    };
+
     if (isEditing) {
-      setEvents(events.map(e => e.id === isEditing ? { ...newEvent, id: isEditing, date: dateObj, duration: newEvent.duration || "1h" } : e));
+      setEvents(events.map((e) => e.id === isEditing ? data : e));
     } else {
-      setEvents([...events, { id: Date.now(), ...newEvent, date: dateObj, duration: "1h" }]);
+      setEvents([...events, data]);
     }
+
     setShowAddModal(false);
     setIsEditing(null);
     setNewEvent({ title: "", date: "", time: "", type: "Lecture", instructor: "" });
   };
 
+  // FIXED — Edit event click
   const handleEditClick = (event) => {
-    const formattedDate = event.date.toISOString().split('T')[0];
+    const formattedDate = event.date.toISOString().split("T")[0];
     setNewEvent({ ...event, date: formattedDate });
     setIsEditing(event.id);
     setSelectedEvent(null);
     setShowAddModal(true);
   };
+
 
   return (
     <div className="p-6 max-w-7xl mx-auto space-y-6 min-h-screens text-slate-900">
