@@ -105,7 +105,7 @@ export default function Settings() {
         animate={{ x: 0, opacity: 1 }}
         transition={{ type: "spring", stiffness: 60 }}
         className="text-[28px] font-extrabold tracking-tight 
-                   bg-gradient-to-r from-blue-500 via-indigo-500 to-purple-600
+                   .bg-gradient-to-r from-blue-500 via-indigo-500 to-purple-600
                    bg-clip-text text-transparent"
       >
         Settings

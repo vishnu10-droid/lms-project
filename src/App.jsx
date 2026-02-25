@@ -12,10 +12,6 @@ import StudentPayments from "./component/pages/admin/students/StudentPayments";
 import InstrouctorProlife from "./component/pages/admin/instrouctor/InstrouctorProlife";
 import Schedule from "./component/pages/admin/schedule/Calendar";
 import Reports from "./component/pages/admin/reports/Reports";
-import EventModal from "./component/pages/admin/schedule/EventModal";
-import DayView from "./component/pages/admin/schedule/DayView";
-import MonthView from "./component/pages/admin/schedule/MonthView";
-import WeekView from "./component/pages/admin/schedule/WeekView";
 import Students from "./component/pages/admin/students/Students";
 import AdminNotifications from "./component/pages/admin/Notification/Notifications";
 import AdminProfile from "./component/pages/admin/dashboard/AdminProfile";
@@ -35,7 +31,8 @@ import Chats from "./component/pages/admin/chats/Chats";
 import AddBatches from "./component/pages/admin/courses/batches/AddBatches";
 import Batches from "./component/pages/admin/courses/batches/Batches";
 import Payments from "./component/pages/admin/payments/Payments";
-import Role from "./component/pages/admin/settings/role/Role";
+import Role from "./component/pages/admin/settings/role/RoleList";
+import RolesPage from "./component/pages/admin/settings/role/RolesPage";
 
 export default function App() {
   return (
@@ -59,7 +56,7 @@ export default function App() {
             element={<SubscriptionPlans />}
           />
         <Route path="/admin/settings" element={<Settings />} />
-        <Route path="/admin/role" element={<Role />} />
+        <Route path="/admin/role" element={<RolesPage />} />
 
           <Route path="/admin/courses" element={<Course />} />
           <Route
@@ -83,13 +80,6 @@ export default function App() {
           <Route path="/admin/reports" element={<Reports />} />
 
 
-          <Route
-            path="/admin/schedulepage/eventmodal"
-            element={<EventModal />}
-          />
-          <Route path="/admin/schedule/dayview" element={<DayView />} />
-          <Route path="/admin/schedule/monthview" element={<MonthView />} />
-          <Route path="/admin/schedule/weekview" element={<WeekView />} />
           <Route path="/admin/schedule" element={<Schedule />} />
           <Route path="/admin/helpcenter" element={<HelpCenter />} />
           <Route path="/admin/chats" element={<Chats />} />
